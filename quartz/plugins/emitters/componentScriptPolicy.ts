@@ -48,8 +48,19 @@ export const earlyInteractionBridge = `
     queuedComponentClicks.push(target);
   };
   document.addEventListener("click", queueComponentClick, true);
+  const closeEarlySearch = (event) => {
+    if (event.key !== "Escape") return;
+    const container = document.querySelector(".search-container.active");
+    if (!container) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    container.classList.remove("active");
+    document.querySelector(".search-button")?.setAttribute("aria-expanded", "false");
+  };
+  document.addEventListener("keydown", closeEarlySearch, true);
   document.addEventListener("quartz:components-ready", () => {
     document.removeEventListener("click", queueComponentClick, true);
+    document.removeEventListener("keydown", closeEarlySearch, true);
     requestAnimationFrame(() => {
       for (const target of queuedComponentClicks) {
         if (target.isConnected) target.click();
