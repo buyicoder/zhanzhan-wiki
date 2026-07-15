@@ -90,7 +90,13 @@ async function verifyFirstVisibleInteractions(browser, width) {
   if (width < 800) {
     const menu = page.locator(".mobile-explorer:visible").first()
     await menu.click()
-    await page.waitForTimeout(500)
+    await page
+      .waitForFunction(
+        () => !document.querySelector(".explorer")?.classList.contains("collapsed"),
+        null,
+        { timeout: 6_000 },
+      )
+      .catch(() => {})
     check(
       (await page.locator(".explorer").getAttribute("class"))?.includes("collapsed") === false,
       `${width}: earliest hamburger click opens drawer`,
@@ -102,7 +108,13 @@ async function verifyFirstVisibleInteractions(browser, width) {
     document.documentElement.getAttribute("saved-theme"),
   )
   if (await theme.count()) await theme.click()
-  await page.waitForTimeout(500)
+  await page
+    .waitForFunction(
+      (previous) => document.documentElement.getAttribute("saved-theme") !== previous,
+      beforeTheme,
+      { timeout: 6_000 },
+    )
+    .catch(() => {})
   const afterTheme = await page.evaluate(() => document.documentElement.getAttribute("saved-theme"))
   check(
     Boolean(await theme.count()) && beforeTheme !== afterTheme,
@@ -112,7 +124,11 @@ async function verifyFirstVisibleInteractions(browser, width) {
 
   const reader = page.locator(".readermode:visible").first()
   if (await reader.count()) await reader.click()
-  await page.waitForTimeout(500)
+  await page
+    .waitForFunction(() => document.documentElement.getAttribute("reader-mode") === "on", null, {
+      timeout: 6_000,
+    })
+    .catch(() => {})
   check(
     Boolean(await reader.count()) &&
       (await page.evaluate(() => document.documentElement.getAttribute("reader-mode"))) === "on",
@@ -173,7 +189,13 @@ async function verifyShortMobile(browser, width) {
   const page = await context.newPage()
   await directLoad(page, "/")
   await page.locator(".mobile-explorer:visible").click()
-  await page.waitForTimeout(500)
+  await page
+    .waitForFunction(
+      () => !document.querySelector(".explorer")?.classList.contains("collapsed"),
+      null,
+      { timeout: 6_000 },
+    )
+    .catch(() => {})
   const geometry = await page.evaluate(() => {
     const controls = [...document.querySelectorAll(".darkmode, .readermode")]
       .filter((entry) => entry.getClientRects().length > 0)
