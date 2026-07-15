@@ -9,6 +9,35 @@ const NAV_LINKS = [
   ["Now", "now"],
 ] as const
 
+const HEADER_SCRIPT = `
+function enhanceDesktopExplorer() {
+  for (const button of document.querySelectorAll(".explorer-toggle.desktop-explorer")) {
+    const explorer = button.closest(".explorer")
+    if (!explorer) continue
+    const syncLabel = () => {
+      const collapsed = explorer.classList.contains("collapsed")
+      const label = collapsed ? "展开全局目录" : "收起全局目录"
+      button.setAttribute("aria-label", label)
+      button.setAttribute("title", label)
+      button.setAttribute("aria-expanded", String(!collapsed))
+    }
+    syncLabel()
+    if (button.dataset.desktopEnhancement !== "true") {
+      button.dataset.desktopEnhancement = "true"
+      button.addEventListener("click", () => requestAnimationFrame(syncLabel))
+    }
+  }
+}
+if (!window.__docHeaderInitialized) {
+  window.__docHeaderInitialized = true
+  document.addEventListener("nav", () => {
+    if (window.location.hash === "") window.scrollTo({ top: 0, left: 0, behavior: "instant" })
+    enhanceDesktopExplorer()
+  })
+}
+enhanceDesktopExplorer()
+`
+
 const Header: QuartzComponent = ({ children, fileData, cfg }: QuartzComponentProps) => {
   const slug = (fileData.slug ?? "index") as FullSlug
 
@@ -33,6 +62,7 @@ const Header: QuartzComponent = ({ children, fileData, cfg }: QuartzComponentPro
         })}
       </nav>
       {children.length > 0 ? <div class="doc-header-extra">{children}</div> : null}
+      <script dangerouslySetInnerHTML={{ __html: HEADER_SCRIPT }} />
     </header>
   )
 }
@@ -49,14 +79,6 @@ Header.css = `
 .doc-header-link {
   text-decoration: none;
 }
-`
-
-Header.afterDOMLoaded = `
-document.addEventListener("nav", () => {
-  if (window.location.hash === "") {
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" })
-  }
-})
 `
 
 export default (() => Header) satisfies QuartzComponentConstructor
