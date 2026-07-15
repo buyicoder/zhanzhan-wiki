@@ -22,6 +22,7 @@ import {
 import { Features, transform } from "lightningcss"
 import { transform as transpile } from "esbuild"
 import { write } from "./helpers"
+import { earlyInteractionBridge, stabilizeComponentScript } from "./componentScriptPolicy"
 
 function hashContent(content: string | Buffer): string {
   return createHash("sha256").update(content).digest("hex").slice(0, 8)
@@ -31,6 +32,7 @@ type ComponentResources = {
   css: string[]
   beforeDOMLoaded: string[]
   afterDOMLoaded: string[]
+  navigationBootstrap: string
   componentCssStrings: Set<string>
 }
 
@@ -65,13 +67,17 @@ function getComponentResources(ctx: BuildCtx): ComponentResources {
     css: [...componentResources.css],
     beforeDOMLoaded: [...componentResources.beforeDOMLoaded],
     afterDOMLoaded: [...componentResources.afterDOMLoaded],
+    navigationBootstrap: "",
     componentCssStrings: new Set(componentResources.css),
   }
 }
 
 async function joinScripts(scripts: string[]): Promise<string> {
   // wrap with iife to prevent scope collision
-  const script = scripts.map((script) => `(function () {${script}})();`).join("\n")
+  const script = scripts
+    .map(stabilizeComponentScript)
+    .map((script) => `(function () {${script}})();`)
+    .join("\n")
 
   // minify with esbuild
   const res = await transpile(script, {
@@ -83,6 +89,8 @@ async function joinScripts(scripts: string[]): Promise<string> {
 
 function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentResources) {
   const cfg = ctx.cfg.configuration
+
+  componentResources.beforeDOMLoaded.push(earlyInteractionBridge)
 
   // popovers
   if (cfg.enablePopovers) {
@@ -259,14 +267,14 @@ function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentReso
   }
 
   if (cfg.enableSPA) {
-    componentResources.afterDOMLoaded.push(spaRouterScript)
+    componentResources.navigationBootstrap = spaRouterScript
   } else {
-    componentResources.afterDOMLoaded.push(`
+    componentResources.navigationBootstrap = `
       window.spaNavigate = (url, _) => window.location.assign(url)
       window.addCleanup = () => {}
       const event = new CustomEvent("nav", { detail: { url: document.body.dataset.slug } })
       document.dispatchEvent(event)
-    `)
+    `
   }
 }
 
@@ -351,17 +359,23 @@ export const ComponentResources: QuartzEmitterPlugin = () => {
       let postscript: string
       if (!useHashing) {
         // Serve mode: monolithic IIFE bundle for fast rebuilds
-        postscript = await joinScripts(componentResources.afterDOMLoaded)
+        postscript = await joinScripts([
+          ...componentResources.afterDOMLoaded,
+          componentResources.navigationBootstrap,
+        ])
       } else {
         // Production: emit each afterDOMLoaded script as an individual cached file,
         // then generate an orchestrator that imports them with correct ordering.
-        // The last script is always the SPA router (pushed last by addGlobalPageResources),
-        // which must execute after all other scripts register their nav listeners.
-        const scripts = componentResources.afterDOMLoaded
+        // The navigation bootstrap executes after component scripts register nav listeners.
+        const scripts = [
+          ...componentResources.afterDOMLoaded,
+          componentResources.navigationBootstrap,
+        ]
         const scriptFilenames: string[] = []
 
         for (let i = 0; i < scripts.length; i++) {
-          const hash = hashContent(scripts[i])
+          const stabilizedScript = stabilizeComponentScript(scripts[i])
+          const hash = hashContent(stabilizedScript)
           const slug = `static/scripts/script-${i}-${hash}`
           const filename = `${slug}.js`
           scriptFilenames.push(filename)
@@ -370,7 +384,7 @@ export const ComponentResources: QuartzEmitterPlugin = () => {
             ctx,
             slug: slug as FullSlug,
             ext: ".js",
-            content: scripts[i],
+            content: stabilizedScript,
           })
         }
 
@@ -382,8 +396,9 @@ export const ComponentResources: QuartzEmitterPlugin = () => {
           .join(",\n  ")
 
         const spaImport = `await import("./${scriptFilenames[scriptFilenames.length - 1]}");`
+        const readySignal = `await fetchData; await new Promise(requestAnimationFrame); document.documentElement.dataset.componentsReady = "true"; document.dispatchEvent(new CustomEvent("quartz:components-ready"));`
 
-        postscript = [`await Promise.all([\n  ${componentImports}\n]);`, spaImport]
+        postscript = [`await Promise.all([\n  ${componentImports}\n]);`, spaImport, readySignal]
           .filter(Boolean)
           .join("\n")
       }

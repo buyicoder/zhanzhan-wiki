@@ -43,6 +43,15 @@ function notifyNav(url: FullSlug) {
 const cleanupFns: Set<(...args: any[]) => void> = new Set()
 window.addCleanup = (fn) => cleanupFns.add(fn)
 
+document.addEventListener(
+  "render",
+  () => {
+    cleanupFns.forEach((fn) => fn())
+    cleanupFns.clear()
+  },
+  { capture: true },
+)
+
 function startLoading() {
   document.querySelector(".navigation-progress")?.remove()
   const loadingBar = document.createElement("div")

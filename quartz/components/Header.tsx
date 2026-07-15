@@ -2,49 +2,56 @@ import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } fro
 import { FullSlug, pathToRoot, resolveRelative } from "../util/path"
 
 const NAV_LINKS = [
-  ["长青作品", "works/index"],
-  ["数字花园", "garden/index"],
   ["制作日志", "logs/index"],
+  ["数字花园", "garden/index"],
+  ["长青作品", "works/index"],
   ["项目档案", "projects/index"],
   ["Now", "now"],
 ] as const
 
 const HEADER_SCRIPT = `
-function enhanceDesktopExplorer() {
-  for (const button of document.querySelectorAll(".explorer-toggle.desktop-explorer")) {
+function enhanceExplorerButtons() {
+  const isCompact = window.matchMedia("(max-width: 1100px)").matches
+  for (const button of document.querySelectorAll(".explorer-toggle")) {
     const explorer = button.closest(".explorer")
     if (!explorer) continue
+    const isMobileButton = button.classList.contains("mobile-explorer")
+    if (isMobileButton && isCompact && button.dataset.initialized !== "true") {
+      explorer.classList.add("collapsed")
+      explorer.setAttribute("aria-expanded", "false")
+      document.documentElement.classList.remove("mobile-no-scroll")
+    }
     const syncLabel = () => {
       const collapsed = explorer.classList.contains("collapsed")
-      const label = collapsed ? "展开全局目录" : "收起全局目录"
+      const label = isMobileButton ? (collapsed ? "打开全局目录" : "关闭全局目录") : (collapsed ? "展开全局目录" : "收起全局目录")
       button.setAttribute("aria-label", label)
       button.setAttribute("title", label)
       button.setAttribute("aria-expanded", String(!collapsed))
     }
     syncLabel()
-    if (button.dataset.desktopEnhancement !== "true") {
-      button.dataset.desktopEnhancement = "true"
+    if (button.dataset.initialized !== "true") {
+      button.dataset.initialized = "true"
       button.addEventListener("click", () => {
-        const wasCollapsed = explorer.classList.contains("collapsed")
-        requestAnimationFrame(() => {
-          if (explorer.classList.contains("collapsed") === wasCollapsed) {
-            explorer.classList.toggle("collapsed")
-            explorer.setAttribute("aria-expanded", String(wasCollapsed))
-          }
-          syncLabel()
-        })
+        queueMicrotask(syncLabel)
       })
     }
   }
 }
+function mountHeaderTools() {
+  const target = document.querySelector(".doc-header-extra")
+  const tools = document.querySelector(".page > #quartz-body > .sidebar.left > .flex-component")
+  if (target && tools && tools.parentElement !== target) target.appendChild(tools)
+}
+function enhanceReadingShell() {
+  mountHeaderTools()
+  enhanceExplorerButtons()
+}
 if (!window.__docHeaderInitialized) {
   window.__docHeaderInitialized = true
-  document.addEventListener("nav", () => {
-    if (window.location.hash === "") window.scrollTo({ top: 0, left: 0, behavior: "instant" })
-    enhanceDesktopExplorer()
-  })
+  document.addEventListener("nav", enhanceReadingShell)
+  document.addEventListener("render", enhanceReadingShell)
 }
-enhanceDesktopExplorer()
+enhanceReadingShell()
 `
 
 const Header: QuartzComponent = ({ children, fileData, cfg }: QuartzComponentProps) => {
@@ -70,7 +77,7 @@ const Header: QuartzComponent = ({ children, fileData, cfg }: QuartzComponentPro
           )
         })}
       </nav>
-      {children.length > 0 ? <div class="doc-header-extra">{children}</div> : null}
+      <div class="doc-header-extra">{children}</div>
       <script dangerouslySetInnerHTML={{ __html: HEADER_SCRIPT }} />
     </header>
   )
