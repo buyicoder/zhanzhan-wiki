@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=./quartz/plugins/quartz-plugins.schema.json
 configuration:
-  pageTitle: 占占的数字花园
+  pageTitle: 占占的 AI 成长知识库
   pageTitleSuffix: ""
   enableSPA: true
   enablePopovers: true

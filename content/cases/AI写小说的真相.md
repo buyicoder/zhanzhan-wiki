@@ -2,6 +2,11 @@
 title: AI 写小说的真相
 date: 2026-07-15
 tags: [AI写作, 小说, NovelEngine]
+aliases: [/works/AI写小说的真相]
+provenance: 📔 笔记整理
+maturity: 🌲 长青
+content_type: 案例
+reader_path: cases
 ---
 
 > 📔 笔记整理 · 🌲 长青 · 图例见 [[conventions|本站的诚实规则]]

@@ -2,6 +2,11 @@
 title: 我的 AI 记忆系统这样存东西
 date: 2026-07-15
 tags: [Jarvis, 记忆系统, 架构, 制作日志]
+aliases: [/logs/我的AI记忆系统这样存东西]
+provenance: 📔 笔记整理
+maturity: 🌿 生长中
+content_type: 案例
+reader_path: cases
 ---
 
 > 📔 笔记整理 · 🌿 生长中 · 整理自我 2026 年 6 月的设计文档 · 图例见 [[conventions|本站的诚实规则]]

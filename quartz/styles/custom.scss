@@ -176,6 +176,7 @@ body {
 }
 
 .page > #quartz-body .center > article,
+.page > #quartz-body .center > .reader-journey-next,
 .page > #quartz-body .center > .page-footer,
 .page > #quartz-body footer {
   box-sizing: border-box;
@@ -185,6 +186,31 @@ body {
   margin-left: auto;
   padding-right: 48px;
   padding-left: 48px;
+}
+
+.reader-journey-next {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--zz-border);
+}
+
+.reader-journey-next a {
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.reader-journey-next a:last-child {
+  margin-left: auto;
+  text-align: right;
+}
+
+/* The start route is a guide, not an empty content folder. */
+body[data-slug="start/index"] .page-listing {
+  display: none;
 }
 
 .page > #quartz-body .center > hr {
@@ -575,6 +601,13 @@ input:focus-visible {
     display: none;
   }
 
+  .doc-header-extra .darkmode,
+  .doc-header-extra .readermode {
+    width: 44px;
+    height: 44px;
+    padding: 9px;
+  }
+
   .page > #quartz-body {
     grid-template:
       "grid-sidebar-left"
@@ -611,6 +644,7 @@ input:focus-visible {
 
   .page > #quartz-body .page-header,
   .page > #quartz-body .center > article,
+  .page > #quartz-body .center > .reader-journey-next,
   .page > #quartz-body .center > .popover-hint,
   .page > #quartz-body .center > .page-footer,
   .page > #quartz-body footer {
@@ -811,6 +845,7 @@ input:focus-visible {
   }
 
   .page > #quartz-body .center > article,
+  .page > #quartz-body .center > .reader-journey-next,
   .page > #quartz-body .center > .popover-hint,
   .page > #quartz-body .center > .page-footer,
   .page > #quartz-body footer {
@@ -825,6 +860,15 @@ input:focus-visible {
 
   .article-title {
     font-size: 28px;
+  }
+
+  .reader-journey-next {
+    flex-direction: column;
+  }
+
+  .reader-journey-next a:last-child {
+    margin-left: 0;
+    text-align: left;
   }
 
   article h2 {

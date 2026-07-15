@@ -2,6 +2,11 @@
 title: AI 时代，最不重要的能力恰恰是大家最焦虑的
 date: 2026-07-15
 tags: [三层能力模型, 原生能力]
+aliases: [/works/AI时代最不重要的能力恰恰是大家最焦虑的]
+provenance: 📔 笔记整理
+maturity: 🌲 长青
+content_type: 方法
+reader_path: learning
 ---
 
 > 📔 笔记整理 · 🌲 长青 · 图例见 [[conventions|本站的诚实规则]]
