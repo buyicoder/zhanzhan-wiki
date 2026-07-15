@@ -24,7 +24,16 @@ function enhanceDesktopExplorer() {
     syncLabel()
     if (button.dataset.desktopEnhancement !== "true") {
       button.dataset.desktopEnhancement = "true"
-      button.addEventListener("click", () => requestAnimationFrame(syncLabel))
+      button.addEventListener("click", () => {
+        const wasCollapsed = explorer.classList.contains("collapsed")
+        requestAnimationFrame(() => {
+          if (explorer.classList.contains("collapsed") === wasCollapsed) {
+            explorer.classList.toggle("collapsed")
+            explorer.setAttribute("aria-expanded", String(wasCollapsed))
+          }
+          syncLabel()
+        })
+      })
     }
   }
 }
