@@ -51,4 +51,12 @@ Header.css = `
 }
 `
 
+Header.afterDOMLoaded = `
+document.addEventListener("nav", () => {
+  if (window.location.hash === "") {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" })
+  }
+})
+`
+
 export default (() => Header) satisfies QuartzComponentConstructor

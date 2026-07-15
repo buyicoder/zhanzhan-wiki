@@ -7,6 +7,7 @@
   --zz-muted: #66706d;
   --zz-accent-soft: #e9f6f2;
   --zz-header-height: 56px;
+  --zz-header-clearance: 16px;
   --titleFont:
     -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB",
     "Microsoft YaHei", sans-serif;
@@ -43,9 +44,8 @@ body {
   height: var(--zz-header-height);
   padding: 0 max(340px, calc((100vw - 1440px) / 2 + 340px)) 0
     max(24px, calc((100vw - 1440px) / 2 + 24px));
-  background: color-mix(in srgb, var(--light) 94%, transparent);
+  background: var(--light);
   border-bottom: 1px solid var(--zz-border);
-  backdrop-filter: blur(10px);
 }
 
 .doc-header-brand {
@@ -142,7 +142,7 @@ body {
     "grid-sidebar-left grid-footer grid-sidebar-right" /
     256px minmax(0, 1fr) 216px;
   gap: 0;
-  padding-top: var(--zz-header-height);
+  padding-top: calc(var(--zz-header-height) + var(--zz-header-clearance));
 }
 
 .page > #quartz-body .sidebar {
@@ -450,6 +450,11 @@ footer > ul {
   box-shadow: 0 12px 32px rgb(20 32 28 / 14%);
 }
 
+.search > .search-container {
+  background: var(--light);
+  backdrop-filter: none;
+}
+
 button:focus-visible,
 a:focus-visible,
 input:focus-visible {
@@ -474,7 +479,7 @@ input:focus-visible {
       "grid-center"
       "grid-sidebar-right"
       "grid-footer" / minmax(0, 1fr);
-    padding: var(--zz-header-height) 24px 0;
+    padding: calc(var(--zz-header-height) + var(--zz-header-clearance)) 24px 0;
   }
 
   .page > #quartz-body .sidebar.left {
@@ -572,7 +577,7 @@ input:focus-visible {
       "grid-center"
       "grid-sidebar-right"
       "grid-footer" / minmax(0, 1fr);
-    padding: var(--zz-header-height) 0 0;
+    padding: calc(var(--zz-header-height) + var(--zz-header-clearance)) 0 0;
   }
 
   .page > #quartz-body .sidebar.left {
