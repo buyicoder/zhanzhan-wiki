@@ -44,9 +44,14 @@ export const DefaultFrame: PageFrame = {
           <Content {...componentData} />
           <hr />
           <div class="page-footer">
-            {afterBody.map((BodyComponent) => (
-              <BodyComponent {...componentData} />
-            ))}
+            {afterBody.length > 0 ? (
+              <details class="knowledge-details">
+                <summary>知识关系与反向链接</summary>
+                {afterBody.map((BodyComponent) => (
+                  <BodyComponent {...componentData} />
+                ))}
+              </details>
+            ) : null}
           </div>
         </div>
         <div class="right sidebar">

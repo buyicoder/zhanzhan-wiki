@@ -21,24 +21,24 @@ configuration:
       code: IBM Plex Mono
     colors:
       lightMode:
-        light: "#faf8f8"
-        lightgray: "#e5e5e5"
-        gray: "#b8b8b8"
-        darkgray: "#4e4e4e"
-        dark: "#2b2b2b"
-        secondary: "#284b63"
-        tertiary: "#84a59d"
-        highlight: rgba(143, 159, 169, 0.15)
+        light: "#ffffff"
+        lightgray: "#e4e8e6"
+        gray: "#7a8581"
+        darkgray: "#3f4845"
+        dark: "#111514"
+        secondary: "#0b725f"
+        tertiary: "#0b725f"
+        highlight: rgba(15, 143, 120, 0.10)
         textHighlight: "#fff23688"
       darkMode:
-        light: "#161618"
-        lightgray: "#393639"
-        gray: "#646464"
-        darkgray: "#d4d4d4"
-        dark: "#ebebec"
-        secondary: "#7b97aa"
-        tertiary: "#84a59d"
-        highlight: rgba(143, 159, 169, 0.15)
+        light: "#151817"
+        lightgray: "#2b312f"
+        gray: "#8d9793"
+        darkgray: "#d9dfdc"
+        dark: "#f2f5f3"
+        secondary: "#4fc3a8"
+        tertiary: "#73d6bf"
+        highlight: rgba(79, 195, 168, 0.12)
         textHighlight: "#b3aa0288"
 plugins:
   - source: github:quartz-community/created-modified-date
@@ -99,7 +99,7 @@ plugins:
     enabled: false
     order: 92
   - source: github:quartz-community/fonts
-    enabled: true
+    enabled: false
   - source: github:quartz-community/remove-draft
     enabled: true
   - source: github:quartz-community/explicit-publish
@@ -127,14 +127,19 @@ plugins:
     enabled: true
   - source: github:quartz-community/explorer
     enabled: true
+    options:
+      title: 目录
+      folderDefaultState: open
+      folderClickBehavior: collapse
+      useSavedState: true
     layout:
       position: left
       priority: 50
   - source: github:quartz-community/graph
     enabled: true
     layout:
-      position: right
-      priority: 10
+      position: afterBody
+      priority: 30
   - source: github:quartz-community/search
     enabled: true
     layout:
@@ -146,8 +151,8 @@ plugins:
   - source: github:quartz-community/backlinks
     enabled: true
     layout:
-      position: right
-      priority: 50
+      position: afterBody
+      priority: 40
   - source: github:quartz-community/article-title
     enabled: true
     layout:
@@ -198,8 +203,9 @@ plugins:
     enabled: true
     options:
       links:
-        GitHub: https://github.com/jackyzha0/quartz
-        Discord Community: https://discord.gg/cRFFHYye7t
+        诚实规则: /zhanzhan-wiki/conventions
+        Now: /zhanzhan-wiki/now
+        GitHub: https://github.com/buyicoder/zhanzhan-wiki
   - source: github:quartz-community/recent-notes
     enabled: false
   - source: github:quartz-community/spacer
