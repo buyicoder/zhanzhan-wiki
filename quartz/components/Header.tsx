@@ -27,6 +27,29 @@ const journeyNext = {
   "cases/协议解析代码必须默认高风险": ["cases/index", "thinking/数学正在从答案稀缺进入理解稀缺", "下一步：占占的判断"],
   "thinking/数学正在从答案稀缺进入理解稀缺": ["thinking/index", "start/index", "回到开始这里"]
 }
+const courseLessons = [
+  "00-使用说明与总览",
+  "01-里程碑一-让agent第一次操作你的电脑",
+  "02-里程碑二-准备ai环境",
+  "03-里程碑三-理解程序与命令行",
+  "04-里程碑四-git存档",
+  "05-里程碑五-github协作",
+  "06-里程碑六-毕业项目贪吃蛇",
+  "07-里程碑七-发布上线",
+  "08-里程碑八-个人复利成长系统"
+]
+function getCourseJourney(slug) {
+  const match = slug.match(/^ai-basics\\/(macos|windows)\\/(.+)$/)
+  if (!match) return undefined
+  const index = courseLessons.indexOf(match[2])
+  if (index < 0) return undefined
+  const platform = match[1]
+  return {
+    back: "ai-basics/" + platform + "/index",
+    previous: index > 0 ? "ai-basics/" + platform + "/" + courseLessons[index - 1] : undefined,
+    next: index < courseLessons.length - 1 ? "ai-basics/" + platform + "/" + courseLessons[index + 1] : undefined,
+  }
+}
 function sitePath(target) {
   const base = (document.body.dataset.basepath || "").replace(/^\\/|\\/$/g, "")
   return (base ? "/" + base : "") + "/" + target.replace(/\\/index$/, "")
@@ -60,27 +83,41 @@ function mountJourneyNext() {
   document.querySelector(".reader-journey-next")?.remove()
   const slug = document.body.dataset.slug?.toLowerCase()
   const entry = slug ? journeyNext[slug] : undefined
+  const course = slug ? getCourseJourney(slug) : undefined
   const article = document.querySelector(".center > article")
-  if (!entry || !article) return
+  if ((!entry && !course) || !article) return
   const nav = document.createElement("nav")
   nav.className = "reader-journey-next"
   nav.setAttribute("aria-label", "阅读下一步")
   const back = document.createElement("a")
-  back.href = sitePath(entry[0])
-  back.textContent = "返回本路径"
-  const next = document.createElement("a")
-  next.href = sitePath(entry[1])
-  next.textContent = entry[2]
-  nav.append(back, next)
+  back.href = sitePath(course?.back || entry[0])
+  back.textContent = course ? "返回平台课程" : "返回本路径"
+  nav.append(back)
+  if (course?.previous) {
+    const previous = document.createElement("a")
+    previous.href = sitePath(course.previous)
+    previous.textContent = "上一篇"
+    nav.append(previous)
+  }
+  const nextTarget = course?.next || entry?.[1]
+  if (nextTarget) {
+    const next = document.createElement("a")
+    next.href = sitePath(nextTarget)
+    next.textContent = course ? "下一篇" : entry[2]
+    nav.append(next)
+  }
   article.insertAdjacentElement("afterend", nav)
 }
 function enhanceExplorerButtons() {
   const isCompact = window.matchMedia("(max-width: 1100px)").matches
-  for (const button of document.querySelectorAll(".explorer-toggle")) {
+  for (const button of document.querySelectorAll(".mobile-explorer, .explorer-toggle")) {
     const explorer = button.closest(".explorer")
     if (!explorer) continue
     const isMobileButton = button.classList.contains("mobile-explorer")
+    if (isMobileButton) button.classList.remove("explorer-toggle")
     if (isMobileButton && isCompact && button.dataset.initialized !== "true") {
+      // The compact control owns its toggle below. Removing Quartz's generic
+      // hook prevents a second listener from immediately reversing the state.
       explorer.classList.add("collapsed")
       explorer.setAttribute("aria-expanded", "false")
       document.documentElement.classList.remove("mobile-no-scroll")
@@ -91,15 +128,53 @@ function enhanceExplorerButtons() {
       button.setAttribute("aria-label", label)
       button.setAttribute("title", label)
       button.setAttribute("aria-expanded", String(!collapsed))
+      explorer.setAttribute("aria-expanded", String(!collapsed))
+      explorer.querySelector(".explorer-content")?.setAttribute("aria-expanded", String(!collapsed))
     }
     syncLabel()
     if (button.dataset.initialized !== "true") {
       button.dataset.initialized = "true"
-      button.addEventListener("click", () => {
-        queueMicrotask(syncLabel)
-      })
+      if (isMobileButton && isCompact) continue
+      button.addEventListener(
+        "click",
+        () => queueMicrotask(syncLabel),
+        { capture: true },
+      )
     }
   }
+}
+function captureCompactExplorerIntent(event) {
+  if (!window.matchMedia("(max-width: 1100px)").matches) return
+  const target = event.target instanceof Element ? event.target.closest(".mobile-explorer") : null
+  const explorer = target?.closest(".explorer")
+  if (!explorer) return
+  target.dataset.nextCollapsed = String(!explorer.classList.contains("collapsed"))
+}
+function handleCompactExplorerToggle(event) {
+  if (event.__compactExplorerHandled) return
+  if (!window.matchMedia("(max-width: 1100px)").matches) return
+  const target = event.target instanceof Element ? event.target.closest(".mobile-explorer") : null
+  const explorer = target?.closest(".explorer")
+  if (!explorer) return
+  if (event.type === "click" && event.detail !== 0) return
+  event.__compactExplorerHandled = true
+  event.preventDefault()
+  event.stopImmediatePropagation()
+  const collapsed = target.dataset.nextCollapsed
+    ? target.dataset.nextCollapsed === "true"
+    : !explorer.classList.contains("collapsed")
+  delete target.dataset.nextCollapsed
+  const applyState = () => {
+    explorer.classList.toggle("collapsed", collapsed)
+    document.documentElement.classList.toggle("mobile-no-scroll", !collapsed)
+    explorer.setAttribute("aria-expanded", String(!collapsed))
+    explorer.querySelector(".explorer-content")?.setAttribute("aria-expanded", String(!collapsed))
+    target.setAttribute("aria-expanded", String(!collapsed))
+    target.setAttribute("aria-label", collapsed ? "打开全局目录" : "关闭全局目录")
+    target.setAttribute("title", collapsed ? "打开全局目录" : "关闭全局目录")
+  }
+  applyState()
+  requestAnimationFrame(applyState)
 }
 function mountHeaderTools() {
   const target = document.querySelector(".doc-header-extra")
@@ -115,6 +190,9 @@ function enhanceReadingShell() {
 }
 if (!window.__docHeaderInitialized) {
   window.__docHeaderInitialized = true
+  document.addEventListener("pointerdown", captureCompactExplorerIntent, { capture: true })
+  document.addEventListener("pointerup", handleCompactExplorerToggle, { capture: true })
+  document.addEventListener("click", handleCompactExplorerToggle, { capture: true })
   document.addEventListener("nav", enhanceReadingShell)
   document.addEventListener("render", enhanceReadingShell)
 }
