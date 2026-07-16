@@ -28,6 +28,23 @@ npx quartz build --serve   # 本地预览 http://localhost:8080
 
 `main` 分支的每次 push 触发 `.github/workflows/deploy.yml` 自动构建部署。
 
+## 发布 profile
+
+构建时必须明确选择目标，不共用含糊的部署路径：
+
+```bash
+# GitHub Pages 过渡站：https://buyicoder.github.io/zhanzhan-wiki/
+npm run build:github-pages -- --output public-github-pages
+
+# 自托管正式站：https://wiki.zhanzhanai.com/（根路径）
+npm run build:self-host -- --output public-self-host
+```
+
+`quartz.config.yaml` 仍保留为 GitHub Pages 兼容默认值，CI 则显式使用
+`quartz.config.github-pages.yaml`。自托管制品必须使用
+`quartz.config.self-host.yaml`；该 profile 的 canonical、sitemap、RSS、OG 和 CNAME
+统一指向 `wiki.zhanzhanai.com`，且不携带 `/zhanzhan-wiki/` base path。
+
 ## 内容结构
 
 ```text

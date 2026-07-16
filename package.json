@@ -14,6 +14,8 @@
   "scripts": {
     "quartz": "./quartz/bootstrap-cli.mjs",
     "docs": "npx quartz build --serve -d docs",
+    "build:github-pages": "node scripts/build-profile.mjs github-pages",
+    "build:self-host": "node scripts/build-profile.mjs self-host",
     "check": "tsc --noEmit && npx prettier . --check",
     "format": "npx prettier . --write",
     "test": "tsx --test",
