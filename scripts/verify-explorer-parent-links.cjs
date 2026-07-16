@@ -23,7 +23,8 @@ async function openExplorer(page, width) {
 }
 
 async function runViewport(browser, viewport) {
-  const page = await browser.newPage({ viewport })
+  const context = await browser.newContext({ viewport })
+  const page = await context.newPage()
   const consoleErrors = []
   const pageErrors = []
   page.on("console", (message) => {
@@ -113,7 +114,7 @@ async function runViewport(browser, viewport) {
   }
 
   await page.screenshot({ path: path.join(outputDir, `${viewport.name}.png`), fullPage: false })
-  await page.close()
+  await context.close()
   return { viewport, consoleErrors, pageErrors, geometry }
 }
 
