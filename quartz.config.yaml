@@ -130,7 +130,7 @@ plugins:
     options:
       title: 目录
       folderDefaultState: open
-      folderClickBehavior: collapse
+      folderClickBehavior: link
       useSavedState: true
     layout:
       position: left

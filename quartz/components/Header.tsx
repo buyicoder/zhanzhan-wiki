@@ -57,6 +57,49 @@ function sitePath(target) {
   const base = (document.body.dataset.basepath || "").replace(/^\\/|\\/$/g, "")
   return (base ? "/" + base : "") + "/" + target.replace(/\\/index$/, "")
 }
+function enhanceFolderControls(root) {
+  for (const container of root.querySelectorAll(".folder-container")) {
+    const folderPath = container.dataset.folderpath
+    const folderOuter = container.nextElementSibling
+    const folderLink = container.querySelector("a.folder-button")
+    const icon = container.querySelector(":scope > .folder-icon")
+    if (!folderPath || !folderOuter || !folderLink || !icon) continue
+
+    const title = folderLink.textContent?.trim() || "目录"
+    const toggle = document.createElement("button")
+    toggle.type = "button"
+    toggle.className = "folder-toggle"
+    toggle.append(icon.cloneNode(true))
+
+    const syncState = () => {
+      const expanded = folderOuter.classList.contains("open")
+      toggle.setAttribute("aria-expanded", String(expanded))
+      toggle.setAttribute("aria-label", (expanded ? "收起" : "展开") + title)
+    }
+    const toggleFolder = (event) => {
+      event.preventDefault()
+      event.stopPropagation()
+      folderOuter.classList.toggle("open")
+      const collapsed = !folderOuter.classList.contains("open")
+      let savedState = []
+      try { savedState = JSON.parse(localStorage.getItem("fileTree") || "[]") } catch {}
+      const existing = savedState.findIndex((item) => item.path === folderPath)
+      if (existing >= 0) savedState[existing].collapsed = collapsed
+      else savedState.push({ path: folderPath, collapsed })
+      localStorage.setItem("fileTree", JSON.stringify(savedState))
+      syncState()
+    }
+    toggle.addEventListener("click", toggleFolder)
+    icon.replaceWith(toggle)
+    syncState()
+
+    const currentSlug = document.body.dataset.slug
+    if (currentSlug === folderPath) {
+      folderLink.classList.add("active", "is-active")
+      folderLink.setAttribute("aria-current", "page")
+    }
+  }
+}
 function organizeExplorer() {
   for (const list of document.querySelectorAll(".explorer-ul")) {
     const items = [...list.children]
@@ -72,6 +115,7 @@ function organizeExplorer() {
       const path = item.querySelector(":scope > .folder-container")?.dataset.folderpath?.replace(/\\/index$/, "")
       item.hidden = legacyRoots.has(path?.split("/")[0])
     })
+    enhanceFolderControls(list)
     if (desired.some((item, index) => item !== list.children[index])) desired.forEach((item) => list.appendChild(item))
     if (list.dataset.journeyObserver !== "true") {
       list.dataset.journeyObserver = "true"
