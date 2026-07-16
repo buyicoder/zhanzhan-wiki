@@ -75,7 +75,7 @@ async function runViewport(browser, viewport) {
     'a.nav-file-title[href*="%E4%BF%A1%E6%81%AF%E6%BA%90"], a.nav-file-title[href*="信息源"]',
   )
   await leaf.first().click()
-  await page.waitForURL(/toolbox\/(%E4%BF%A1%E6%81%AF%E6%BA%90|信息源)/)
+  await page.waitForFunction(() => decodeURIComponent(location.pathname).includes("/toolbox/信息源"))
 
   await openExplorer(page, viewport.width)
   const geometry = await page.evaluate(() => {

@@ -8,6 +8,7 @@
   --zz-accent-soft: #e9f6f2;
   --zz-header-height: 56px;
   --zz-header-clearance: 16px;
+  --zz-explorer-width: 280px;
   --titleFont:
     -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB",
     "Microsoft YaHei", sans-serif;
@@ -145,7 +146,7 @@ body {
     "grid-sidebar-left grid-header grid-sidebar-right"
     "grid-sidebar-left grid-center grid-sidebar-right"
     "grid-sidebar-left grid-footer grid-sidebar-right" /
-    256px minmax(0, 1fr) 216px;
+    var(--zz-explorer-width) minmax(0, 1fr) 216px;
   gap: 0;
   padding-top: calc(var(--zz-header-height) + var(--zz-header-clearance));
   transition: grid-template-columns 180ms ease;
@@ -159,6 +160,7 @@ body {
 }
 
 .page > #quartz-body .sidebar.left {
+  position: relative;
   z-index: 41;
   background: var(--zz-sidebar);
   border-right: 1px solid var(--zz-border);
@@ -258,6 +260,9 @@ body[data-slug="start/index"] .page-listing {
   border-radius: 4px;
   font-size: 14px;
   line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .explorer-content .folder-container {
@@ -301,8 +306,9 @@ body[data-slug="start/index"] .page-listing {
   padding: 6px 8px 6px 4px;
   border-radius: 4px;
   line-height: 1.4;
-  overflow-wrap: anywhere;
-  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .explorer-content .folder-container a.folder-button:hover {
@@ -336,8 +342,9 @@ body[data-slug="start/index"] .page-listing {
 .explorer-content a.tree-item-self {
   display: block;
   width: 100%;
-  overflow-wrap: anywhere;
-  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .explorer-content li + li {
@@ -362,8 +369,8 @@ body[data-slug="start/index"] .page-listing {
 }
 
 .explorer-content .folder-outer > ul {
-  margin-left: 10px;
-  padding-left: 8px;
+  margin-left: 6px;
+  padding-left: 6px;
   border-left-color: var(--zz-border);
 }
 
@@ -644,8 +651,41 @@ footer > ul {
 }
 
 @media (min-width: 1101px) {
+  .explorer-resize-handle {
+    position: absolute;
+    z-index: 4;
+    top: 0;
+    right: -6px;
+    bottom: 0;
+    width: 12px;
+    cursor: col-resize;
+    touch-action: none;
+  }
+
+  .explorer-resize-handle::after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 5px;
+    width: 1px;
+    background: transparent;
+    content: "";
+  }
+
+  .explorer-resize-handle:hover::after,
+  .explorer-resize-handle:focus-visible::after,
+  .explorer-resize-handle.is-dragging::after {
+    background: var(--secondary);
+  }
+
+  html.explorer-is-resizing,
+  html.explorer-is-resizing * {
+    cursor: col-resize !important;
+    user-select: none !important;
+  }
+
   .page > #quartz-body:not(:has(.sidebar.right .toc)) {
-    grid-template-columns: 256px minmax(0, 1fr) 0;
+    grid-template-columns: var(--zz-explorer-width) minmax(0, 1fr) 0;
   }
 
   .page > #quartz-body:not(:has(.sidebar.right .toc)) .sidebar.right {
@@ -782,9 +822,24 @@ input:focus-visible {
   }
 }
 
+@media (min-width: 1025px) and (max-width: 1100px) {
+  .doc-header-nav {
+    display: flex;
+    gap: 14px;
+  }
+
+  .doc-header-extra .search {
+    width: 160px;
+  }
+}
+
 @media (min-width: 1101px) {
   .page > #quartz-body:has(.sidebar.left .explorer.collapsed) {
     grid-template-columns: 56px minmax(0, 1fr) 216px;
+  }
+
+  .page > #quartz-body:has(.sidebar.left .explorer.collapsed) .explorer-resize-handle {
+    display: none;
   }
 
   .page > #quartz-body:has(.sidebar.left .explorer.collapsed) .sidebar.left {
@@ -833,6 +888,10 @@ input:focus-visible {
   }
 
   .doc-header-nav {
+    display: none;
+  }
+
+  .page-header .note-properties {
     display: none;
   }
 

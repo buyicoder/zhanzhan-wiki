@@ -2,18 +2,20 @@ import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } fro
 import { FullSlug, pathToRoot, resolveRelative } from "../util/path"
 
 const NAV_LINKS = [
-  ["开始这里", "start/index"],
-  ["AI 小白入门实战", "ai-basics/index"],
-  ["AI 时代学习方法", "learning/index"],
-  ["AI 工作与商业", "business/index"],
-  ["真实案例", "cases/index"],
-  ["占占的判断", "thinking/index"],
-  ["工具箱与信息源", "toolbox/index"],
+  ["首页", "index", ["index"]],
+  ["知识库", "start/index", ["start", "learning", "business", "thinking", "toolbox"]],
+  ["AI 课程", "ai-basics/index", ["ai-basics"]],
+  ["项目与作品", "cases/index", ["cases", "works", "projects"]],
+  ["关于占占", "now", ["now", "conventions"]],
 ] as const
 
 const HEADER_SCRIPT = `
 const readerJourneyOrder = ["start", "ai-basics", "learning", "business", "cases", "thinking", "toolbox"]
 const legacyRoots = new Set(["works", "garden", "logs", "projects"])
+const explorerWidthKey = "zz-explorer-width"
+const explorerWidthDefault = 280
+const explorerWidthMin = 240
+const explorerWidthMax = 520
 const journeyNext = {
   "ai-basics/高考完之后-焚决": ["ai-basics/index", "learning/ai时代的七条基础能力", "下一步：AI 时代的七条基础能力"],
   "learning/ai时代的七条基础能力": ["learning/index", "learning/ai时代最不重要的能力恰恰是大家最焦虑的", "下一步：三层能力模型"],
@@ -66,6 +68,8 @@ function enhanceFolderControls(root) {
     if (!folderPath || !folderOuter || !folderLink || !icon) continue
 
     const title = folderLink.textContent?.trim() || "目录"
+    folderLink.title = title
+    folderLink.setAttribute("aria-label", title)
     const toggle = document.createElement("button")
     toggle.type = "button"
     toggle.className = "folder-toggle"
@@ -116,12 +120,76 @@ function organizeExplorer() {
       item.hidden = legacyRoots.has(path?.split("/")[0])
     })
     enhanceFolderControls(list)
+    for (const link of list.querySelectorAll("a.tree-item-self")) {
+      const title = link.textContent?.trim()
+      if (title) {
+        link.title = title
+        link.setAttribute("aria-label", title)
+      }
+    }
     if (desired.some((item, index) => item !== list.children[index])) desired.forEach((item) => list.appendChild(item))
     if (list.dataset.journeyObserver !== "true") {
       list.dataset.journeyObserver = "true"
       new MutationObserver(organizeExplorer).observe(list, { childList: true })
     }
   }
+}
+function mountExplorerResize() {
+  const desktop = window.matchMedia("(min-width: 1101px)").matches
+  const body = document.querySelector(".page > #quartz-body")
+  const sidebar = body?.querySelector(":scope > .sidebar.left")
+  if (!body || !sidebar) return
+  sidebar.querySelector(".explorer-resize-handle")?.remove()
+  if (!desktop) return
+
+  const limit = () => Math.max(explorerWidthMin, Math.min(explorerWidthMax, Math.floor(window.innerWidth * 0.4)))
+  const clamp = (value) => Math.max(explorerWidthMin, Math.min(limit(), Math.round(value)))
+  const saved = Number(localStorage.getItem(explorerWidthKey))
+  let width = clamp(Number.isFinite(saved) && saved > 0 ? saved : explorerWidthDefault)
+  const handle = document.createElement("div")
+  handle.className = "explorer-resize-handle"
+  handle.tabIndex = 0
+  handle.setAttribute("role", "separator")
+  handle.setAttribute("aria-orientation", "vertical")
+  handle.setAttribute("aria-label", "调整全局目录宽度")
+
+  const apply = (next, persist = true) => {
+    width = clamp(next)
+    document.documentElement.style.setProperty("--zz-explorer-width", width + "px")
+    handle.setAttribute("aria-valuemin", String(explorerWidthMin))
+    handle.setAttribute("aria-valuemax", String(limit()))
+    handle.setAttribute("aria-valuenow", String(width))
+    if (persist) localStorage.setItem(explorerWidthKey, String(width))
+  }
+  apply(width, Number.isFinite(saved) && saved > 0)
+
+  handle.addEventListener("pointerdown", (event) => {
+    event.preventDefault()
+    handle.setPointerCapture(event.pointerId)
+    handle.classList.add("is-dragging")
+    document.documentElement.classList.add("explorer-is-resizing")
+    const startX = event.clientX
+    const startWidth = width
+    const move = (moveEvent) => apply(startWidth + moveEvent.clientX - startX)
+    const stop = () => {
+      handle.classList.remove("is-dragging")
+      document.documentElement.classList.remove("explorer-is-resizing")
+      handle.removeEventListener("pointermove", move)
+      handle.removeEventListener("pointerup", stop)
+      handle.removeEventListener("pointercancel", stop)
+    }
+    handle.addEventListener("pointermove", move)
+    handle.addEventListener("pointerup", stop)
+    handle.addEventListener("pointercancel", stop)
+  })
+  handle.addEventListener("dblclick", () => apply(explorerWidthDefault))
+  handle.addEventListener("keydown", (event) => {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return
+    event.preventDefault()
+    const step = event.shiftKey ? 32 : 8
+    apply(width + (event.key === "ArrowRight" ? step : -step))
+  })
+  sidebar.append(handle)
 }
 function localizeProperties() {
   for (const title of document.querySelectorAll(".note-properties-title")) title.textContent = "页面信息"
@@ -232,6 +300,7 @@ function enhanceReadingShell() {
   mountHeaderTools()
   enhanceExplorerButtons()
   organizeExplorer()
+  mountExplorerResize()
   localizeProperties()
   mountJourneyNext()
 }
@@ -255,8 +324,9 @@ const Header: QuartzComponent = ({ children, fileData, cfg }: QuartzComponentPro
         {cfg.pageTitle}
       </a>
       <nav class="doc-header-nav" aria-label="全局导航">
-        {NAV_LINKS.map(([label, target]) => {
-          const active = slug === target || slug.startsWith(`${target.replace("/index", "")}/`)
+        {NAV_LINKS.map(([label, target, roots]) => {
+          const root = slug === "index" ? "index" : slug.split("/")[0]
+          const active = roots.includes(root as never)
           return (
             <a
               key={target}
