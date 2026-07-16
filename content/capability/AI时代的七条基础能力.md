@@ -2,7 +2,7 @@
 title: AI 时代的七条基础能力
 date: 2026-07-15
 tags: [基础能力, 清单]
-aliases: [/garden/AI时代的七条基础能力]
+aliases: [/garden/AI时代的七条基础能力, /learning/AI时代的七条基础能力]
 provenance: 📔 笔记整理
 maturity: 🌱 种子
 content_type: 方法

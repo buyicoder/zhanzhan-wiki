@@ -2,7 +2,7 @@
 title: 我的 AI 记忆系统这样存东西
 date: 2026-07-15
 tags: [Jarvis, 记忆系统, 架构, 制作日志]
-aliases: [/logs/我的AI记忆系统这样存东西]
+aliases: [/logs/我的AI记忆系统这样存东西, /cases/我的AI记忆系统这样存东西]
 provenance: 📔 笔记整理
 maturity: 🌿 生长中
 content_type: 案例

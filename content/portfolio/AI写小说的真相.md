@@ -2,7 +2,7 @@
 title: AI 写小说真正有价值的，可能不是小说
 date: 2026-07-15
 tags: [AI写作, 小说, NovelEngine]
-aliases: [/works/AI写小说的真相]
+aliases: [/works/AI写小说的真相, /cases/AI写小说的真相]
 provenance: 📔 笔记整理
 maturity: 🌲 长青
 content_type: 案例

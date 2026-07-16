@@ -2,7 +2,7 @@
 title: 为什么我给自己造了一个 Jarvis
 date: 2026-07-15
 tags: [Jarvis, 记忆系统, 制作日志]
-aliases: [/logs/为什么我给自己造了一个Jarvis]
+aliases: [/logs/为什么我给自己造了一个Jarvis, /cases/为什么我给自己造了一个Jarvis]
 provenance: 📔 笔记整理
 maturity: 🌿 生长中
 content_type: 案例

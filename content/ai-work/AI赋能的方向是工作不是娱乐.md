@@ -2,7 +2,7 @@
 title: AI 赋能的方向是工作，不是娱乐
 date: 2026-07-15
 tags: [AI创业, 判断]
-aliases: [/garden/AI赋能的方向是工作不是娱乐]
+aliases: [/garden/AI赋能的方向是工作不是娱乐, /business/AI赋能的方向是工作不是娱乐]
 provenance: 📔 笔记整理
 maturity: 🌿 生长中
 content_type: 判断

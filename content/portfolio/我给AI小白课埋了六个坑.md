@@ -2,7 +2,7 @@
 title: 我给 AI 小白课埋了六个坑
 date: 2026-07-15
 tags: [制作日志, 占占AI课, Excel, 数据清洗]
-aliases: [/logs/我给AI小白课埋了六个坑]
+aliases: [/logs/我给AI小白课埋了六个坑, /cases/我给AI小白课埋了六个坑]
 provenance: 📔 笔记整理
 maturity: 🌿 生长中
 content_type: 案例

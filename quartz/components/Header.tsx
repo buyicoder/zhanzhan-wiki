@@ -3,34 +3,39 @@ import { FullSlug, pathToRoot, resolveRelative } from "../util/path"
 
 const NAV_LINKS = [
   ["首页", "index", ["index"]],
-  ["知识库", "start/index", ["start", "learning", "business", "thinking", "toolbox"]],
+  [
+    "知识库",
+    "map/index",
+    ["map", "input", "capability", "leverage", "ai-work", "expression", "life", "tutorials"],
+  ],
   ["AI 课程", "ai-basics/index", ["ai-basics"]],
-  ["项目与作品", "cases/index", ["cases", "works", "projects"]],
+  ["项目与作品", "portfolio/index", ["portfolio", "cases", "works", "projects"]],
   ["关于占占", "now", ["now", "conventions"]],
 ] as const
 
 const HEADER_SCRIPT = `
-const readerJourneyOrder = ["start", "ai-basics", "learning", "business", "cases", "thinking", "toolbox"]
-const legacyRoots = new Set(["works", "garden", "logs", "projects"])
+const readerJourneyOrder = ["map", "input", "capability", "leverage", "ai-work", "portfolio", "expression", "life", "tutorials"]
+const legacyRoots = new Set(["start", "ai-basics", "learning", "business", "cases", "thinking", "toolbox", "works", "garden", "logs", "projects"])
+const legacyLeafPaths = new Set(["now", "conventions"])
 const explorerWidthKey = "zz-explorer-width"
 const explorerWidthDefault = 280
 const explorerWidthMin = 240
 const explorerWidthMax = 520
 const journeyNext = {
-  "ai-basics/高考完之后-焚决": ["ai-basics/index", "learning/ai时代的七条基础能力", "下一步：AI 时代的七条基础能力"],
-  "learning/ai时代的七条基础能力": ["learning/index", "learning/ai时代最不重要的能力恰恰是大家最焦虑的", "下一步：三层能力模型"],
-  "learning/ai时代最不重要的能力恰恰是大家最焦虑的": ["learning/index", "cases/我给ai小白课埋了六个坑", "下一步：看真实课程案例"],
-  "business/ai赋能的方向是工作不是娱乐": ["business/index", "business/企业ai转型方法论", "下一步：企业 AI 转型的五个阶段"],
-  "business/企业ai转型方法论": ["business/index", "business/个人知识库不是给自己看的", "下一步：个人知识库如何对外交付"],
-  "business/个人知识库不是给自己看的": ["business/index", "cases/ai写小说的真相", "下一步：一次 AI 写作失败复盘"],
-  "cases/我给ai小白课埋了六个坑": ["cases/index", "cases/为什么我给自己造了一个jarvis", "下一个案例：为什么造 Jarvis"],
-  "cases/为什么我给自己造了一个jarvis": ["cases/index", "cases/我的ai记忆系统这样存东西", "下一个案例：AI 记忆系统的存储设计"],
-  "cases/我的ai记忆系统这样存东西": ["cases/index", "cases/ai写小说的真相", "下一个案例：AI 写小说的真相"],
-  "cases/ai写小说的真相": ["cases/index", "cases/前端需求要给视觉参照", "下一个案例：用视觉参照写前端需求"],
-  "cases/前端需求要给视觉参照": ["cases/index", "cases/协议解析代码必须默认高风险", "下一个案例：协议解析为什么高风险"],
-  "cases/协议解析代码必须默认高风险": ["cases/index", "thinking/数学正在从答案稀缺进入理解稀缺", "下一步：占占的判断"],
-  "thinking/数学正在从答案稀缺进入理解稀缺": ["thinking/index", "toolbox/信息源", "下一步：信息源与个人能力系统"],
-  "toolbox/信息源": ["toolbox/index", "start/index", "回到开始这里"]
+  "capability/高考完之后-焚决": ["capability/index", "capability/ai时代的七条基础能力", "下一步：AI 时代的七条基础能力"],
+  "capability/ai时代的七条基础能力": ["capability/index", "capability/ai时代最不重要的能力恰恰是大家最焦虑的", "下一步：三层能力模型"],
+  "capability/ai时代最不重要的能力恰恰是大家最焦虑的": ["capability/index", "portfolio/我给ai小白课埋了六个坑", "下一步：看真实课程案例"],
+  "ai-work/ai赋能的方向是工作不是娱乐": ["ai-work/index", "ai-work/企业ai转型方法论", "下一步：企业 AI 转型的五个阶段"],
+  "ai-work/企业ai转型方法论": ["ai-work/index", "ai-work/个人知识库不是给自己看的", "下一步：个人知识库如何对外交付"],
+  "ai-work/个人知识库不是给自己看的": ["ai-work/index", "portfolio/ai写小说的真相", "下一步：一次 AI 写作失败复盘"],
+  "portfolio/我给ai小白课埋了六个坑": ["portfolio/index", "portfolio/为什么我给自己造了一个jarvis", "下一个案例：为什么造 Jarvis"],
+  "portfolio/为什么我给自己造了一个jarvis": ["portfolio/index", "portfolio/我的ai记忆系统这样存东西", "下一个案例：AI 记忆系统的存储设计"],
+  "portfolio/我的ai记忆系统这样存东西": ["portfolio/index", "portfolio/ai写小说的真相", "下一个案例：AI 写小说的真相"],
+  "portfolio/ai写小说的真相": ["portfolio/index", "ai-work/前端需求要给视觉参照", "下一个案例：用视觉参照写前端需求"],
+  "ai-work/前端需求要给视觉参照": ["ai-work/index", "ai-work/协议解析代码必须默认高风险", "下一个案例：协议解析为什么高风险"],
+  "ai-work/协议解析代码必须默认高风险": ["ai-work/index", "capability/数学正在从答案稀缺进入理解稀缺", "下一步：学习与能力"],
+  "capability/数学正在从答案稀缺进入理解稀缺": ["capability/index", "map/index", "下一步：回到总地图"],
+  "map/index": ["map/index", "input/index", "从输入系统开始"]
 }
 const courseLessons = [
   "00-使用说明与总览",
@@ -117,7 +122,9 @@ function organizeExplorer() {
     const desired = items.sort((a, b) => rank(a) - rank(b))
     desired.forEach((item) => {
       const path = item.querySelector(":scope > .folder-container")?.dataset.folderpath?.replace(/\\/index$/, "")
-      item.hidden = legacyRoots.has(path?.split("/")[0])
+      const leafHref = item.querySelector(":scope > a.nav-file-title")?.getAttribute("href") || ""
+      const leafPath = decodeURIComponent(leafHref).replace(/^.*\\//, "").replace(/\\/$/, "")
+      item.hidden = legacyRoots.has(path?.split("/")[0]) || legacyLeafPaths.has(leafPath)
     })
     enhanceFolderControls(list)
     for (const link of list.querySelectorAll("a.tree-item-self")) {
