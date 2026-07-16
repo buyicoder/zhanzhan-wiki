@@ -8,10 +8,11 @@ const NAV_LINKS = [
   ["AI 工作与商业", "business/index"],
   ["真实案例", "cases/index"],
   ["占占的判断", "thinking/index"],
+  ["工具箱与信息源", "toolbox/index"],
 ] as const
 
 const HEADER_SCRIPT = `
-const readerJourneyOrder = ["start", "ai-basics", "learning", "business", "cases", "thinking"]
+const readerJourneyOrder = ["start", "ai-basics", "learning", "business", "cases", "thinking", "toolbox"]
 const legacyRoots = new Set(["works", "garden", "logs", "projects"])
 const journeyNext = {
   "ai-basics/高考完之后-焚决": ["ai-basics/index", "learning/ai时代的七条基础能力", "下一步：AI 时代的七条基础能力"],
@@ -26,7 +27,8 @@ const journeyNext = {
   "cases/ai写小说的真相": ["cases/index", "cases/前端需求要给视觉参照", "下一个案例：用视觉参照写前端需求"],
   "cases/前端需求要给视觉参照": ["cases/index", "cases/协议解析代码必须默认高风险", "下一个案例：协议解析为什么高风险"],
   "cases/协议解析代码必须默认高风险": ["cases/index", "thinking/数学正在从答案稀缺进入理解稀缺", "下一步：占占的判断"],
-  "thinking/数学正在从答案稀缺进入理解稀缺": ["thinking/index", "start/index", "回到开始这里"]
+  "thinking/数学正在从答案稀缺进入理解稀缺": ["thinking/index", "toolbox/信息源", "下一步：信息源与个人能力系统"],
+  "toolbox/信息源": ["toolbox/index", "start/index", "回到开始这里"]
 }
 const courseLessons = [
   "00-使用说明与总览",
