@@ -130,8 +130,12 @@ fs.mkdirSync(output, { recursive: true })
     for (const [oldRoute, canonical] of oldRoutes) {
       const response = await page.goto(base + oldRoute, { waitUntil: "domcontentloaded" })
       check(response?.ok(), `old HTTP ${oldRoute}`, { status: response?.status() })
-      await page.waitForTimeout(300)
       const normalized = (value) => decodeURIComponent(value).replace(/\/$/, "").toLowerCase()
+      await page
+        .waitForURL((url) => normalized(url.pathname).endsWith(normalized(canonical)), {
+          timeout: 15_000,
+        })
+        .catch(() => {})
       check(
         normalized(new URL(page.url()).pathname).endsWith(normalized(canonical)),
         `old redirects ${oldRoute}`,
