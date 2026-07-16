@@ -164,23 +164,32 @@ function mountExplorerResize() {
   apply(width, Number.isFinite(saved) && saved > 0)
 
   handle.addEventListener("pointerdown", (event) => {
-    event.preventDefault()
-    handle.setPointerCapture(event.pointerId)
-    handle.classList.add("is-dragging")
-    document.documentElement.classList.add("explorer-is-resizing")
     const startX = event.clientX
     const startWidth = width
-    const move = (moveEvent) => apply(startWidth + moveEvent.clientX - startX)
+    let dragging = false
+    const move = (moveEvent) => {
+      const delta = moveEvent.clientX - startX
+      if (!dragging && Math.abs(delta) < 5) return
+      if (!dragging) {
+        dragging = true
+        handle.setPointerCapture(event.pointerId)
+        handle.classList.add("is-dragging")
+        document.documentElement.classList.add("explorer-is-resizing")
+      }
+      moveEvent.preventDefault()
+      apply(startWidth + delta)
+    }
     const stop = () => {
+      if (handle.hasPointerCapture(event.pointerId)) handle.releasePointerCapture(event.pointerId)
       handle.classList.remove("is-dragging")
       document.documentElement.classList.remove("explorer-is-resizing")
-      handle.removeEventListener("pointermove", move)
-      handle.removeEventListener("pointerup", stop)
-      handle.removeEventListener("pointercancel", stop)
+      document.removeEventListener("pointermove", move)
+      document.removeEventListener("pointerup", stop)
+      document.removeEventListener("pointercancel", stop)
     }
-    handle.addEventListener("pointermove", move)
-    handle.addEventListener("pointerup", stop)
-    handle.addEventListener("pointercancel", stop)
+    document.addEventListener("pointermove", move)
+    document.addEventListener("pointerup", stop)
+    document.addEventListener("pointercancel", stop)
   })
   handle.addEventListener("dblclick", () => apply(explorerWidthDefault))
   handle.addEventListener("keydown", (event) => {
