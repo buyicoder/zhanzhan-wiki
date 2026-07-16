@@ -137,7 +137,8 @@ fs.mkdirSync(output, { recursive: true })
         `old redirects ${oldRoute}`,
         { actual: decodeURIComponent(new URL(page.url()).pathname), canonical },
       )
-      await page.reload({ waitUntil: "domcontentloaded" })
+      const refreshedUrl = page.url()
+      await page.goto(refreshedUrl, { waitUntil: "domcontentloaded" })
       check(
         normalized(new URL(page.url()).pathname).endsWith(normalized(canonical)),
         `refresh canonical ${oldRoute}`,
