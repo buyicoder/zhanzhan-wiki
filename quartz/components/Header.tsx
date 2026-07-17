@@ -141,6 +141,28 @@ function organizeExplorer() {
     }
   }
 }
+function restoreGlobalExplorerTree(explorer) {
+  const content = explorer?.querySelector(":scope > .explorer-content")
+  const list = content?.querySelector(":scope > .explorer-ul")
+  if (!list) return
+  for (const item of list.children) {
+    const folder = item.querySelector(":scope > .folder-container")
+    const path = folder?.dataset.folderpath?.replace(/\\/index$/, "")
+    const root = path?.split("/")[0]
+    if (!readerJourneyOrder.includes(root)) continue
+    item.hidden = false
+    folder.hidden = false
+    folder.nextElementSibling?.classList.add("open")
+    folder.querySelector(".folder-toggle")?.setAttribute("aria-expanded", "true")
+  }
+  sessionStorage.removeItem("explorerScrollTop")
+  content.scrollTop = 0
+  list.scrollTop = 0
+  requestAnimationFrame(() => {
+    content.scrollTop = 0
+    list.scrollTop = 0
+  })
+}
 function mountExplorerResize() {
   const desktop = window.matchMedia("(min-width: 1101px)").matches
   const body = document.querySelector(".page > #quartz-body")
@@ -240,7 +262,7 @@ function mountJourneyNext() {
   article.insertAdjacentElement("afterend", nav)
 }
 function enhanceExplorerButtons() {
-  const isCompact = window.matchMedia("(max-width: 1100px)").matches
+  const isCompact = window.matchMedia("(max-width: 800px)").matches
   for (const button of document.querySelectorAll(".mobile-explorer, .explorer-toggle")) {
     const explorer = button.closest(".explorer")
     if (!explorer) continue
@@ -265,47 +287,30 @@ function enhanceExplorerButtons() {
     syncLabel()
     if (button.dataset.initialized !== "true") {
       button.dataset.initialized = "true"
-      if (isMobileButton && isCompact) continue
-      button.addEventListener(
-        "click",
-        () => queueMicrotask(syncLabel),
-        { capture: true },
-      )
     }
   }
 }
-function captureCompactExplorerIntent(event) {
-  if (!window.matchMedia("(max-width: 1100px)").matches) return
-  const target = event.target instanceof Element ? event.target.closest(".mobile-explorer") : null
+function handleExplorerToggle(event) {
+  const target = event.target instanceof Element
+    ? event.target.closest(".mobile-explorer, .desktop-explorer")
+    : null
   const explorer = target?.closest(".explorer")
   if (!explorer) return
-  target.dataset.nextCollapsed = String(!explorer.classList.contains("collapsed"))
-}
-function handleCompactExplorerToggle(event) {
-  if (event.__compactExplorerHandled) return
-  if (!window.matchMedia("(max-width: 1100px)").matches) return
-  const target = event.target instanceof Element ? event.target.closest(".mobile-explorer") : null
-  const explorer = target?.closest(".explorer")
-  if (!explorer) return
-  if (event.type === "click" && event.detail !== 0) return
-  event.__compactExplorerHandled = true
   event.preventDefault()
   event.stopImmediatePropagation()
-  const collapsed = target.dataset.nextCollapsed
-    ? target.dataset.nextCollapsed === "true"
-    : !explorer.classList.contains("collapsed")
-  delete target.dataset.nextCollapsed
-  const applyState = () => {
-    explorer.classList.toggle("collapsed", collapsed)
-    document.documentElement.classList.toggle("mobile-no-scroll", !collapsed)
-    explorer.setAttribute("aria-expanded", String(!collapsed))
-    explorer.querySelector(".explorer-content")?.setAttribute("aria-expanded", String(!collapsed))
-    target.setAttribute("aria-expanded", String(!collapsed))
-    target.setAttribute("aria-label", collapsed ? "打开全局目录" : "关闭全局目录")
-    target.setAttribute("title", collapsed ? "打开全局目录" : "关闭全局目录")
-  }
-  applyState()
-  requestAnimationFrame(applyState)
+  const collapsed = !explorer.classList.contains("collapsed")
+  const compact = window.matchMedia("(max-width: 800px)").matches
+  explorer.classList.toggle("collapsed", collapsed)
+  document.documentElement.classList.toggle("mobile-no-scroll", compact && !collapsed)
+  explorer.setAttribute("aria-expanded", String(!collapsed))
+  explorer.querySelector(".explorer-content")?.setAttribute("aria-expanded", String(!collapsed))
+  target.setAttribute("aria-expanded", String(!collapsed))
+  const label = target.classList.contains("mobile-explorer")
+    ? (collapsed ? "打开全局目录" : "关闭全局目录")
+    : (collapsed ? "展开全局目录" : "收起全局目录")
+  target.setAttribute("aria-label", label)
+  target.setAttribute("title", label)
+  if (!collapsed) restoreGlobalExplorerTree(explorer)
 }
 function mountHeaderTools() {
   const target = document.querySelector(".doc-header-extra")
@@ -322,9 +327,7 @@ function enhanceReadingShell() {
 }
 if (!window.__docHeaderInitialized) {
   window.__docHeaderInitialized = true
-  document.addEventListener("pointerdown", captureCompactExplorerIntent, { capture: true })
-  document.addEventListener("pointerup", handleCompactExplorerToggle, { capture: true })
-  document.addEventListener("click", handleCompactExplorerToggle, { capture: true })
+  document.addEventListener("click", handleExplorerToggle, { capture: true })
   document.addEventListener("nav", enhanceReadingShell)
   document.addEventListener("render", enhanceReadingShell)
 }

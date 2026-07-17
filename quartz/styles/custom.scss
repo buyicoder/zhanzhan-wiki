@@ -706,7 +706,7 @@ input:focus-visible {
 
 @media (min-width: 801px) and (max-width: 1100px) {
   .doc-header {
-    padding: 0 16px 0 64px;
+    padding: 0 16px;
     gap: 16px;
   }
 
@@ -723,36 +723,22 @@ input:focus-visible {
 
   .page > #quartz-body {
     grid-template:
-      "grid-sidebar-left"
-      "grid-header"
-      "grid-center"
-      "grid-sidebar-right"
-      "grid-footer" / minmax(0, 1fr);
-    padding: calc(var(--zz-header-height) + var(--zz-header-clearance)) 24px 0;
+      "grid-sidebar-left grid-header"
+      "grid-sidebar-left grid-center"
+      "grid-sidebar-left grid-footer" / 240px minmax(0, 1fr);
+    padding: calc(var(--zz-header-height) + var(--zz-header-clearance)) 0 0;
   }
 
   .page > #quartz-body .sidebar.left {
-    position: initial;
-    width: 0;
-    height: 0;
-    padding: 0;
-    border: 0;
+    position: relative;
+    width: auto;
+    height: calc(100vh - var(--zz-header-height));
+    padding: 24px 16px;
+    border-right: 1px solid var(--zz-border);
   }
 
   .page > #quartz-body .sidebar.right {
-    width: min(100%, 760px);
-    height: auto;
-    margin: 0 auto;
-    padding: 0 24px;
-    border: 0;
-  }
-
-  .page > #quartz-body .sidebar.right .toc {
-    display: block;
-    padding: 14px 16px;
-    background: var(--zz-surface);
-    border: 1px solid var(--zz-border);
-    border-radius: 4px;
+    display: none;
   }
 
   .page > #quartz-body .page-header,
@@ -771,40 +757,49 @@ input:focus-visible {
   }
 
   .explorer .mobile-explorer {
-    position: fixed;
-    z-index: 50;
-    top: 1px;
-    left: 6px;
-    display: flex !important;
-    width: 44px;
-    height: 44px;
-    align-items: center;
-    justify-content: center;
-    color: var(--dark);
-    background: var(--zz-sidebar);
+    display: none !important;
   }
 
   .explorer .desktop-explorer {
-    display: none;
+    display: flex;
   }
 
   .explorer .explorer-content {
-    position: fixed;
-    z-index: 49;
-    top: var(--zz-header-height);
-    left: 0;
-    width: min(86vw, 320px);
-    height: calc(100dvh - var(--zz-header-height));
-    padding: 24px 18px;
-    background: var(--zz-sidebar);
-    border-right: 1px solid var(--zz-border);
-    transform: translateX(-100%);
-    transition: transform 180ms ease;
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    transform: none;
     overflow-y: auto;
   }
 
-  .explorer:not(.collapsed) .explorer-content {
-    transform: translateX(0);
+  .page > #quartz-body:has(.sidebar.left .explorer.collapsed) {
+    grid-template-columns: 56px minmax(0, 1fr);
+  }
+
+  .page > #quartz-body:has(.sidebar.left .explorer.collapsed) .sidebar.left {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  .explorer-toggle.desktop-explorer {
+    width: 100%;
+    min-height: 32px;
+    justify-content: space-between;
+  }
+
+  .explorer.collapsed .explorer-toggle.desktop-explorer {
+    justify-content: center;
+  }
+
+  .explorer.collapsed .explorer-toggle.desktop-explorer h2 {
+    display: none;
+  }
+
+  .explorer.collapsed .explorer-toggle.desktop-explorer .fold {
+    margin-left: 0;
   }
 
   .section-ul .section {
@@ -1039,6 +1034,15 @@ input:focus-visible {
     height: 44px;
     align-items: center;
     justify-content: center;
+    color: var(--dark);
+    background: transparent;
+    border-radius: 4px;
+  }
+
+  .explorer button.mobile-explorer .lucide-menu {
+    display: block;
+    fill: none;
+    stroke: currentColor;
   }
 
   .explorer .explorer-content {
@@ -1046,14 +1050,14 @@ input:focus-visible {
     z-index: 51;
     top: 0;
     left: 0;
-    width: min(86vw, 320px);
-    max-width: 320px;
+    width: 100vw;
+    max-width: none;
     height: 100dvh;
     max-height: 100dvh;
     padding: 64px 18px 24px;
     background: var(--zz-sidebar);
     border-right: 1px solid var(--zz-border);
-    box-shadow: 0 12px 32px rgb(20 32 28 / 14%);
+    box-shadow: none;
     transform: translateX(-100%);
     transition:
       transform 180ms ease,
@@ -2099,8 +2103,12 @@ article img {
 }
 
 /* 收起态：内容彻底隐藏，不允许残影或半截箭头溢出 */
-.explorer-content[aria-expanded="false"] {
+.explorer.collapsed > .explorer-content {
   visibility: hidden;
+}
+
+.explorer:not(.collapsed) > .explorer-content {
+  visibility: visible;
 }
 
 .explorer svg.fold,
