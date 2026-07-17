@@ -128,7 +128,7 @@ plugins:
   - source: github:quartz-community/explorer
     enabled: true
     options:
-      title: 目录
+      title: 漫游全站
       folderDefaultState: open
       folderClickBehavior: link
       useSavedState: true
