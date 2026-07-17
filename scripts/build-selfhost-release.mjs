@@ -24,7 +24,7 @@ const run = (command, args, cwd) => {
 try {
   run("git", ["worktree", "add", "--detach", worktree, sourceCommit], repo)
   run("npm", ["ci"], worktree)
-  run("npm", ["run", "install-plugins"], worktree)
+  run("npx", ["quartz", "plugin", "install"], worktree)
   run("npm", ["run", "build:self-host", "--", "--output", output], worktree)
   run("node", ["scripts/verify-selfhost-artifact.mjs", output], worktree)
   run("node", ["scripts/freeze-selfhost-artifact.mjs", output, manifest], worktree)
