@@ -25,7 +25,9 @@ export default (() => {
     const url = new URL(`https://${cfg.baseUrl ?? "example.com"}`)
     const path = url.pathname as FullSlug
     const baseDir = fileData.slug === "404" ? path : pathToRoot(fileData.slug!)
-    const iconPath = joinSegments(baseDir, "static/icon.png")
+    // Keep the favicon URL versioned so browsers do not reuse an older root-domain fallback.
+    // The hash identifies the original GitHub Pages icon without changing its pixels.
+    const iconPath = `${joinSegments(baseDir, "static/icon.png")}?v=532d053e`
 
     // Url of current page
     const socialUrl =
@@ -94,7 +96,7 @@ export default (() => {
           </>
         )}
 
-        <link rel="icon" href={iconPath} />
+        <link rel="icon" type="image/png" sizes="200x200" href={iconPath} />
         <meta name="description" content={description} />
         <meta name="generator" content="Quartz" />
 
