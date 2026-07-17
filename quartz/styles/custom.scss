@@ -2095,39 +2095,24 @@ article img {
 
 .explorer .desktop-explorer {
   border-bottom: none;
-  padding-bottom: 4px;
+  padding-bottom: 10px;
+}
+
+/* 收起态：内容彻底隐藏，不允许残影或半截箭头溢出 */
+.explorer-content[aria-expanded="false"] {
+  visibility: hidden;
+}
+
+.explorer svg.fold,
+.sidebar svg {
+  overflow: visible;
 }
 
 .explorer .desktop-explorer h2 {
   letter-spacing: 0.18em;
 }
 
-/* 首页不放全站目录：第一屏留给人，导航交给正文的主题入口 */
-body[data-slug="index"] .page > #quartz-body {
-  grid-template:
-    "grid-header grid-sidebar-right"
-    "grid-center grid-sidebar-right"
-    "grid-footer grid-sidebar-right" /
-    minmax(0, 1fr) 216px;
-}
-
-body[data-slug="index"] .page > #quartz-body .sidebar.left {
-  display: none;
-}
-
-body[data-slug="index"] .page > #quartz-body .center > article {
-  max-width: 860px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* 首页标题块与正文同宽居中，并隐藏文章式元信息 */
-body[data-slug="index"] .page > #quartz-body .page-header {
-  max-width: 860px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
+/* 首页隐藏文章式元信息 */
 body[data-slug="index"] .content-meta {
   display: none;
 }
