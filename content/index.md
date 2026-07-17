@@ -27,6 +27,15 @@ provenance: 🤝 AI 起草我重写
 
 它是整个知识库的 canonical 总地图。你不需要从头读到尾；先找到自己当前最想解决的问题，再进入对应节点。
 
+## 占占 AI 成长知识库总地图
+
+<figure class="zz-knowledge-map">
+  <a class="zz-knowledge-map-link" href="static/maps/zhanzhan-ai-growth-map.png" target="_blank" rel="noopener" aria-label="查看占占 AI 成长知识库高清总地图">
+    <img src="static/maps/zhanzhan-ai-growth-map.png" width="2100" height="1299" decoding="async" alt="占占的 AI 成长知识库总地图：从输入系统、学习与能力、工具与杠杆、AI 工作系统、项目与作品、内容与表达、人生操作系统到教程与复利">
+  </a>
+  <figcaption>这是占占 AI 成长知识库的真实总地图预览。先看全局，再进入你当前最需要解决的节点。<a href="static/maps/zhanzhan-ai-growth-map.png" target="_blank" rel="noopener">查看高清图</a></figcaption>
+</figure>
+
 ## 你现在可以从哪里开始
 
 - **还不知道自己缺什么：** 从 [[map/index|个人能力总地图]] 开始，先看完整闭环。

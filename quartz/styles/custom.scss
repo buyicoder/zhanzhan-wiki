@@ -2066,6 +2066,43 @@ article img {
   line-height: 1.5;
 }
 
+/* 首页知识库总地图：预览保持完整，高清图由明确链接打开。 */
+.zz-knowledge-map {
+  margin: 1rem 0 2rem;
+  padding: 0.65rem;
+  background: var(--zz-surface);
+  border: 1px solid var(--zz-border);
+  border-radius: 12px;
+}
+
+.zz-knowledge-map-link {
+  display: block;
+  overflow: hidden;
+  border-radius: 8px;
+  background: white;
+}
+
+.zz-knowledge-map img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.zz-knowledge-map figcaption {
+  margin: 0.75rem 0.25rem 0.15rem;
+  color: var(--zz-muted);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.zz-knowledge-map figcaption a {
+  white-space: nowrap;
+  margin-left: 0.35rem;
+  font-weight: 600;
+}
+
 /* 栏目页题图 */
 .zz-section-illo {
   display: block;
