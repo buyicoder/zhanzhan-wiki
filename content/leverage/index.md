@@ -4,6 +4,8 @@ content_type: 导航
 aliases: [/toolbox, /toolbox/index]
 ---
 
+<img class="zz-section-illo" src="../static/illustrations/leverage.svg" alt="">
+
 工具与杠杆解决“面对几十个模型和软件，应该先用什么”的问题。我的原则是先跑通最小生产链，遇到明确限制再切换。
 
 ## 它在整套系统中的位置

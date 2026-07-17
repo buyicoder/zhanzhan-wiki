@@ -3,6 +3,8 @@ title: 教程与复利
 content_type: 导航
 ---
 
+<img class="zz-section-illo" src="../static/illustrations/tutorials.svg" alt="">
+
 教程与复利解决“做过一次，下一次仍然从零开始”的问题。教程不是把命令堆在一起，而是把目标、任务粒度、成功标准、故障护栏与验收保存下来。
 
 ## 它在整套系统中的位置

@@ -21,25 +21,25 @@ configuration:
       code: IBM Plex Mono
     colors:
       lightMode:
-        light: "#ffffff"
-        lightgray: "#e4e8e6"
-        gray: "#7a8581"
-        darkgray: "#3f4845"
-        dark: "#111514"
-        secondary: "#0b725f"
-        tertiary: "#0b725f"
-        highlight: rgba(15, 143, 120, 0.10)
-        textHighlight: "#fff23688"
+        light: "#faf6ee"
+        lightgray: "#e8dfcc"
+        gray: "#b0a288"
+        darkgray: "#4a4034"
+        dark: "#2b241a"
+        secondary: "#9a5b2e"
+        tertiary: "#7a8b5c"
+        highlight: rgba(154, 91, 46, 0.08)
+        textHighlight: "#f0dcae88"
       darkMode:
-        light: "#151817"
-        lightgray: "#2b312f"
-        gray: "#8d9793"
-        darkgray: "#d9dfdc"
-        dark: "#f2f5f3"
-        secondary: "#4fc3a8"
-        tertiary: "#73d6bf"
-        highlight: rgba(79, 195, 168, 0.12)
-        textHighlight: "#b3aa0288"
+        light: "#1e1912"
+        lightgray: "#352c1f"
+        gray: "#6e6250"
+        darkgray: "#d8ccb6"
+        dark: "#f0e7d4"
+        secondary: "#d4915a"
+        tertiary: "#a3b380"
+        highlight: rgba(212, 145, 90, 0.12)
+        textHighlight: "#8a5d2e88"
 plugins:
   - source: github:quartz-community/created-modified-date
     enabled: true

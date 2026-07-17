@@ -4,6 +4,8 @@ content_type: 导航
 aliases: [/learning, /learning/index, /thinking, /thinking/index]
 ---
 
+<img class="zz-section-illo" src="../static/illustrations/capability.svg" alt="">
+
 学习与能力解决“知道很多，却仍然做不出来”的问题。AI 可以降低理解门槛，但不能替我形成稳定的认知结构，更不能替我完成现实交付。
 
 ## 它在整套系统中的位置

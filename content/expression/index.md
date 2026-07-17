@@ -3,6 +3,8 @@ title: 内容与表达
 content_type: 导航
 ---
 
+<img class="zz-section-illo" src="../static/illustrations/expression.svg" alt="">
+
 内容与表达解决“有经历、有判断，却无法让别人理解”的问题。我不想靠制造焦虑换流量，也不想让 AI 把文字磨成没有性格的标准答案。
 
 ## 它在整套系统中的位置

@@ -4,6 +4,8 @@ content_type: 导航
 aliases: [/business, /business/index]
 ---
 
+<img class="zz-section-illo" src="../static/illustrations/ai-work.svg" alt="">
+
 AI 工作系统解决“Agent 说完成了，现实是否真的完成”的问题。目标、权限、证据、检查和回滚，比多开几个模型更重要。
 
 ## 它在整套系统中的位置

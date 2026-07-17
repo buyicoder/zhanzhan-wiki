@@ -3,6 +3,8 @@ title: 人生操作系统
 content_type: 导航
 ---
 
+<img class="zz-section-illo" src="../static/illustrations/life.svg" alt="">
+
 人生操作系统解决“能力和产出不断增长，人却被系统耗尽”的问题。工作只是人生的一部分，效率不能成为新的优绩主义。
 
 ## 它在整套系统中的位置

@@ -4,6 +4,8 @@ content_type: 导航
 aliases: [/cases, /cases/index]
 ---
 
+<img class="zz-section-illo" src="../static/illustrations/portfolio.svg" alt="">
+
 项目与作品是整套能力系统的现实反馈。作品不是能力清单上的装饰，而是暴露错误、形成证据和积累资产的地方。
 
 ## 它在整套系统中的位置

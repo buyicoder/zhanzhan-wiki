@@ -3,6 +3,8 @@ title: 输入系统
 content_type: 导航
 ---
 
+<img class="zz-section-illo" src="../static/illustrations/input.svg" alt="">
+
 输入系统解决的不是“去哪里收藏更多链接”，而是怎样接触事实、需求、人和故事，再把输入送进判断与行动。
 
 ## 它在整套系统中的位置

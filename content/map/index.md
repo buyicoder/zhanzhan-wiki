@@ -9,6 +9,8 @@ reader_path: toolbox
 aliases: [/start, /start/index, /toolbox/信息源]
 ---
 
+<img class="zz-section-illo" src="../static/illustrations/map.svg" alt="">
+
 > 📔 笔记整理 · 🌿 生长中 · 图例见 [[conventions|本站的诚实规则]]
 > 这是私人知识库总纲的公开副本。涉及账号、网络工具与服务商的部分只保留判断原则，不提供代充、共享账号、具体代理服务或服务器搭建推荐。
 
