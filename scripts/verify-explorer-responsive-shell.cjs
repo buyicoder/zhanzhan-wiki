@@ -59,7 +59,15 @@ async function verify(browser, width) {
   page.on("pageerror", (error) => errors.push(String(error)))
   const response = await page.goto(`${base}/leverage/`, { waitUntil: "domcontentloaded" })
   check(response?.ok(), `${width}: route loads`, { status: response?.status() })
-  await page.waitForTimeout(500)
+  await page.waitForFunction(
+    (minimum) =>
+      document.querySelectorAll(
+        ".explorer-ul > li:not([hidden]) > .folder-container a.folder-button",
+      ).length >= minimum,
+    expectedRoots.length,
+    { timeout: 15_000 },
+  )
+  await page.waitForTimeout(250)
 
   let state = await readState(page)
   check(!state.overflow, `${width}: no horizontal overflow`)
