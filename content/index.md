@@ -14,6 +14,11 @@ provenance: 🤝 AI 起草我重写
 </div>
 </section>
 
+<aside class="studio-notice" aria-label="书房手记">
+<div><span class="studio-kicker">书房手记 · 2026.09.10</span><p>学习、工作、表达，最后都要回到真实的作品。</p></div>
+<a href="map/">打开我的能力地图 <span aria-hidden="true">↗</span></a>
+</aside>
+
 <div class="studio-section-label"><span>01 / 值得慢慢读</span><a href="map/">全部笔记 ↗</a></div>
 
 <div class="studio-stories">

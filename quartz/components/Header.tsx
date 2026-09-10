@@ -237,7 +237,7 @@ function mountJourneyNext() {
   const slug = document.body.dataset.slug?.toLowerCase()
   const entry = slug ? journeyNext[slug] : undefined
   const course = slug ? getCourseJourney(slug) : undefined
-  const article = document.querySelector(".center > article")
+  const article = document.querySelector(".center article")
   if ((!entry && !course) || !article) return
   const nav = document.createElement("nav")
   nav.className = "reader-journey-next"
@@ -257,9 +257,69 @@ function mountJourneyNext() {
     const next = document.createElement("a")
     next.href = sitePath(nextTarget)
     next.textContent = course ? "下一篇" : entry[2]
+    const reason = document.createElement("small")
+    const reasons = {
+      "map/index": "先建立输入习惯，再沿着地图寻找自己的学习路径。",
+      "portfolio/为什么我给自己造了一个jarvis": "从为什么需要记忆，继续看记忆具体怎样保存。",
+      "portfolio/我的ai记忆系统这样存东西": "换一个真实创作场景，看看 AI 的能力边界。",
+      "portfolio/ai写小说的真相": "从文字创作转到界面制作，看看怎样把要求讲具体。",
+      "capability/ai时代最不重要的能力恰恰是大家最焦虑的": "把能力判断放进真实课程，看看实践会遇到什么。",
+      "ai-work/企业ai转型方法论": "从企业流程回到个人知识，继续思考如何交付。",
+    }
+    reason.textContent = course ? "沿当前课程顺序，继续下一个学习任务。" : (reasons[slug] || "沿这条阅读路径，继续看一个相邻的问题。")
+    next.append(reason)
     nav.append(next)
   }
   article.insertAdjacentElement("afterend", nav)
+}
+function mountReadingMemory() {
+  const article = document.querySelector(".center article")
+  if (!article || article.dataset.readingMemory) return
+  window.__zzReadingCleanup?.()
+  article.dataset.readingMemory = "true"
+  if (["index", "portfolio/index"].includes(document.body.dataset.slug)) return
+  const key = "zz-reading:" + document.body.dataset.slug
+  let saved
+  try { saved = JSON.parse(localStorage.getItem(key) || "null") } catch {}
+  let notice
+  if (saved && Number.isFinite(saved.ratio) && saved.ratio > .08 && saved.ratio < .95) {
+    notice = document.createElement("div")
+    notice.className = "reader-resume"
+    const label = document.createElement("span")
+    label.textContent = "上次读到 " + Math.round(saved.ratio * 100) + "%"
+    const resume = document.createElement("button")
+    resume.type = "button"
+    resume.textContent = "继续阅读 ↓"
+    resume.title = "阅读位置仅保存在当前浏览器"
+    resume.onclick = () => {
+      notice.remove()
+      const target = saved.heading && document.getElementById(saved.heading)
+      const top = target ? target.getBoundingClientRect().top + window.scrollY - 120 : article.getBoundingClientRect().top + window.scrollY + article.offsetHeight * saved.ratio - 120
+      window.scrollTo({top, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth"})
+    }
+    const dismiss = document.createElement("button")
+    dismiss.type = "button"
+    dismiss.textContent = "×"
+    dismiss.setAttribute("aria-label", "清除这篇文章的阅读位置")
+    dismiss.onclick = () => { try { localStorage.removeItem(key) } catch {}; notice.remove() }
+    notice.append(label, resume, dismiss)
+    article.before(notice)
+  }
+  let timer
+  const save = () => {
+    const rect = article.getBoundingClientRect()
+    const ratio = Math.max(0, Math.min(1, (120 - rect.top) / article.offsetHeight))
+    if (ratio < .08) return
+    const headings = [...article.querySelectorAll("h2[id], h3[id]")]
+    const heading = headings.filter(h => h.getBoundingClientRect().top <= 140).at(-1)?.id
+    try {
+      if (rect.bottom <= window.innerHeight || ratio >= .95) localStorage.removeItem(key)
+      else localStorage.setItem(key, JSON.stringify({ratio, heading}))
+    } catch {}
+  }
+  const scroll = () => { clearTimeout(timer); timer = setTimeout(save, 250) }
+  window.addEventListener("scroll", scroll, {passive:true})
+  window.__zzReadingCleanup = () => { clearTimeout(timer); window.removeEventListener("scroll", scroll); notice?.remove() }
 }
 function enhanceExplorerButtons() {
   const isCompact = window.matchMedia("(max-width: 800px)").matches
@@ -328,6 +388,7 @@ function enhanceReadingShell() {
   mountExplorerResize()
   localizeProperties()
   mountJourneyNext()
+  mountReadingMemory()
   const randomButton = document.querySelector(".studio-random")
   if (randomButton && !randomButton.dataset.ready) {
     randomButton.dataset.ready = "true"

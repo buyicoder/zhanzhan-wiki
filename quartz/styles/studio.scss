@@ -151,6 +151,19 @@ article .studio-questions a.internal { padding: 17px 0; }
   .studio-desk-links > a { padding: 14px 0; border-bottom: 1px solid var(--zz-border); }
   .article-title { font-size: 28px; }
 }
+.studio-notice { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 22px 0; margin: -16px 0 32px; border-bottom: 1px solid var(--zz-border); }
+.studio-notice p { font-size: 14px; margin: 8px 0 0; font-weight: 400; }
+.studio-notice > a { font-size: 14px; flex-shrink: 0; }
+.reader-resume { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 12px 0; margin-bottom: 24px; border-bottom: 1px solid var(--zz-border); font-size: 13px; color: var(--zz-muted); }
+.reader-resume button { background: transparent; border: 0; color: var(--secondary); font: inherit; cursor: pointer; padding: 8px; min-height: 40px; }
+.reader-resume button:last-child { margin-left: auto; font-size: 22px; color: var(--zz-muted); }
+.reader-journey-next { align-items: flex-start; gap: 24px; }
+.reader-journey-next a { max-width: 100%; overflow-wrap: anywhere; }
+.reader-journey-next small { display: block; max-width: 340px; margin-top: 8px; font-size: 13px; line-height: 1.7; font-weight: 400; color: var(--zz-muted); }
+article h2[id], article h3[id] { scroll-margin-top: 120px; }
+@media (max-width: 800px) {
+  .studio-notice { align-items: flex-start; flex-direction: column; gap: 12px; margin-top: 0; }
+}
 /* Interaction feedback stays on transforms, leaving the reading layout stable. */
 .studio-read, .studio-project-number, .studio-brand-dot,
 .studio-story .studio-title, .studio-desk-links .studio-title,
