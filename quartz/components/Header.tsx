@@ -319,11 +319,23 @@ function mountHeaderTools() {
 }
 function enhanceReadingShell() {
   mountHeaderTools()
+  if (["index", "portfolio/index"].includes(document.body.dataset.slug)) {
+    document.querySelector(".explorer")?.classList.add("collapsed")
+    document.documentElement.classList.remove("mobile-no-scroll")
+  }
   enhanceExplorerButtons()
   organizeExplorer()
   mountExplorerResize()
   localizeProperties()
   mountJourneyNext()
+  const randomButton = document.querySelector(".studio-random")
+  if (randomButton && !randomButton.dataset.ready) {
+    randomButton.dataset.ready = "true"
+    randomButton.addEventListener("click", () => {
+      const links = [...document.querySelectorAll(".studio-story[href], .studio-desk-links a[href]")]
+      if (links.length) links[Math.floor(Math.random() * links.length)].click()
+    })
+  }
 }
 if (!window.__docHeaderInitialized) {
   window.__docHeaderInitialized = true
@@ -334,13 +346,13 @@ if (!window.__docHeaderInitialized) {
 enhanceReadingShell()
 `
 
-const Header: QuartzComponent = ({ children, fileData, cfg }: QuartzComponentProps) => {
+const Header: QuartzComponent = ({ children, fileData }: QuartzComponentProps) => {
   const slug = (fileData.slug ?? "index") as FullSlug
 
   return (
     <header class="doc-header">
       <a class="doc-header-brand" href={pathToRoot(slug)}>
-        {cfg.pageTitle}
+        占占 Wiki<span class="studio-brand-dot">.</span>
       </a>
       <nav class="doc-header-nav" aria-label="全局导航">
         {NAV_LINKS.map(([label, target, roots]) => {

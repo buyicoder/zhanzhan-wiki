@@ -1,4 +1,5 @@
 @use "./variables.scss" as *;
+@use "sass:meta";
 
 :root {
   --zz-sidebar: #f5efe2;
@@ -2124,3 +2125,5 @@ article img {
 body[data-slug="index"] .content-meta {
   display: none;
 }
+
+@include meta.load-css("./studio.scss");
