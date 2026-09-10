@@ -151,6 +151,47 @@ article .studio-questions a.internal { padding: 17px 0; }
   .studio-desk-links > a { padding: 14px 0; border-bottom: 1px solid var(--zz-border); }
   .article-title { font-size: 28px; }
 }
+/* Interaction feedback stays on transforms, leaving the reading layout stable. */
+.studio-read, .studio-project-number, .studio-brand-dot,
+.studio-story .studio-title, .studio-desk-links .studio-title,
+.studio-questions span {
+  transition: transform 240ms ease, color 240ms ease;
+}
+.studio-brand-dot { display: inline-block; transform-origin: bottom center; }
+.studio-random { position: relative; transition: color 180ms ease, transform 180ms ease; }
+.studio-random::after {
+  content: ""; position: absolute; bottom: -1px; left: 0;
+  width: 100%; height: 2px; background: currentColor;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 260ms ease;
+}
+.studio-random:active { transform: translateY(2px); }
+.studio-random:focus-visible::after { transform: scaleX(1); }
+.studio-story:focus-visible .studio-read,
+.studio-project:focus-visible .studio-read { transform: translateX(5px); }
+@media (hover: hover) and (pointer: fine) {
+  .studio-story:hover .studio-read, .studio-project:hover .studio-read { transform: translateX(5px); }
+  .studio-story:hover .studio-title, .studio-desk-links a:hover .studio-title { transform: translateY(-3px); }
+  .studio-project:hover .studio-project-number { transform: translateY(-3px) rotate(-4deg); }
+  .studio-questions a:hover span { transform: translateX(-4px); color: var(--secondary); }
+  .studio-random:hover::after { transform: scaleX(1); }
+  .doc-header-brand:hover .studio-brand-dot { animation: studio-dot-hop 420ms ease; }
+}
+@keyframes studio-dot-hop {
+  0%, 100% { transform: translateY(0); }
+  45% { transform: translateY(-5px); }
+  75% { transform: translateY(1px); }
+}
+@keyframes studio-arrive {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .studio-intro-copy > * { animation: studio-arrive 550ms ease backwards; }
+  .studio-intro-copy > :nth-child(2) { animation-delay: 60ms; }
+  .studio-intro-copy > :nth-child(3) { animation-delay: 120ms; }
+  .studio-intro-copy > :nth-child(n+4) { animation-delay: 180ms; }
+}
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
 }
