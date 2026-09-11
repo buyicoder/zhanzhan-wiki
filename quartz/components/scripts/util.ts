@@ -41,6 +41,8 @@ export async function fetchCanonical(url: URL): Promise<Response> {
   // reading the body can only be done once, so we need to clone the response
   // to allow the caller to read it if it's was not a redirect
   const text = await res.clone().text()
+  // Canonical identifies the preferred search URL, not a navigation redirect.
+  if (!/<meta\s+[^>]*http-equiv=["']refresh["']/i.test(text)) return res
   const [_, redirect] = text.match(canonicalRegex) ?? []
   return redirect ? fetch(`${new URL(redirect, url)}`) : res
 }

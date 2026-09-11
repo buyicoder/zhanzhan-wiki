@@ -37,6 +37,7 @@ if (profile === "self-host") {
     }
   }
   walk(outputDirectory)
+  fs.writeFileSync(path.join(outputDirectory, "robots.txt"), "User-agent: *\nAllow: /\nDisallow: /analytics/\n\nSitemap: https://wiki.zhanzhanai.com/sitemap.xml\n")
 
   for (const file of files) {
     const html = fs.readFileSync(file, "utf8")

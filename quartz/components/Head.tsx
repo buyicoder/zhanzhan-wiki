@@ -34,6 +34,15 @@ export default (() => {
       fileData.slug === "404"
         ? url.toString()
         : joinSegments(url.toString(), simplifySlug(fileData.slug!))
+    const canonicalUrl = fileData.slug === "404" ? "https://wiki.zhanzhanai.com/404" : joinSegments("https://wiki.zhanzhanai.com", simplifySlug(fileData.slug!))
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@graph": [
+        { "@type": "Person", "@id": "https://wiki.zhanzhanai.com/#author", name: "占占", url: "https://wiki.zhanzhanai.com/now", sameAs: ["https://github.com/buyicoder"] },
+        { "@type": "WebSite", "@id": "https://wiki.zhanzhanai.com/#website", name: "占占 Wiki", url: "https://wiki.zhanzhanai.com/", inLanguage: "zh-CN", author: { "@id": "https://wiki.zhanzhanai.com/#author" } },
+        { "@type": "WebPage", "@id": canonicalUrl, url: canonicalUrl, name: title, description, inLanguage: "zh-CN", isPartOf: { "@id": "https://wiki.zhanzhanai.com/#website" } },
+      ],
+    }
 
     const usesCustomOgImage = ctx.cfg.plugins.emitters.some(
       (e) => e.name === CustomOgImagesEmitterName,
@@ -89,7 +98,7 @@ export default (() => {
 
         {cfg.baseUrl && (
           <>
-            {fileData.slug !== "404" && <link rel="canonical" href={socialUrl} />}
+            {fileData.slug !== "404" && <link rel="canonical" href={canonicalUrl} />}
             <meta property="twitter:domain" content={cfg.baseUrl}></meta>
             <meta property="og:url" content={socialUrl}></meta>
             <meta property="twitter:url" content={socialUrl}></meta>
@@ -99,6 +108,8 @@ export default (() => {
         <link rel="icon" type="image/png" sizes="200x200" href={iconPath} />
         <meta name="description" content={description} />
         <meta name="generator" content="Quartz" />
+        {fileData.slug === "404" ? <meta name="robots" content="noindex" /> : <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }} />}
+        {cfg.baseUrl === "wiki.zhanzhanai.com" && <script defer src="/static/wiki-analytics.js" />}
 
         {css.map((resource) => CSSResourceToStyleElement(resource, true))}
         {js

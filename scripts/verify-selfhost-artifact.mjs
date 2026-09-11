@@ -4,7 +4,7 @@ import path from "node:path"
 const root = path.resolve(process.argv[2] ?? "public-self-host")
 const expectedDomain = "wiki.zhanzhanai.com"
 const forbidden = ["buyicoder.github.io", "/zhanzhan-wiki/"]
-const requiredFiles = ["index.html", "404.html", "sitemap.xml", "index.xml", "CNAME"]
+const requiredFiles = ["index.html", "404.html", "sitemap.xml", "index.xml", "CNAME", "robots.txt", "privacy.html", "static/wiki-analytics.js"]
 
 const failures = []
 const files = []
@@ -41,6 +41,11 @@ const cname = fs.readFileSync(path.join(root, "CNAME"), "utf8").trim()
 if (!sitemap.includes(`https://${expectedDomain}/`)) failures.push("sitemap domain mismatch")
 if (!rss.includes(`https://${expectedDomain}`)) failures.push("RSS domain mismatch")
 if (cname !== expectedDomain) failures.push(`CNAME mismatch: ${cname}`)
+const robots = fs.readFileSync(path.join(root, "robots.txt"), "utf8")
+if (!robots.includes(`Sitemap: https://${expectedDomain}/sitemap.xml`)) failures.push("robots sitemap missing")
+const home = fs.readFileSync(path.join(root, "index.html"), "utf8")
+const schema = home.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)
+if (!schema || !JSON.parse(schema[1])["@graph"].some(x => x["@type"] === "Person")) failures.push("author schema missing")
 
 for (const file of files.filter((candidate) => candidate.endsWith(".html"))) {
   if (path.basename(file) === "404.html") continue
