@@ -72,7 +72,10 @@ export function pageResources(
   })
 
   const contentIndexPath = joinSegments(baseDir, "static/contentIndex.json")
-  const contentIndexScript = `const fetchData = fetch("${contentIndexPath}").then(data => data.json())`
+  const contentIndexScript = `const fetchData = fetch("${contentIndexPath}").then(data => data.json()).then(data => {
+    const pageIsEnglish = document.documentElement.lang.toLowerCase().startsWith("en")
+    return Object.fromEntries(Object.entries(data).filter(([slug]) => pageIsEnglish ? slug.startsWith("en/") : !slug.startsWith("en/")))
+  })`
 
   const resources: StaticResources = {
     css: [
@@ -335,7 +338,9 @@ export function renderPage(
   const Body = BodyConstructor()
   const frame = resolveFrame(frameName)
 
-  const lang = componentData.fileData.frontmatter?.lang ?? cfg.locale?.split("-")[0] ?? "en"
+  const lang =
+    componentData.fileData.frontmatter?.lang ??
+    (slug === "en" || slug.startsWith("en/") ? "en" : (cfg.locale?.split("-")[0] ?? "en"))
   const direction = i18n(cfg.locale).direction ?? "ltr"
   // During local dev (--serve), the dev server serves from root without the
   // baseUrl subpath, so basePath must be empty to avoid broken links.

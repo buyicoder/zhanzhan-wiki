@@ -1,5 +1,5 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
-import { FullSlug, pathToRoot, resolveRelative } from "../util/path"
+import { FullSlug, resolveRelative } from "../util/path"
 
 const NAV_LINKS = [
   ["首页", "index", ["index"]],
@@ -13,6 +13,14 @@ const NAV_LINKS = [
   ["关于占占", "now", ["now", "conventions"]],
 ] as const
 
+const EN_NAV_LINKS = [
+  ["Home", "en/index", ["index"]],
+  ["Knowledge", "en/map/index", ["map"]],
+  ["AI Course", "en/ai-basics/index", ["ai-basics"]],
+  ["Projects", "en/portfolio/index", ["portfolio"]],
+  ["About", "en/now", ["now"]],
+] as const
+
 const HEADER_SCRIPT = `
 const readerJourneyOrder = ["map", "input", "capability", "leverage", "ai-work", "portfolio", "expression", "life", "tutorials"]
 const legacyRoots = new Set(["start", "ai-basics", "learning", "business", "cases", "thinking", "toolbox", "works", "garden", "logs", "projects"])
@@ -21,6 +29,9 @@ const explorerWidthKey = "zz-explorer-width"
 const explorerWidthDefault = 280
 const explorerWidthMin = 240
 const explorerWidthMax = 520
+function isEnglishPage() {
+  return document.documentElement.lang.toLowerCase().startsWith("en")
+}
 const journeyNext = {
   "capability/高考完之后-焚决": ["capability/index", "capability/ai时代的七条基础能力", "下一步：AI 时代的七条基础能力"],
   "capability/ai时代的七条基础能力": ["capability/index", "capability/ai时代最不重要的能力恰恰是大家最焦虑的", "下一步：三层能力模型"],
@@ -72,7 +83,7 @@ function enhanceFolderControls(root) {
     const icon = container.querySelector(":scope > .folder-icon")
     if (!folderPath || !folderOuter || !folderLink || !icon) continue
 
-    const title = folderLink.textContent?.trim() || "目录"
+    const title = folderLink.textContent?.trim() || (isEnglishPage() ? "Contents" : "目录")
     folderLink.title = title
     folderLink.setAttribute("aria-label", title)
     const toggle = document.createElement("button")
@@ -83,7 +94,9 @@ function enhanceFolderControls(root) {
     const syncState = () => {
       const expanded = folderOuter.classList.contains("open")
       toggle.setAttribute("aria-expanded", String(expanded))
-      toggle.setAttribute("aria-label", (expanded ? "收起" : "展开") + title)
+      toggle.setAttribute("aria-label", isEnglishPage()
+        ? (expanded ? "Collapse " : "Expand ") + title
+        : (expanded ? "收起" : "展开") + title)
     }
     const toggleFolder = (event) => {
       event.preventDefault()
@@ -180,7 +193,7 @@ function mountExplorerResize() {
   handle.tabIndex = 0
   handle.setAttribute("role", "separator")
   handle.setAttribute("aria-orientation", "vertical")
-  handle.setAttribute("aria-label", "调整全局目录宽度")
+  handle.setAttribute("aria-label", isEnglishPage() ? "Resize navigation" : "调整全局目录宽度")
 
   const apply = (next, persist = true) => {
     width = clamp(next)
@@ -230,7 +243,21 @@ function mountExplorerResize() {
   sidebar.append(handle)
 }
 function localizeProperties() {
-  for (const title of document.querySelectorAll(".note-properties-title")) title.textContent = "页面信息"
+  for (const title of document.querySelectorAll(".note-properties-title")) title.textContent = isEnglishPage() ? "Page information" : "页面信息"
+}
+function localizeSearch() {
+  const english = isEnglishPage()
+  for (const search of document.querySelectorAll(".search")) {
+    const button = search.querySelector(".search-button")
+    const input = search.querySelector(".search-bar")
+    const label = english ? "Search" : "搜索"
+    button?.setAttribute("aria-label", label)
+    button?.querySelector("p")?.replaceChildren(label)
+    if (input) {
+      input.setAttribute("aria-label", english ? "Search this wiki" : "搜索本站内容")
+      input.setAttribute("placeholder", english ? "Search this wiki" : "搜索本站内容")
+    }
+  }
 }
 function mountJourneyNext() {
   document.querySelector(".reader-journey-next")?.remove()
@@ -337,7 +364,9 @@ function enhanceExplorerButtons() {
     }
     const syncLabel = () => {
       const collapsed = explorer.classList.contains("collapsed")
-      const label = isMobileButton ? (collapsed ? "打开全局目录" : "关闭全局目录") : (collapsed ? "展开全局目录" : "收起全局目录")
+      const label = isEnglishPage()
+        ? (isMobileButton ? (collapsed ? "Open navigation" : "Close navigation") : (collapsed ? "Expand navigation" : "Collapse navigation"))
+        : (isMobileButton ? (collapsed ? "打开全局目录" : "关闭全局目录") : (collapsed ? "展开全局目录" : "收起全局目录"))
       button.setAttribute("aria-label", label)
       button.setAttribute("title", label)
       button.setAttribute("aria-expanded", String(!collapsed))
@@ -365,9 +394,13 @@ function handleExplorerToggle(event) {
   explorer.setAttribute("aria-expanded", String(!collapsed))
   explorer.querySelector(".explorer-content")?.setAttribute("aria-expanded", String(!collapsed))
   target.setAttribute("aria-expanded", String(!collapsed))
-  const label = target.classList.contains("mobile-explorer")
-    ? (collapsed ? "打开全局目录" : "关闭全局目录")
-    : (collapsed ? "展开全局目录" : "收起全局目录")
+  const label = isEnglishPage()
+    ? (target.classList.contains("mobile-explorer")
+      ? (collapsed ? "Open navigation" : "Close navigation")
+      : (collapsed ? "Expand navigation" : "Collapse navigation"))
+    : (target.classList.contains("mobile-explorer")
+      ? (collapsed ? "打开全局目录" : "关闭全局目录")
+      : (collapsed ? "展开全局目录" : "收起全局目录"))
   target.setAttribute("aria-label", label)
   target.setAttribute("title", label)
   if (!collapsed) restoreGlobalExplorerTree(explorer)
@@ -387,6 +420,7 @@ function enhanceReadingShell() {
   organizeExplorer()
   mountExplorerResize()
   localizeProperties()
+  localizeSearch()
   mountJourneyNext()
   mountReadingMemory()
   const randomButton = document.querySelector(".studio-random")
@@ -407,12 +441,23 @@ if (!window.__docHeaderInitialized) {
 enhanceReadingShell()
 `
 
-const Header: QuartzComponent = ({ children, fileData }: QuartzComponentProps) => {
+const Header: QuartzComponent = ({ children, fileData, allFiles }: QuartzComponentProps) => {
   const slug = (fileData.slug ?? "index") as FullSlug
+  const isEnglish = slug === "en" || slug.startsWith("en/")
+  const localSlug = (isEnglish ? slug.replace(/^en\/?/, "") || "index" : slug) as FullSlug
+  const counterpart = (isEnglish ? localSlug : `en/${localSlug}`) as FullSlug
+  const counterpartExists = allFiles.some((file) => file.slug === counterpart)
+  const languageTarget = counterpartExists
+    ? counterpart
+    : ((isEnglish ? "index" : "en/index") as FullSlug)
+  const navLinks = isEnglish ? EN_NAV_LINKS : NAV_LINKS
 
   return (
     <header class="doc-header">
-      <a class="doc-header-brand" href={pathToRoot(slug)}>
+      <a
+        class="doc-header-brand"
+        href={resolveRelative(slug, (isEnglish ? "en/index" : "index") as FullSlug)}
+      >
         <svg class="doc-header-brand-mark" viewBox="0 0 512 512" aria-hidden="true">
           <g
             fill="none"
@@ -430,9 +475,9 @@ const Header: QuartzComponent = ({ children, fileData }: QuartzComponentProps) =
         </svg>
         <span>占占 Wiki</span>
       </a>
-      <nav class="doc-header-nav" aria-label="全局导航">
-        {NAV_LINKS.map(([label, target, roots]) => {
-          const root = slug === "index" ? "index" : slug.split("/")[0]
+      <nav class="doc-header-nav" aria-label={isEnglish ? "Global navigation" : "全局导航"}>
+        {navLinks.map(([label, target, roots]) => {
+          const root = localSlug === "index" ? "index" : localSlug.split("/")[0]
           const active = roots.includes(root as never)
           return (
             <a
@@ -446,6 +491,17 @@ const Header: QuartzComponent = ({ children, fileData }: QuartzComponentProps) =
           )
         })}
       </nav>
+      <a
+        class="doc-language-switch"
+        href={resolveRelative(slug, languageTarget)}
+        data-router-ignore="true"
+        lang={isEnglish ? "zh-CN" : "en"}
+        hreflang={isEnglish ? "zh-CN" : "en"}
+        aria-label={isEnglish ? "切换到中文" : "Switch to English"}
+        title={counterpartExists ? undefined : isEnglish ? "返回中文首页" : "Open English home"}
+      >
+        {isEnglish ? "中文" : "EN"}
+      </a>
       <div class="doc-header-extra">{children}</div>
       <script dangerouslySetInnerHTML={{ __html: HEADER_SCRIPT }} />
     </header>
@@ -463,6 +519,40 @@ Header.css = `
 .doc-header-brand,
 .doc-header-link {
   text-decoration: none;
+}
+
+.doc-header-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.doc-header-brand-mark {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+}
+
+.doc-language-switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  min-height: 2rem;
+  padding: 0 0.55rem;
+  border: 1px solid var(--lightgray);
+  border-radius: 999px;
+  color: var(--darkgray);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+}
+
+.doc-language-switch:hover,
+.doc-language-switch:focus-visible {
+  border-color: var(--secondary);
+  color: var(--secondary);
 }
 `
 

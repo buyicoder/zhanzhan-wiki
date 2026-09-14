@@ -11,6 +11,7 @@ export default (() => {
     fileData,
     externalResources,
     ctx,
+    allFiles,
   }: QuartzComponentProps) => {
     const titleSuffix = cfg.pageTitleSuffix ?? ""
     const title =
@@ -33,13 +34,46 @@ export default (() => {
       fileData.slug === "404"
         ? url.toString()
         : joinSegments(url.toString(), simplifySlug(fileData.slug!))
-    const canonicalUrl = fileData.slug === "404" ? "https://wiki.zhanzhanai.com/404" : joinSegments("https://wiki.zhanzhanai.com", simplifySlug(fileData.slug!))
+    const canonicalUrl =
+      fileData.slug === "404"
+        ? "https://wiki.zhanzhanai.com/404"
+        : joinSegments("https://wiki.zhanzhanai.com", simplifySlug(fileData.slug!))
+    const slug = (fileData.slug ?? "index") as FullSlug
+    const isEnglish = slug === "en" || slug.startsWith("en/")
+    const pageLanguage = isEnglish ? "en" : "zh-CN"
+    const localSlug = (isEnglish ? slug.replace(/^en\/?/, "") || "index" : slug) as FullSlug
+    const alternateSlug = (isEnglish ? localSlug : `en/${localSlug}`) as FullSlug
+    const alternateExists = allFiles.some((file) => file.slug === alternateSlug)
+    const alternateUrl = alternateExists
+      ? joinSegments("https://wiki.zhanzhanai.com", simplifySlug(alternateSlug))
+      : undefined
     const structuredData = {
       "@context": "https://schema.org",
       "@graph": [
-        { "@type": "Person", "@id": "https://wiki.zhanzhanai.com/#author", name: "占占", url: "https://wiki.zhanzhanai.com/now", sameAs: ["https://github.com/buyicoder"] },
-        { "@type": "WebSite", "@id": "https://wiki.zhanzhanai.com/#website", name: "占占 Wiki", url: "https://wiki.zhanzhanai.com/", inLanguage: "zh-CN", author: { "@id": "https://wiki.zhanzhanai.com/#author" } },
-        { "@type": "WebPage", "@id": canonicalUrl, url: canonicalUrl, name: title, description, inLanguage: "zh-CN", isPartOf: { "@id": "https://wiki.zhanzhanai.com/#website" } },
+        {
+          "@type": "Person",
+          "@id": "https://wiki.zhanzhanai.com/#author",
+          name: "占占",
+          url: "https://wiki.zhanzhanai.com/now",
+          sameAs: ["https://github.com/buyicoder"],
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://wiki.zhanzhanai.com/#website",
+          name: "占占 Wiki",
+          url: "https://wiki.zhanzhanai.com/",
+          inLanguage: ["zh-CN", "en"],
+          author: { "@id": "https://wiki.zhanzhanai.com/#author" },
+        },
+        {
+          "@type": "WebPage",
+          "@id": canonicalUrl,
+          url: canonicalUrl,
+          name: title,
+          description,
+          inLanguage: pageLanguage,
+          isPartOf: { "@id": "https://wiki.zhanzhanai.com/#website" },
+        },
       ],
     }
 
@@ -98,6 +132,15 @@ export default (() => {
         {cfg.baseUrl && (
           <>
             {fileData.slug !== "404" && <link rel="canonical" href={canonicalUrl} />}
+            {fileData.slug !== "404" && (
+              <>
+                <link rel="alternate" hrefLang={pageLanguage} href={canonicalUrl} />
+                {alternateUrl && (
+                  <link rel="alternate" hrefLang={isEnglish ? "zh-CN" : "en"} href={alternateUrl} />
+                )}
+                <link rel="alternate" hrefLang="x-default" href="https://wiki.zhanzhanai.com/" />
+              </>
+            )}
             <meta property="twitter:domain" content={cfg.baseUrl}></meta>
             <meta property="og:url" content={socialUrl}></meta>
             <meta property="twitter:url" content={socialUrl}></meta>
@@ -107,7 +150,16 @@ export default (() => {
         <link rel="icon" type="image/png" sizes="200x200" href={iconPath} />
         <meta name="description" content={description} />
         <meta name="generator" content="Quartz" />
-        {fileData.slug === "404" ? <meta name="robots" content="noindex" /> : <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }} />}
+        {fileData.slug === "404" ? (
+          <meta name="robots" content="noindex" />
+        ) : (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+            }}
+          />
+        )}
         {cfg.baseUrl === "wiki.zhanzhanai.com" && <script defer src="/static/wiki-analytics.js" />}
 
         {css.map((resource) => CSSResourceToStyleElement(resource, true))}
