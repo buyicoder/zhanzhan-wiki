@@ -410,7 +410,57 @@ function mountHeaderTools() {
   const tools = document.querySelector(".page > #quartz-body > .sidebar.left > .flex-component")
   if (target && tools && tools.parentElement !== target) target.appendChild(tools)
 }
+function localizeEnglishLinks() {
+  const header = document.querySelector(".doc-header[data-english-routes]")
+  const slug = document.body.dataset.slug || ""
+  if (!header || (slug !== "en" && !slug.startsWith("en/"))) return
+
+  let routes
+  try {
+    routes = new Set(JSON.parse(header.dataset.englishRoutes || "[]"))
+  } catch {
+    return
+  }
+
+  const marker = "/en/"
+  const markerIndex = window.location.pathname.toLowerCase().indexOf(marker)
+  const basePath = markerIndex >= 0 ? window.location.pathname.slice(0, markerIndex + 1) : "/"
+  document.querySelectorAll("a[href]").forEach((anchor) => {
+    if (anchor.matches(".doc-language-switch, [hreflang='zh-CN']")) return
+    let url
+    try {
+      url = new URL(anchor.href, window.location.href)
+    } catch {
+      return
+    }
+    if (url.origin !== window.location.origin || url.pathname.startsWith(basePath + "en/")) return
+
+    const rawPath = url.pathname.startsWith(basePath)
+      ? url.pathname.slice(basePath.length)
+      : url.pathname.startsWith("/")
+        ? url.pathname.slice(1)
+        : url.pathname
+    let route
+    try {
+      route = decodeURIComponent(rawPath)
+      if (route.endsWith("/")) route = route.slice(0, -1)
+      route ||= "index"
+    } catch {
+      return
+    }
+    if (!routes.has(route.toLowerCase())) return
+
+    const localizedPath =
+      route === "index" ? "en/" : "en/" + (rawPath.endsWith("/") ? rawPath.slice(0, -1) : rawPath)
+    url.pathname = basePath + localizedPath
+    anchor.href = url.pathname + url.search + url.hash
+  })
+}
+function handleEnglishLinkClick(event) {
+  if (event.target.closest?.("a[href]")) localizeEnglishLinks()
+}
 function enhanceReadingShell() {
+  localizeEnglishLinks()
   mountHeaderTools()
   if (["index", "portfolio/index"].includes(document.body.dataset.slug)) {
     document.querySelector(".explorer")?.classList.add("collapsed")
@@ -435,10 +485,13 @@ function enhanceReadingShell() {
 if (!window.__docHeaderInitialized) {
   window.__docHeaderInitialized = true
   document.addEventListener("click", handleExplorerToggle, { capture: true })
+  document.addEventListener("click", handleEnglishLinkClick, { capture: true })
   document.addEventListener("nav", enhanceReadingShell)
   document.addEventListener("render", enhanceReadingShell)
+  document.addEventListener("DOMContentLoaded", enhanceReadingShell, { once: true })
 }
 enhanceReadingShell()
+window.setTimeout(localizeEnglishLinks, 0)
 `
 
 const Header: QuartzComponent = ({ children, fileData, allFiles }: QuartzComponentProps) => {
@@ -453,7 +506,17 @@ const Header: QuartzComponent = ({ children, fileData, allFiles }: QuartzCompone
   const navLinks = isEnglish ? EN_NAV_LINKS : NAV_LINKS
 
   return (
-    <header class="doc-header">
+    <header
+      class="doc-header"
+      data-english-routes={JSON.stringify(
+        allFiles
+          .map((file) => String(file.slug ?? ""))
+          .filter((fileSlug) => fileSlug === "en" || fileSlug.startsWith("en/"))
+          .map((fileSlug) => fileSlug.replace(/^en\/?/, "") || "index")
+          .map((fileSlug) => fileSlug.replace(/\/index$/, "") || "index")
+          .map((fileSlug) => fileSlug.toLowerCase()),
+      )}
+    >
       <a
         class="doc-header-brand"
         href={resolveRelative(slug, (isEnglish ? "en/index" : "index") as FullSlug)}
