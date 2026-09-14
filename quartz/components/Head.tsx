@@ -27,7 +27,7 @@ export default (() => {
     const path = url.pathname as FullSlug
     const baseDir = fileData.slug === "404" ? path : pathToRoot(fileData.slug!)
     // Keep the favicon URL versioned so browsers do not reuse an older brand asset.
-    const iconPath = `${joinSegments(baseDir, "static/icon.png")}?v=zhanzhan-v1`
+    const iconPath = `${joinSegments(baseDir, "static/icon.png")}?v=zhanzhan-v2`
 
     // Url of current page
     const socialUrl =

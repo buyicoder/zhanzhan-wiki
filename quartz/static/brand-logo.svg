@@ -1,11 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
   <title id="title">占占品牌标志</title>
-  <desc id="desc">两个占字骨架托起中央双色晶核</desc>
-  <g fill="none" stroke="#15171A" stroke-width="42" stroke-linecap="square" stroke-linejoin="miter">
-    <path d="M92 112v116h144M420 112v116H276"/>
-    <path d="M74 278h162v156H74zM276 278h162v156H276z"/>
-  </g>
-  <path fill="#15171A" d="M236 207h40v92h-40z"/>
-  <path fill="#19C6E5" d="M256 48 184 124l72 74z"/>
-  <path fill="#FF4B3E" d="m256 48 72 76-72 74z"/>
+  <desc id="desc">由占字自然延伸出的东方现代图形</desc>
+  <path fill="#17191C" d="M82 28h30v43c0 18 15 28 37 36 17 6 35 11 55 17v30c-39-15-80-17-122-7V28Z"/>
+  <path fill="#17191C" fill-rule="evenodd" d="M48 181c0-20 36-31 82-31 48 0 78 12 78 30 0 23-34 38-80 38-45 0-80-14-80-37Zm25-7c-2 9 12 16 31 17 20 1 37-4 39-13 2-8-11-14-30-16-19-1-38 3-40 12Z"/>
 </svg>
