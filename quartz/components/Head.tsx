@@ -27,7 +27,9 @@ export default (() => {
     const path = url.pathname as FullSlug
     const baseDir = fileData.slug === "404" ? path : pathToRoot(fileData.slug!)
     // Keep the favicon URL versioned so browsers do not reuse an older brand asset.
-    const iconPath = `${joinSegments(baseDir, "static/icon.png")}?v=zhanzhan-v2`
+    const faviconVersion = "zhanzhan-v3"
+    const faviconPath = `${joinSegments(baseDir, "favicon.ico")}?v=${faviconVersion}`
+    const iconPath = `${joinSegments(baseDir, "static/icon.png")}?v=${faviconVersion}`
 
     // Url of current page
     const socialUrl =
@@ -147,7 +149,10 @@ export default (() => {
           </>
         )}
 
+        <link rel="icon" type="image/png" sizes="48x48" href={faviconPath} />
+        <link rel="shortcut icon" type="image/png" href={faviconPath} />
         <link rel="icon" type="image/png" sizes="200x200" href={iconPath} />
+        <link rel="apple-touch-icon" sizes="200x200" href={iconPath} />
         <meta name="description" content={description} />
         <meta name="generator" content="Quartz" />
         {fileData.slug === "404" ? (
