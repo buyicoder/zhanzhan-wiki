@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">占占品牌标志</title>
+  <desc id="desc">两个占字骨架托起中央双色晶核</desc>
+  <g fill="none" stroke="#15171A" stroke-width="42" stroke-linecap="square" stroke-linejoin="miter">
+    <path d="M92 112v116h144M420 112v116H276"/>
+    <path d="M74 278h162v156H74zM276 278h162v156H276z"/>
+  </g>
+  <path fill="#15171A" d="M236 207h40v92h-40z"/>
+  <path fill="#19C6E5" d="M256 48 184 124l72 74z"/>
+  <path fill="#FF4B3E" d="m256 48 72 76-72 74z"/>
+</svg>

@@ -60,10 +60,26 @@ body {
 }
 
 .doc-header-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
   color: var(--dark) !important;
   font-size: 16px;
   font-weight: 700;
   white-space: nowrap;
+}
+
+.doc-header-brand-mark {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  transition: transform 220ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .doc-header-brand:hover .doc-header-brand-mark {
+    transform: translateY(-2px) rotate(-2deg);
+  }
 }
 
 .doc-header-nav {

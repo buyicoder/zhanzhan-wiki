@@ -413,7 +413,22 @@ const Header: QuartzComponent = ({ children, fileData }: QuartzComponentProps) =
   return (
     <header class="doc-header">
       <a class="doc-header-brand" href={pathToRoot(slug)}>
-        占占 Wiki<span class="studio-brand-dot">.</span>
+        <svg class="doc-header-brand-mark" viewBox="0 0 512 512" aria-hidden="true">
+          <g
+            fill="none"
+            stroke="currentColor"
+            stroke-width="42"
+            stroke-linecap="square"
+            stroke-linejoin="miter"
+          >
+            <path d="M92 112v116h144M420 112v116H276" />
+            <path d="M74 278h162v156H74zM276 278h162v156H276z" />
+          </g>
+          <path fill="currentColor" d="M236 207h40v92h-40z" />
+          <path fill="#19c6e5" d="M256 48 184 124l72 74z" />
+          <path fill="#ff4b3e" d="m256 48 72 76-72 74z" />
+        </svg>
+        <span>占占 Wiki</span>
       </a>
       <nav class="doc-header-nav" aria-label="全局导航">
         {NAV_LINKS.map(([label, target, roots]) => {
