@@ -5,12 +5,11 @@ const path = require("node:path")
 const base = (process.env.BASE_URL || "http://127.0.0.1:8080").replace(/\/$/, "")
 const output = process.env.OUTPUT_DIR || "/tmp/zhanzhan-wiki-explorer-responsive-shell"
 const expectedRoots = [
-  "信息源：我的 AI 时代个人能力系统",
+  "总览",
   "输入系统",
   "学习与能力",
   "工具与杠杆",
   "AI 工作系统",
-  "项目与作品",
   "内容与表达",
   "人生操作系统",
   "教程与复利",
@@ -43,7 +42,7 @@ const readState = (page) =>
       menuStroke: getComputedStyle(document.querySelector(".mobile-explorer .lucide-menu")).stroke,
       roots: [
         ...document.querySelectorAll(
-          ".explorer-ul > li:not([hidden]) > .folder-container a.folder-button",
+          ".explorer-ul > li:not([hidden]) > .folder-container a.folder-button, .explorer-ul > li:not([hidden]) > a.nav-file-title",
         ),
       ]
         .filter(visible)
@@ -62,7 +61,7 @@ async function verify(browser, width) {
   await page.waitForFunction(
     (minimum) =>
       document.querySelectorAll(
-        ".explorer-ul > li:not([hidden]) > .folder-container a.folder-button",
+        ".explorer-ul > li:not([hidden]) > .folder-container a.folder-button, .explorer-ul > li:not([hidden]) > a.nav-file-title",
       ).length >= minimum,
     expectedRoots.length,
     { timeout: 15_000 },
@@ -86,7 +85,7 @@ async function verify(browser, width) {
     state = await readState(page)
     check(
       expectedRoots.every((root) => state.roots.includes(root)),
-      `${width}: expand restores every global root`,
+      `${width}: expand restores every knowledge chapter`,
       { roots: state.roots },
     )
     check(state.contentScrollTop === 0, `${width}: expand returns to the global tree start`)
@@ -100,7 +99,7 @@ async function verify(browser, width) {
     check(state.content.width === width, `${width}: mobile directory is full-screen`)
     check(
       expectedRoots.every((root) => state.roots.includes(root)),
-      `${width}: mobile directory contains every global root`,
+      `${width}: mobile directory contains every knowledge chapter`,
       { roots: state.roots },
     )
   }

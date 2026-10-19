@@ -1,50 +1,49 @@
 ---
-title: "占Wiki Open Library and Laboratories"
-provenance: "🤝 AI Drafts I Rewrite"
+title: Zhanzhan Wiki · An Open Notebook
+provenance: 🤝 AI Draft, Rewritten by Me
 lang: en
 ---
 
-<section class="studio-intro">
-<img class="studio-art" src="../static/studio-desk.webp" alt="笔记、书籍与电脑组成的书桌插画">
-<div class="studio-intro-copy">
-<p class="studio-eyebrow">ZHANZHAN / OPEN NOTEBOOK</p>
-<h1>Zen.<br>Library and laboratory<span class="studio-period">.</span></h1>
-<p class="studio-deck">Do something with AI and think about the world.</p>
-<p class="studio-bio">I'm Jim, a young man who writes articles and makes products.<br>Here I leave my practice, my questions, and the answers that grow.</p>
-<a class="studio-text-link" href="en/now">Meet Jimmy.</a>
-</div>
+<div class="notebook-opening">
+<section class="notebook-preface" aria-label="About Zhanzhan">
+<p class="studio-eyebrow">ZHANZHAN / AN OPEN NOTEBOOK</p>
+<h1>Zhanzhan <span class="notebook-handle">@zhanzhan</span></h1>
+<p class="notebook-motto">Learn by building. Grow by sharing.</p>
+<p class="notebook-bio">I write, build products, and experiment with AI.<br>This is a home for my practice, open questions,<br>and answers that are still taking shape.</p>
+<div class="notebook-byline"><a href="en/now">My story</a><span>·</span><a href="en/portfolio/">Projects</a><span>·</span><a href="en/conventions">How I write</a></div>
+<aside class="notebook-note"><span class="studio-kicker">A NOTE TO MYSELF, AND WHOEVER FINDS IT USEFUL</span><p>Learning, working, and sharing should lead back to things we actually make.</p></aside>
 </section>
-
-<aside class="studio-notice" aria-label="书房手记">
-<div><span class="studio-kicker">Bookroom clerk 2026.09.10</span><p>Learning, working, expressing, and finally returning to real work.</p></div>
-<a href="en/map/">Open my power map.<span aria-hidden="true">↗</span></a>
+<aside class="notebook-margin" aria-label="Projects on my desk">
+<p class="studio-eyebrow">ON MY DESK / EXPLORATIONS</p>
+<a class="notebook-project notebook-project-green" href="en/portfolio/为什么我给自己造了一个Jarvis"><span class="studio-kicker">01 / PERSONAL SYSTEM</span><span class="notebook-project-title" role="heading" aria-level="2">Building my own Jarvis</span><p>Keep the experience. Turn ideas into action.</p><span class="notebook-arrow" aria-hidden="true">↗</span></a>
+<a class="notebook-project" href="en/map/"><span class="studio-kicker">02 / KNOWLEDGE GARDEN</span><span class="notebook-project-title" role="heading" aria-level="2">A map of my learning</span><p>Connecting scattered knowledge into a system.</p><span class="notebook-arrow" aria-hidden="true">↗</span></a>
 </aside>
-
-<div class="studio-section-label"><span>01 / Worth reading slowly</span><a href="en/map/">All notes.</a></div>
-
-<div class="studio-stories">
-<a class="studio-story" href="en/capability/AI时代最不重要的能力恰恰是大家最焦虑的"><span class="studio-kicker">Learning a judgment</span><span class="studio-title studio-title-2" role="heading" aria-level="2">I'm not sure.<br>What exactly should we learn?</span><p>From making questions, using tools, to deciding what is worth doing. Look at yourself again.</p><span class="studio-read">Read the article.</span></a>
-<a class="studio-story" href="en/portfolio/AI写小说的真相"><span class="studio-kicker">· An experiment.</span><span class="studio-title studio-title-2" role="heading" aria-level="2">Let AI write novels.<br>And?</span><p>After 120,000 words, it's probably not the novel.</p><span class="studio-read">See the results.</span></a>
-<a class="studio-story" href="en/portfolio/为什么我给自己造了一个Jarvis"><span class="studio-kicker">A tool. A work.</span><span class="studio-title studio-title-2" role="heading" aria-level="2">I give myself<br>Made a Jarvis.</span><p>As dialogue grows, I begin to need a system that will help me remember, sort and recall.</p><span class="studio-read">Go to the studio.</span></a>
+<a class="notebook-bookmark" href="en/ai-basics/"><span class="studio-kicker">AN OPEN AI COURSE</span><strong>From a first prompt<br>to a first project.</strong><span class="notebook-bookmark-bottom">Open the course ↗</span></a>
 </div>
 
-<section class="studio-explore">
-<div><p class="studio-kicker">From a question.</p><h2>What are you curious about today?</h2><p>You don't have to start over. Find a problem with you.</p><button class="studio-random" type="button">Just turn over a page.</button></div>
-<div class="studio-questions">
-<a href="en/ai-basics/">How can a normal person really use AI?<span>01 ↗</span></a>
-<a href="en/capability/">How do you learn?<span>02 ↗</span></a>
-<a href="en/portfolio/">How do you make an idea?<span>03 ↗</span></a>
-<a href="en/expression/">How do you explain yourself?<span>04 ↗</span></a>
-<a href="en/life/">How do you find your own rhythm?<span>05 ↗</span></a>
+<div class="studio-section-label"><h2>Things worth thinking about</h2><a href="en/map/">All notes ↗</a></div>
+<div class="studio-stories" aria-label="Selected writing">
+<a class="studio-story" href="en/capability/AI时代最不重要的能力恰恰是大家最焦虑的"><span class="studio-kicker">LEARNING</span><span class="studio-title" role="heading" aria-level="3">What should we learn<br>in the age of AI?</span><p>From solving exercises and using tools to deciding what is worth doing.</p><span class="studio-read">Read the essay → <small>§ 01</small></span></a>
+<a class="studio-story" href="en/portfolio/AI写小说的真相"><span class="studio-kicker">CREATING</span><span class="studio-title" role="heading" aria-level="3">AI wrote a novel.<br>Then what?</span><p>After 120,000 Chinese characters, the most lasting result wasn't necessarily the novel.</p><span class="studio-read">See the experiment → <small>§ 02</small></span></a>
+<a class="studio-story" href="en/portfolio/为什么我给自己造了一个Jarvis"><span class="studio-kicker">BUILDING</span><span class="studio-title" role="heading" aria-level="3">Why I built<br>my own Jarvis.</span><p>A system for remembering, organizing, and reflecting on an ever-growing stream of conversations.</p><span class="studio-read">Visit the workshop → <small>§ 03</small></span></a>
+<a class="studio-story" href="en/ai-work/个人知识库不是给自己看的"><span class="studio-kicker">KNOWLEDGE</span><span class="studio-title" role="heading" aria-level="3">A knowledge base<br>isn't just for you.</span><p>Moving beyond collecting, toward something that can be shared and delivered.</p><span class="studio-read">Read the essay → <small>§ 04</small></span></a>
+<a class="studio-story" href="en/portfolio/我的AI记忆系统这样存东西"><span class="studio-kicker">MEMORY</span><span class="studio-title" role="heading" aria-level="3">How do we keep<br>an experience?</span><p>Notes on AI memory and the things we will want to use again.</p><span class="studio-read">Open the notebook → <small>§ 05</small></span></a>
 </div>
+<p class="notebook-sidenote">Five starting points. Take your time.<button class="studio-random" type="button">Pick a page ↗</button></p>
+
+<section class="notebook-library" aria-label="Explore the library">
+<div><h2>Start with a question</h2><div class="studio-questions">
+<a href="en/ai-basics/">How can I start using AI? <span>Learn ↗</span></a>
+<a href="en/capability/">How do I learn in the AI era? <span>Skills ↗</span></a>
+<a href="en/portfolio/">How do I turn an idea into a project? <span>Build ↗</span></a>
+<a href="en/expression/">How do I express an idea clearly? <span>Write ↗</span></a>
+<a href="en/life/">How do I find my own rhythm? <span>Life ↗</span></a>
+</div></div>
+<div class="notebook-shelf"><h2>On the bookshelf</h2>
+<a class="studio-desk-link" href="en/leverage/我的完整工具图谱"><span class="studio-kicker">TOOLS</span><span class="notebook-shelf-title" role="heading" aria-level="3">My toolbox</span><p>Tools and sources that have earned a place in my daily work.</p></a>
+<a class="studio-desk-link" href="en/portfolio/我的AI记忆系统这样存东西"><span class="studio-kicker">NOTES</span><span class="notebook-shelf-title" role="heading" aria-level="3">Keeping a memory</span><p>Turning one experience into something useful next time.</p></a>
+<a class="studio-desk-link" href="en/conventions"><span class="studio-kicker">COLOPHON</span><span class="notebook-shelf-title" role="heading" aria-level="3">The rules of this notebook</span><p>Ideas can change. Experience needs testing.</p></a>
+</div>
+<figure class="notebook-illustration"><img src="../static/studio-desk.webp" alt="A desk with books, notes, and a computer" loading="lazy"><figcaption>A library in progress.<br>A story still being written.<a href="en/now">About Zhanzhan ↗</a></figcaption></figure>
 </section>
-
-<div class="studio-section-label"><span>02 / Something on the table</span><a href="en/portfolio/">Projects and works</a></div>
-
-<div class="studio-desk-links">
-<a href="en/leverage/我的完整工具图谱"><span>TOOLS</span><span class="studio-title studio-title-3" role="heading" aria-level="3">My toolbox.</span><p>A real source of tools and information for daily work.</p></a>
-<a href="en/portfolio/我的AI记忆系统这样存东西"><span>NOTES</span><span class="studio-title studio-title-3" role="heading" aria-level="3">How do you keep your memories?</span><p>One experience, how to become something that'll work next time.</p></a>
-<a href="en/ai-basics/"><span>LEARN</span><span class="studio-title studio-title-3" role="heading" aria-level="3">Let's do the first one together.</span><p>From the first command, Agent, to the release of the work.</p></a>
-</div>
-
-<p class="studio-colophon">This study will continue to be organized. Views could be amended and experience needed to be validated.<a href="en/conventions">About the path to content</a></p>
+<p class="studio-colophon">Zhanzhan's open notebook and laboratory.<a href="https://wiki.zhanzhanai.com/index.xml">Follow by RSS ↗</a><a href="en/privacy">Privacy ↗</a></p>

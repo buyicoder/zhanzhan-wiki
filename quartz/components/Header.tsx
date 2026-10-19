@@ -1,30 +1,11 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import { FullSlug, resolveRelative } from "../util/path"
+import { navigationContext, navigationSections } from "./navigation"
 
-const NAV_LINKS = [
-  ["首页", "index", ["index"]],
-  [
-    "知识库",
-    "map/index",
-    ["map", "input", "capability", "leverage", "ai-work", "expression", "life", "tutorials"],
-  ],
-  ["AI 课程", "ai-basics/index", ["ai-basics"]],
-  ["项目与作品", "portfolio/index", ["portfolio", "cases", "works", "projects"]],
-  ["关于占占", "now", ["now", "conventions"]],
-] as const
-
-const EN_NAV_LINKS = [
-  ["Home", "en/index", ["index"]],
-  ["Knowledge", "en/map/index", ["map"]],
-  ["AI Course", "en/ai-basics/index", ["ai-basics"]],
-  ["Projects", "en/portfolio/index", ["portfolio"]],
-  ["About", "en/now", ["now"]],
-] as const
+const NAV_LINKS = navigationSections.map(({ zh, target }) => [zh, target] as const)
+const EN_NAV_LINKS = navigationSections.map(({ en, target }) => [en, "en/" + target] as const)
 
 const HEADER_SCRIPT = `
-const readerJourneyOrder = ["map", "input", "capability", "leverage", "ai-work", "portfolio", "expression", "life", "tutorials"]
-const legacyRoots = new Set(["start", "ai-basics", "learning", "business", "cases", "thinking", "toolbox", "works", "garden", "logs", "projects"])
-const legacyLeafPaths = new Set(["now", "conventions"])
 const explorerWidthKey = "zz-explorer-width"
 const explorerWidthDefault = 280
 const explorerWidthMin = 240
@@ -122,22 +103,105 @@ function enhanceFolderControls(root) {
     }
   }
 }
+function promoteSectionChildren(list, header) {
+  const root = header.dataset.navigationRoot
+  const label = header.dataset.navigationOverview
+  if (!label) return
+  for (const item of [...list.children]) {
+    const folder = item.querySelector(":scope > .folder-container")
+    const path = folder?.dataset.folderpath?.replace(/^en\\//, "").replace(/\\/index$/, "")
+    if (path !== root) continue
+    const link = folder.querySelector("a.folder-button")
+    if (!link) continue
+    const overview = document.createElement("li")
+    overview.dataset.navigationRoot = root
+    const anchor = document.createElement("a")
+    anchor.className = "nav-file-title tree-item-self"
+    anchor.href = link.href
+    anchor.textContent = label
+    overview.append(anchor)
+    const children = header.dataset.navigationFlatten === "true"
+      ? [...(item.querySelector(":scope > .folder-outer > ul")?.children || [])]
+      : []
+    children.forEach(child => { child.dataset.navigationRoot = root })
+    item.replaceWith(overview, ...children)
+  }
+}
+function orderCourseChapters(list) {
+  for (const folder of list.querySelectorAll(".folder-container")) {
+    const path = folder.dataset.folderpath?.replace(/^en\\//, "").replace(/\\/index$/, "")
+    const platform = path?.match(/^ai-basics\\/(macos|windows)$/)?.[1]
+    if (!platform) continue
+    const link = folder.querySelector("a.folder-button")
+    const title = link?.querySelector(".folder-title")
+    if (title) title.textContent = (platform === "macos" ? "macOS" : "Windows") + (isEnglishPage() ? " course" : " 课程")
+    const lessons = folder.nextElementSibling?.querySelector(":scope > ul")
+    if (!lessons) continue
+    const items = [...lessons.children]
+    const rank = item => {
+      const href = item.querySelector(":scope > a")?.href
+      const slug = href ? decodeURIComponent(new URL(href).pathname).split("/").pop()?.toLowerCase() : ""
+      const index = courseLessons.indexOf(slug)
+      return index < 0 ? courseLessons.length : index
+    }
+    const ordered = [...items].sort((a, b) => rank(a) - rank(b))
+    if (ordered.some((item, index) => item !== items[index])) lessons.append(...ordered)
+  }
+}
 function organizeExplorer() {
+  const header = document.querySelector(".doc-header")
+  if (!header) return
+  const chapters = JSON.parse(header.dataset.navigationChapters || "[]")
+  const currentPath = (document.body.dataset.slug || "").replace(/^en\\//, "").replace(/\\/index$/, "")
+  document.body.dataset.navigationSection = header.dataset.navigationSection
+  for (const title of document.querySelectorAll(".desktop-explorer h2")) {
+    title.textContent = header.dataset.navigationTitle
+  }
   for (const list of document.querySelectorAll(".explorer-ul")) {
+    // The English index has a language wrapper, not an extra navigation level.
+    const languageRoot = [...list.children].find(item =>
+      item.querySelector(":scope > .folder-container")?.dataset.folderpath?.replace(/\\/index$/, "") === "en")
+    const languageItems = languageRoot?.querySelector(":scope > .folder-outer > ul")
+    if (languageItems) {
+      list.append(...languageItems.children)
+      languageRoot.remove()
+    }
+    promoteSectionChildren(list, header)
+    orderCourseChapters(list)
     const items = [...list.children]
+    const folderRoot = (item) => item.dataset.navigationRoot ||
+      item.querySelector(":scope > .folder-container")?.dataset.folderpath?.replace(/^en\\//, "").split("/")[0]
     const rank = (item) => {
-      const path = item.querySelector(":scope > .folder-container")?.dataset.folderpath?.replace(/\\/index$/, "")
-      const root = path?.split("/")[0]
-      if (legacyRoots.has(root)) return 100
-      const index = readerJourneyOrder.indexOf(root)
+      const index = chapters.indexOf(folderRoot(item))
       return index < 0 ? 50 : index
     }
     const desired = items.sort((a, b) => rank(a) - rank(b))
+    let chapterNumber = 0
     desired.forEach((item) => {
-      const path = item.querySelector(":scope > .folder-container")?.dataset.folderpath?.replace(/\\/index$/, "")
-      const leafHref = item.querySelector(":scope > a.nav-file-title")?.getAttribute("href") || ""
-      const leafPath = decodeURIComponent(leafHref).replace(/^.*\\//, "").replace(/\\/$/, "")
-      item.hidden = legacyRoots.has(path?.split("/")[0]) || legacyLeafPaths.has(leafPath)
+      const root = folderRoot(item)
+      item.hidden = !chapters.includes(root)
+      const folder = item.querySelector(":scope > .folder-container")
+      const folderPath = folder?.dataset.folderpath?.replace(/^en\\//, "").replace(/\\/index$/, "")
+      item.classList.toggle("is-current-chapter", Boolean(folderPath &&
+        (currentPath === folderPath || currentPath.startsWith(folderPath + "/"))))
+      if (item.hidden) return
+      const number = String(++chapterNumber).padStart(2, "0")
+      if (folder) folder.dataset.chapter = number
+      const leaf = item.querySelector(":scope > a.nav-file-title")
+      if (leaf) {
+        leaf.dataset.chapter = number
+        if (!leaf.querySelector(".sidebar-entry-title")) {
+          const title = document.createElement("span")
+          title.className = "sidebar-entry-title"
+          title.textContent = leaf.textContent
+          leaf.replaceChildren(title)
+        }
+        const normalizePath = path => decodeURIComponent(path).replace(/\\/index$/, "").replace(/\\/$/, "").toLowerCase()
+        const active = normalizePath(new URL(leaf.href).pathname) === normalizePath(location.pathname)
+        leaf.classList.toggle("active", active)
+        if (active) leaf.setAttribute("aria-current", "page")
+        else leaf.removeAttribute("aria-current")
+      }
     })
     enhanceFolderControls(list)
     for (const link of list.querySelectorAll("a.tree-item-self")) {
@@ -160,13 +224,15 @@ function restoreGlobalExplorerTree(explorer) {
   if (!list) return
   for (const item of list.children) {
     const folder = item.querySelector(":scope > .folder-container")
-    const path = folder?.dataset.folderpath?.replace(/\\/index$/, "")
-    const root = path?.split("/")[0]
-    if (!readerJourneyOrder.includes(root)) continue
-    item.hidden = false
+    if (item.hidden || !folder) continue
     folder.hidden = false
-    folder.nextElementSibling?.classList.add("open")
-    folder.querySelector(".folder-toggle")?.setAttribute("aria-expanded", "true")
+    const expanded = Boolean(folder.nextElementSibling?.classList.contains("open"))
+    const toggle = folder.querySelector(".folder-toggle")
+    const title = folder.querySelector("a.folder-button")?.textContent?.trim() || ""
+    toggle?.setAttribute("aria-expanded", String(expanded))
+    toggle?.setAttribute("aria-label", (isEnglishPage()
+      ? (expanded ? "Collapse " : "Expand ")
+      : (expanded ? "收起" : "展开")) + title)
   }
   sessionStorage.removeItem("explorerScrollTop")
   content.scrollTop = 0
@@ -462,7 +528,7 @@ function handleEnglishLinkClick(event) {
 function enhanceReadingShell() {
   localizeEnglishLinks()
   mountHeaderTools()
-  if (["index", "portfolio/index"].includes(document.body.dataset.slug)) {
+  if (["index", "en/index"].includes(document.body.dataset.slug)) {
     document.querySelector(".explorer")?.classList.add("collapsed")
     document.documentElement.classList.remove("mobile-no-scroll")
   }
@@ -477,7 +543,7 @@ function enhanceReadingShell() {
   if (randomButton && !randomButton.dataset.ready) {
     randomButton.dataset.ready = "true"
     randomButton.addEventListener("click", () => {
-      const links = [...document.querySelectorAll(".studio-story[href], .studio-desk-links a[href]")]
+      const links = [...document.querySelectorAll(".studio-story[href], .studio-desk-link[href]")]
       if (links.length) links[Math.floor(Math.random() * links.length)].click()
     })
   }
@@ -504,10 +570,17 @@ const Header: QuartzComponent = ({ children, fileData, allFiles }: QuartzCompone
     ? counterpart
     : ((isEnglish ? "index" : "en/index") as FullSlug)
   const navLinks = isEnglish ? EN_NAV_LINKS : NAV_LINKS
+  const { section } = navigationContext(slug)
 
   return (
     <header
       class="doc-header"
+      data-navigation-section={section.id}
+      data-navigation-chapters={JSON.stringify(section.chapters)}
+      data-navigation-title={isEnglish ? section.en : section.zh}
+      data-navigation-root={section.target.replace(/\/index$/, "")}
+      data-navigation-flatten={String(section.flatten)}
+      data-navigation-overview={section.overview?.[isEnglish ? "en" : "zh"] ?? ""}
       data-english-routes={JSON.stringify(
         allFiles
           .map((file) => String(file.slug ?? ""))
@@ -535,9 +608,8 @@ const Header: QuartzComponent = ({ children, fileData, allFiles }: QuartzCompone
         <span>占占 Wiki</span>
       </a>
       <nav class="doc-header-nav" aria-label={isEnglish ? "Global navigation" : "全局导航"}>
-        {navLinks.map(([label, target, roots]) => {
-          const root = localSlug === "index" ? "index" : localSlug.split("/")[0]
-          const active = roots.includes(root as never)
+        {navLinks.map(([label, target]) => {
+          const active = target === (isEnglish ? "en/" : "") + section.target
           return (
             <a
               key={target}
