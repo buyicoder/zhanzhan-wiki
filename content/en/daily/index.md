@@ -23,4 +23,6 @@ Find a useful idea. Try it in practice.
 
 ## Learning notes
 
-Reading notes, practical methods, and reflections will live here. No learning notes have been published yet.
+Reading notes, practical methods, and reflections, collected by date.
+
+- [2026-10-19 · Notes on AI Native Thinking](./2026-10-19-ai-native-thinking): reading Baoyu, with proposed acceptance methods for document-review tools and animated explainers.
