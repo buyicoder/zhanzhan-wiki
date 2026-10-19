@@ -25,4 +25,4 @@ Find a useful idea. Try it in practice.
 
 Reading notes, practical methods, and reflections, collected by date.
 
-- [2026-10-19 · Notes on AI Native Thinking](./2026-10-19-ai-native-thinking): reading Baoyu, with proposed acceptance methods for document-review tools and animated explainers.
+- [[en/daily/2026-10-19-ai-native-thinking|2026-10-19 · Notes on AI Native Thinking]]: reading Baoyu, with proposed acceptance methods for document-review tools and animated explainers.

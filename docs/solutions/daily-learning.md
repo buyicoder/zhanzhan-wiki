@@ -34,6 +34,11 @@ Record actual steps, results, and limits. Omit if not tried.
 ```
 
 Add an English counterpart under `content/en/daily/` with `lang: en` when ready.
+For curated links in folder indexes, use a full Quartz wikilink such as
+`[[daily/YYYY-MM-DD-short-title|Note title]]`; the English index must use
+`[[en/daily/YYYY-MM-DD-short-title|Note title]]`. A `./short-title` Markdown link
+can resolve outside the folder after crawl-link rewriting. Verify the rendered
+index-to-note navigation in a browser, not only that the output file exists.
 Do not invent learning notes to populate the empty state. Remove the first-note
 empty-state paragraph from each index when publishing its first actual note.
 Build using the self-host profile and follow the existing manifest-verified
