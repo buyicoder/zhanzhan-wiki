@@ -22,6 +22,8 @@ test("section indexes do not mix courses, essays, and projects", () => {
   assert.deepEqual(navigationContext("ai-basics/macos/lesson").section.chapters, ["ai-basics"])
   assert.deepEqual(navigationContext("en/portfolio/a-project").section.chapters, ["portfolio"])
   assert.deepEqual(navigationContext("now").section.chapters, [])
+  assert.deepEqual(navigationContext("daily/2026-10-20").section.chapters, ["daily"])
+  assert.ok(!knowledge.includes("daily"))
 })
 
 test("home and unknown pages have deterministic navigation", () => {

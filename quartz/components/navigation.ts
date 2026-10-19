@@ -32,6 +32,16 @@ export const navigationSections: NavigationSection[] = [
     overview: null,
   },
   {
+    id: "daily",
+    zh: "每日学习",
+    en: "Daily Learning",
+    target: "daily/index",
+    roots: ["daily"],
+    chapters: ["daily"],
+    flatten: true,
+    overview: { zh: "学习总览", en: "Learning overview" },
+  },
+  {
     id: "knowledge",
     zh: "知识库",
     en: "Knowledge",
@@ -78,6 +88,7 @@ export function navigationContext(slug: string) {
   const localSlug = (english ? slug.replace(/^en\/?/, "") : slug) || "index"
   const root = localSlug.split("/")[0]
   const section =
-    navigationSections.find((item) => item.roots.includes(root)) ?? navigationSections[1]
+    navigationSections.find((item) => item.roots.includes(root)) ??
+    navigationSections.find((item) => item.id === "knowledge")!
   return { english, localSlug, root, section }
 }

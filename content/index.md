@@ -20,6 +20,19 @@ provenance: 🤝 AI 起草我重写
 <a class="notebook-bookmark" href="ai-basics/"><span class="studio-kicker">一门开放的 AI 小白课</span><strong>从第一个指令，<br>到第一个作品。</strong><span class="notebook-bookmark-bottom">翻开课程 ↗</span></a>
 </div>
 
+<section class="daily-strip" aria-label="每日学习">
+<a class="daily-strip-title" href="daily/"><span>每日学习</span><small>DAILY READING</small></a>
+<nav class="daily-strip-links" aria-label="文字阅读入口">
+<a href="https://www.ruanyifeng.com/blog/weekly/" target="_blank" rel="noopener noreferrer" data-router-ignore="true"><span>阮一峰周刊 ↗</span><small>科技 · 中文</small></a>
+<a href="https://sspai.com/" target="_blank" rel="noopener noreferrer" data-router-ignore="true"><span>少数派 ↗</span><small>工具与实践 · 中文</small></a>
+<a href="https://simonwillison.net/" target="_blank" rel="noopener noreferrer" data-router-ignore="true"><span>Simon Willison ↗</span><small>AI 工程 · 英文</small></a>
+<a href="https://www.oneusefulthing.org/" target="_blank" rel="noopener noreferrer" data-router-ignore="true"><span>One Useful Thing ↗</span><small>AI 与工作 · 英文</small></a>
+<a href="https://swyx.io/" target="_blank" rel="noopener noreferrer" data-router-ignore="true"><span>swyx ↗</span><small>AI 与构建 · 英文</small></a>
+<a href="https://www.anthropic.com/engineering" target="_blank" rel="noopener noreferrer" data-router-ignore="true"><span>Anthropic Engineering ↗</span><small>工程实践 · 英文</small></a>
+</nav>
+<a class="daily-strip-archive" href="daily/">学习手记 ↗</a>
+</section>
+
 <div class="studio-section-label"><h2>值得慢慢想的事</h2><a href="map/">所有笔记 ↗</a></div>
 <div class="studio-stories" aria-label="精选文章">
 <a class="studio-story" href="capability/AI时代最不重要的能力恰恰是大家最焦虑的"><span class="studio-kicker">LEARNING / 学习</span><span class="studio-title" role="heading" aria-level="3">AI 时代，<br>我们究竟该学什么？</span><p>从做题、使用工具，到决定什么值得做。重新看一遍自己的能力。</p><span class="studio-read">读这篇文章 → <small>§ 01</small></span></a>

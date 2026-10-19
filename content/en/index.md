@@ -21,6 +21,19 @@ lang: en
 <a class="notebook-bookmark" href="en/ai-basics/"><span class="studio-kicker">AN OPEN AI COURSE</span><strong>From a first prompt<br>to a first project.</strong><span class="notebook-bookmark-bottom">Open the course ↗</span></a>
 </div>
 
+<section class="daily-strip" aria-label="Daily learning">
+<a class="daily-strip-title" href="en/daily/"><span>Daily learning</span><small>DAILY READING</small></a>
+<nav class="daily-strip-links" aria-label="Reading sources">
+<a href="https://www.ruanyifeng.com/blog/weekly/" target="_blank" rel="noopener noreferrer" data-router-ignore="true"><span>Ruan Yifeng ↗</span><small>Tech weekly · Chinese</small></a>
+<a href="https://sspai.com/" target="_blank" rel="noopener noreferrer" data-router-ignore="true"><span>SSPAI ↗</span><small>Tools & practice · Chinese</small></a>
+<a href="https://simonwillison.net/" target="_blank" rel="noopener noreferrer" data-router-ignore="true"><span>Simon Willison ↗</span><small>AI engineering · English</small></a>
+<a href="https://www.oneusefulthing.org/" target="_blank" rel="noopener noreferrer" data-router-ignore="true"><span>One Useful Thing ↗</span><small>AI & work · English</small></a>
+<a href="https://swyx.io/" target="_blank" rel="noopener noreferrer" data-router-ignore="true"><span>swyx ↗</span><small>AI & building · English</small></a>
+<a href="https://www.anthropic.com/engineering" target="_blank" rel="noopener noreferrer" data-router-ignore="true"><span>Anthropic Engineering ↗</span><small>Engineering · English</small></a>
+</nav>
+<a class="daily-strip-archive" href="en/daily/">Learning notes ↗</a>
+</section>
+
 <div class="studio-section-label"><h2>Things worth thinking about</h2><a href="en/map/">All notes ↗</a></div>
 <div class="studio-stories" aria-label="Selected writing">
 <a class="studio-story" href="en/capability/AI时代最不重要的能力恰恰是大家最焦虑的"><span class="studio-kicker">LEARNING</span><span class="studio-title" role="heading" aria-level="3">What should we learn<br>in the age of AI?</span><p>From solving exercises and using tools to deciding what is worth doing.</p><span class="studio-read">Read the essay → <small>§ 01</small></span></a>

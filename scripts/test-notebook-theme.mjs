@@ -28,6 +28,20 @@ for (const language of ["", "en/"]) {
     }
     assert.equal(find(tree, (node) => hasClass(node, "notebook-project")).length, 2)
     assert.equal(find(tree, (node) => hasClass(node, "notebook-bookmark")).length, 1)
+    const strips = find(tree, (node) => hasClass(node, "daily-strip"))
+    assert.equal(strips.length, 1)
+    const sources = find(
+      strips[0],
+      (node) => node.tagName === "a" && node.properties.target === "_blank",
+    )
+    assert.equal(sources.length, 6)
+    for (const source of sources) {
+      assert.ok(source.properties.href.startsWith("https://"))
+      assert.ok(source.properties.rel.includes("noopener"))
+      assert.ok(source.properties.rel.includes("noreferrer"))
+    }
+    const archive = find(strips[0], (node) => hasClass(node, "daily-strip-archive"))[0]
+    assert.ok(archive.properties.href.includes(language + "daily/"))
     assert.equal(
       find(tree, (node) => node.tagName === "button" && hasClass(node, "studio-random")).length,
       1,

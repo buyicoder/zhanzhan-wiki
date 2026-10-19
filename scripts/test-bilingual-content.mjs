@@ -38,6 +38,7 @@ test("head publishes language and alternate-page metadata", () => {
 for (const path of [
   "index.md",
   "map/index.md",
+  "daily/index.md",
   "ai-basics/index.md",
   "portfolio/index.md",
   "now.md",

@@ -452,6 +452,65 @@ article a.notebook-bookmark {
   padding-top: 16px;
   font-size: 14px;
 }
+.daily-strip {
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 24px;
+  margin: 0 0 36px;
+  border-top: 1px solid var(--zz-border);
+  border-bottom: 1px solid var(--zz-border);
+}
+article .daily-strip a {
+  text-decoration: none;
+  background: none;
+  border-radius: 0;
+}
+.daily-strip-title {
+  display: grid;
+  gap: 4px;
+  padding: 18px 0;
+  font: 700 20px/1.4 var(--headerFont);
+}
+.daily-strip small {
+  display: block;
+  color: var(--zz-muted);
+  font: 400 11px/1.6 var(--bodyFont);
+  letter-spacing: 0;
+}
+.daily-strip-links {
+  display: flex;
+  min-width: 0;
+  gap: 28px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--zz-border) transparent;
+  scroll-padding: 8px;
+}
+.daily-strip-links a {
+  display: grid;
+  flex-shrink: 0;
+  gap: 3px;
+  padding: 18px 3px;
+  font: 400 14px/1.5 var(--headerFont);
+  white-space: nowrap;
+}
+.daily-strip-links a:focus-visible {
+  outline-offset: -2px;
+}
+.daily-strip-archive {
+  padding: 18px 0;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.daily-strip .external-icon {
+  display: none;
+}
+body:is([data-slug="daily/index"], [data-slug="en/daily/index"]) {
+  .page-listing:not(:has(.section-li)) {
+    display: none;
+  }
+}
 .studio-section-label {
   display: flex;
   align-items: baseline;
@@ -840,6 +899,28 @@ article a.studio-project.internal {
     grid-template-columns: minmax(0, 1fr);
     gap: 24px;
     padding: 14px 0 30px;
+  }
+  .daily-strip {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0 16px;
+    margin-bottom: 28px;
+  }
+  .daily-strip-title {
+    padding: 16px 0 8px;
+    font-size: 19px;
+  }
+  .daily-strip-links {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    gap: 24px;
+  }
+  .daily-strip-links a {
+    padding: 12px 3px 18px;
+  }
+  .daily-strip-archive {
+    grid-column: 2;
+    grid-row: 1;
+    padding: 16px 0 8px;
   }
   .notebook-preface {
     padding: 0;
