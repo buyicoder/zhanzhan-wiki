@@ -1,0 +1,690 @@
+import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
+import { FullSlug, resolveRelative } from "../util/path"
+import { navigationContext, navigationSections } from "./navigation"
+
+const NAV_LINKS = navigationSections.map(({ zh, target }) => [zh, target] as const)
+const EN_NAV_LINKS = navigationSections.map(({ en, target }) => [en, "en/" + target] as const)
+
+const HEADER_SCRIPT = `
+const explorerWidthKey = "zz-explorer-width"
+const explorerWidthDefault = 280
+const explorerWidthMin = 240
+const explorerWidthMax = 520
+function isEnglishPage() {
+  return document.documentElement.lang.toLowerCase().startsWith("en")
+}
+const journeyNext = {
+  "capability/高考完之后-焚决": ["capability/index", "capability/ai时代的七条基础能力", "下一步：AI 时代的七条基础能力"],
+  "capability/ai时代的七条基础能力": ["capability/index", "capability/ai时代最不重要的能力恰恰是大家最焦虑的", "下一步：三层能力模型"],
+  "capability/ai时代最不重要的能力恰恰是大家最焦虑的": ["capability/index", "portfolio/我给ai小白课埋了六个坑", "下一步：看真实课程案例"],
+  "ai-work/ai赋能的方向是工作不是娱乐": ["ai-work/index", "ai-work/企业ai转型方法论", "下一步：企业 AI 转型的五个阶段"],
+  "ai-work/企业ai转型方法论": ["ai-work/index", "ai-work/个人知识库不是给自己看的", "下一步：个人知识库如何对外交付"],
+  "ai-work/个人知识库不是给自己看的": ["ai-work/index", "portfolio/ai写小说的真相", "下一步：一次 AI 写作失败复盘"],
+  "portfolio/我给ai小白课埋了六个坑": ["portfolio/index", "portfolio/为什么我给自己造了一个jarvis", "下一个案例：为什么造 Jarvis"],
+  "portfolio/为什么我给自己造了一个jarvis": ["portfolio/index", "portfolio/我的ai记忆系统这样存东西", "下一个案例：AI 记忆系统的存储设计"],
+  "portfolio/我的ai记忆系统这样存东西": ["portfolio/index", "portfolio/ai写小说的真相", "下一个案例：AI 写小说的真相"],
+  "portfolio/ai写小说的真相": ["portfolio/index", "ai-work/前端需求要给视觉参照", "下一个案例：用视觉参照写前端需求"],
+  "ai-work/前端需求要给视觉参照": ["ai-work/index", "ai-work/协议解析代码必须默认高风险", "下一个案例：协议解析为什么高风险"],
+  "ai-work/协议解析代码必须默认高风险": ["ai-work/index", "capability/数学正在从答案稀缺进入理解稀缺", "下一步：学习与能力"],
+  "capability/数学正在从答案稀缺进入理解稀缺": ["capability/index", "map/index", "下一步：回到总地图"],
+  "map/index": ["map/index", "input/index", "从输入系统开始"]
+}
+const courseLessons = [
+  "00-使用说明与总览",
+  "01-里程碑一-让agent第一次操作你的电脑",
+  "02-里程碑二-准备ai环境",
+  "03-里程碑三-理解程序与命令行",
+  "04-里程碑四-git存档",
+  "05-里程碑五-github协作",
+  "06-里程碑六-毕业项目贪吃蛇",
+  "07-里程碑七-发布上线",
+  "08-里程碑八-个人复利成长系统"
+]
+function getCourseJourney(slug) {
+  const match = slug.match(/^ai-basics\\/(macos|windows)\\/(.+)$/)
+  if (!match) return undefined
+  const index = courseLessons.indexOf(match[2])
+  if (index < 0) return undefined
+  const platform = match[1]
+  return {
+    back: "ai-basics/" + platform + "/index",
+    previous: index > 0 ? "ai-basics/" + platform + "/" + courseLessons[index - 1] : undefined,
+    next: index < courseLessons.length - 1 ? "ai-basics/" + platform + "/" + courseLessons[index + 1] : undefined,
+  }
+}
+function sitePath(target) {
+  const base = (document.body.dataset.basepath || "").replace(/^\\/|\\/$/g, "")
+  return (base ? "/" + base : "") + "/" + target.replace(/\\/index$/, "")
+}
+function enhanceFolderControls(root) {
+  for (const container of root.querySelectorAll(".folder-container")) {
+    const folderPath = container.dataset.folderpath
+    const folderOuter = container.nextElementSibling
+    const folderLink = container.querySelector("a.folder-button")
+    const icon = container.querySelector(":scope > .folder-icon")
+    if (!folderPath || !folderOuter || !folderLink || !icon) continue
+
+    const title = folderLink.textContent?.trim() || (isEnglishPage() ? "Contents" : "目录")
+    folderLink.title = title
+    folderLink.setAttribute("aria-label", title)
+    const toggle = document.createElement("button")
+    toggle.type = "button"
+    toggle.className = "folder-toggle"
+    toggle.append(icon.cloneNode(true))
+
+    const syncState = () => {
+      const expanded = folderOuter.classList.contains("open")
+      toggle.setAttribute("aria-expanded", String(expanded))
+      toggle.setAttribute("aria-label", isEnglishPage()
+        ? (expanded ? "Collapse " : "Expand ") + title
+        : (expanded ? "收起" : "展开") + title)
+    }
+    const toggleFolder = (event) => {
+      event.preventDefault()
+      event.stopPropagation()
+      folderOuter.classList.toggle("open")
+      const collapsed = !folderOuter.classList.contains("open")
+      let savedState = []
+      try { savedState = JSON.parse(localStorage.getItem("fileTree") || "[]") } catch {}
+      const existing = savedState.findIndex((item) => item.path === folderPath)
+      if (existing >= 0) savedState[existing].collapsed = collapsed
+      else savedState.push({ path: folderPath, collapsed })
+      localStorage.setItem("fileTree", JSON.stringify(savedState))
+      syncState()
+    }
+    toggle.addEventListener("click", toggleFolder)
+    icon.replaceWith(toggle)
+    syncState()
+
+    const currentSlug = document.body.dataset.slug
+    if (currentSlug === folderPath) {
+      folderLink.classList.add("active", "is-active")
+      folderLink.setAttribute("aria-current", "page")
+    }
+  }
+}
+function promoteSectionChildren(list, header) {
+  const root = header.dataset.navigationRoot
+  const label = header.dataset.navigationOverview
+  if (!label) return
+  for (const item of [...list.children]) {
+    const folder = item.querySelector(":scope > .folder-container")
+    const path = folder?.dataset.folderpath?.replace(/^en\\//, "").replace(/\\/index$/, "")
+    if (path !== root) continue
+    const link = folder.querySelector("a.folder-button")
+    if (!link) continue
+    const overview = document.createElement("li")
+    overview.dataset.navigationRoot = root
+    const anchor = document.createElement("a")
+    anchor.className = "nav-file-title tree-item-self"
+    anchor.href = link.href
+    anchor.textContent = label
+    overview.append(anchor)
+    const children = header.dataset.navigationFlatten === "true"
+      ? [...(item.querySelector(":scope > .folder-outer > ul")?.children || [])]
+      : []
+    children.forEach(child => { child.dataset.navigationRoot = root })
+    item.replaceWith(overview, ...children)
+  }
+}
+function orderCourseChapters(list) {
+  for (const folder of list.querySelectorAll(".folder-container")) {
+    const path = folder.dataset.folderpath?.replace(/^en\\//, "").replace(/\\/index$/, "")
+    const platform = path?.match(/^ai-basics\\/(macos|windows)$/)?.[1]
+    if (!platform) continue
+    const link = folder.querySelector("a.folder-button")
+    const title = link?.querySelector(".folder-title")
+    if (title) title.textContent = (platform === "macos" ? "macOS" : "Windows") + (isEnglishPage() ? " course" : " 课程")
+    const lessons = folder.nextElementSibling?.querySelector(":scope > ul")
+    if (!lessons) continue
+    const items = [...lessons.children]
+    const rank = item => {
+      const href = item.querySelector(":scope > a")?.href
+      const slug = href ? decodeURIComponent(new URL(href).pathname).split("/").pop()?.toLowerCase() : ""
+      const index = courseLessons.indexOf(slug)
+      return index < 0 ? courseLessons.length : index
+    }
+    const ordered = [...items].sort((a, b) => rank(a) - rank(b))
+    if (ordered.some((item, index) => item !== items[index])) lessons.append(...ordered)
+  }
+}
+function organizeExplorer() {
+  const header = document.querySelector(".doc-header")
+  if (!header) return
+  const chapters = JSON.parse(header.dataset.navigationChapters || "[]")
+  const currentPath = (document.body.dataset.slug || "").replace(/^en\\//, "").replace(/\\/index$/, "")
+  document.body.dataset.navigationSection = header.dataset.navigationSection
+  for (const title of document.querySelectorAll(".desktop-explorer h2")) {
+    title.textContent = header.dataset.navigationTitle
+  }
+  for (const list of document.querySelectorAll(".explorer-ul")) {
+    // The English index has a language wrapper, not an extra navigation level.
+    const languageRoot = [...list.children].find(item =>
+      item.querySelector(":scope > .folder-container")?.dataset.folderpath?.replace(/\\/index$/, "") === "en")
+    const languageItems = languageRoot?.querySelector(":scope > .folder-outer > ul")
+    if (languageItems) {
+      list.append(...languageItems.children)
+      languageRoot.remove()
+    }
+    promoteSectionChildren(list, header)
+    orderCourseChapters(list)
+    const items = [...list.children]
+    const folderRoot = (item) => item.dataset.navigationRoot ||
+      item.querySelector(":scope > .folder-container")?.dataset.folderpath?.replace(/^en\\//, "").split("/")[0]
+    const rank = (item) => {
+      const index = chapters.indexOf(folderRoot(item))
+      return index < 0 ? 50 : index
+    }
+    const desired = items.sort((a, b) => rank(a) - rank(b))
+    let chapterNumber = 0
+    desired.forEach((item) => {
+      const root = folderRoot(item)
+      item.hidden = !chapters.includes(root)
+      const folder = item.querySelector(":scope > .folder-container")
+      const folderPath = folder?.dataset.folderpath?.replace(/^en\\//, "").replace(/\\/index$/, "")
+      item.classList.toggle("is-current-chapter", Boolean(folderPath &&
+        (currentPath === folderPath || currentPath.startsWith(folderPath + "/"))))
+      if (item.hidden) return
+      const number = String(++chapterNumber).padStart(2, "0")
+      if (folder) folder.dataset.chapter = number
+      const leaf = item.querySelector(":scope > a.nav-file-title")
+      if (leaf) {
+        leaf.dataset.chapter = number
+        if (!leaf.querySelector(".sidebar-entry-title")) {
+          const title = document.createElement("span")
+          title.className = "sidebar-entry-title"
+          title.textContent = leaf.textContent
+          leaf.replaceChildren(title)
+        }
+        const normalizePath = path => decodeURIComponent(path).replace(/\\/index$/, "").replace(/\\/$/, "").toLowerCase()
+        const active = normalizePath(new URL(leaf.href).pathname) === normalizePath(location.pathname)
+        leaf.classList.toggle("active", active)
+        if (active) leaf.setAttribute("aria-current", "page")
+        else leaf.removeAttribute("aria-current")
+      }
+    })
+    enhanceFolderControls(list)
+    for (const link of list.querySelectorAll("a.tree-item-self")) {
+      const title = link.textContent?.trim()
+      if (title) {
+        link.title = title
+        link.setAttribute("aria-label", title)
+      }
+    }
+    if (desired.some((item, index) => item !== list.children[index])) desired.forEach((item) => list.appendChild(item))
+    if (list.dataset.journeyObserver !== "true") {
+      list.dataset.journeyObserver = "true"
+      new MutationObserver(organizeExplorer).observe(list, { childList: true })
+    }
+  }
+}
+function restoreGlobalExplorerTree(explorer) {
+  const content = explorer?.querySelector(":scope > .explorer-content")
+  const list = content?.querySelector(":scope > .explorer-ul")
+  if (!list) return
+  for (const item of list.children) {
+    const folder = item.querySelector(":scope > .folder-container")
+    if (item.hidden || !folder) continue
+    folder.hidden = false
+    const expanded = Boolean(folder.nextElementSibling?.classList.contains("open"))
+    const toggle = folder.querySelector(".folder-toggle")
+    const title = folder.querySelector("a.folder-button")?.textContent?.trim() || ""
+    toggle?.setAttribute("aria-expanded", String(expanded))
+    toggle?.setAttribute("aria-label", (isEnglishPage()
+      ? (expanded ? "Collapse " : "Expand ")
+      : (expanded ? "收起" : "展开")) + title)
+  }
+  sessionStorage.removeItem("explorerScrollTop")
+  content.scrollTop = 0
+  list.scrollTop = 0
+  requestAnimationFrame(() => {
+    content.scrollTop = 0
+    list.scrollTop = 0
+  })
+}
+function mountExplorerResize() {
+  const desktop = window.matchMedia("(min-width: 1101px)").matches
+  const body = document.querySelector(".page > #quartz-body")
+  const sidebar = body?.querySelector(":scope > .sidebar.left")
+  if (!body || !sidebar) return
+  sidebar.querySelector(".explorer-resize-handle")?.remove()
+  if (!desktop) return
+
+  const limit = () => Math.max(explorerWidthMin, Math.min(explorerWidthMax, Math.floor(window.innerWidth * 0.4)))
+  const clamp = (value) => Math.max(explorerWidthMin, Math.min(limit(), Math.round(value)))
+  const saved = Number(localStorage.getItem(explorerWidthKey))
+  let width = clamp(Number.isFinite(saved) && saved > 0 ? saved : explorerWidthDefault)
+  const handle = document.createElement("div")
+  handle.className = "explorer-resize-handle"
+  handle.tabIndex = 0
+  handle.setAttribute("role", "separator")
+  handle.setAttribute("aria-orientation", "vertical")
+  handle.setAttribute("aria-label", isEnglishPage() ? "Resize navigation" : "调整全局目录宽度")
+
+  const apply = (next, persist = true) => {
+    width = clamp(next)
+    document.documentElement.style.setProperty("--zz-explorer-width", width + "px")
+    handle.setAttribute("aria-valuemin", String(explorerWidthMin))
+    handle.setAttribute("aria-valuemax", String(limit()))
+    handle.setAttribute("aria-valuenow", String(width))
+    if (persist) localStorage.setItem(explorerWidthKey, String(width))
+  }
+  apply(width, Number.isFinite(saved) && saved > 0)
+
+  handle.addEventListener("pointerdown", (event) => {
+    const startX = event.clientX
+    const startWidth = width
+    let dragging = false
+    const move = (moveEvent) => {
+      const delta = moveEvent.clientX - startX
+      if (!dragging && Math.abs(delta) < 5) return
+      if (!dragging) {
+        dragging = true
+        handle.setPointerCapture(event.pointerId)
+        handle.classList.add("is-dragging")
+        document.documentElement.classList.add("explorer-is-resizing")
+      }
+      moveEvent.preventDefault()
+      apply(startWidth + delta)
+    }
+    const stop = () => {
+      if (handle.hasPointerCapture(event.pointerId)) handle.releasePointerCapture(event.pointerId)
+      handle.classList.remove("is-dragging")
+      document.documentElement.classList.remove("explorer-is-resizing")
+      document.removeEventListener("pointermove", move)
+      document.removeEventListener("pointerup", stop)
+      document.removeEventListener("pointercancel", stop)
+    }
+    document.addEventListener("pointermove", move)
+    document.addEventListener("pointerup", stop)
+    document.addEventListener("pointercancel", stop)
+  })
+  handle.addEventListener("dblclick", () => apply(explorerWidthDefault))
+  handle.addEventListener("keydown", (event) => {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return
+    event.preventDefault()
+    const step = event.shiftKey ? 32 : 8
+    apply(width + (event.key === "ArrowRight" ? step : -step))
+  })
+  sidebar.append(handle)
+}
+function localizeProperties() {
+  for (const title of document.querySelectorAll(".note-properties-title")) title.textContent = isEnglishPage() ? "Page information" : "页面信息"
+}
+function localizeSearch() {
+  const english = isEnglishPage()
+  for (const search of document.querySelectorAll(".search")) {
+    const button = search.querySelector(".search-button")
+    const input = search.querySelector(".search-bar")
+    const label = english ? "Search" : "搜索"
+    button?.setAttribute("aria-label", label)
+    button?.querySelector("p")?.replaceChildren(label)
+    if (input) {
+      input.setAttribute("aria-label", english ? "Search this wiki" : "搜索本站内容")
+      input.setAttribute("placeholder", english ? "Search this wiki" : "搜索本站内容")
+    }
+  }
+}
+function mountJourneyNext() {
+  document.querySelector(".reader-journey-next")?.remove()
+  const slug = document.body.dataset.slug?.toLowerCase()
+  const entry = slug ? journeyNext[slug] : undefined
+  const course = slug ? getCourseJourney(slug) : undefined
+  const article = document.querySelector(".center article")
+  if ((!entry && !course) || !article) return
+  const nav = document.createElement("nav")
+  nav.className = "reader-journey-next"
+  nav.setAttribute("aria-label", "阅读下一步")
+  const back = document.createElement("a")
+  back.href = sitePath(course?.back || entry[0])
+  back.textContent = course ? "返回平台课程" : "返回本路径"
+  nav.append(back)
+  if (course?.previous) {
+    const previous = document.createElement("a")
+    previous.href = sitePath(course.previous)
+    previous.textContent = "上一篇"
+    nav.append(previous)
+  }
+  const nextTarget = course?.next || entry?.[1]
+  if (nextTarget) {
+    const next = document.createElement("a")
+    next.href = sitePath(nextTarget)
+    next.textContent = course ? "下一篇" : entry[2]
+    const reason = document.createElement("small")
+    const reasons = {
+      "map/index": "先建立输入习惯，再沿着地图寻找自己的学习路径。",
+      "portfolio/为什么我给自己造了一个jarvis": "从为什么需要记忆，继续看记忆具体怎样保存。",
+      "portfolio/我的ai记忆系统这样存东西": "换一个真实创作场景，看看 AI 的能力边界。",
+      "portfolio/ai写小说的真相": "从文字创作转到界面制作，看看怎样把要求讲具体。",
+      "capability/ai时代最不重要的能力恰恰是大家最焦虑的": "把能力判断放进真实课程，看看实践会遇到什么。",
+      "ai-work/企业ai转型方法论": "从企业流程回到个人知识，继续思考如何交付。",
+    }
+    reason.textContent = course ? "沿当前课程顺序，继续下一个学习任务。" : (reasons[slug] || "沿这条阅读路径，继续看一个相邻的问题。")
+    next.append(reason)
+    nav.append(next)
+  }
+  article.insertAdjacentElement("afterend", nav)
+}
+function mountReadingMemory() {
+  const article = document.querySelector(".center article")
+  if (!article || article.dataset.readingMemory) return
+  window.__zzReadingCleanup?.()
+  article.dataset.readingMemory = "true"
+  if (["index", "portfolio/index"].includes(document.body.dataset.slug)) return
+  const key = "zz-reading:" + document.body.dataset.slug
+  let saved
+  try { saved = JSON.parse(localStorage.getItem(key) || "null") } catch {}
+  let notice
+  if (saved && Number.isFinite(saved.ratio) && saved.ratio > .08 && saved.ratio < .95) {
+    notice = document.createElement("div")
+    notice.className = "reader-resume"
+    const label = document.createElement("span")
+    label.textContent = "上次读到 " + Math.round(saved.ratio * 100) + "%"
+    const resume = document.createElement("button")
+    resume.type = "button"
+    resume.textContent = "继续阅读 ↓"
+    resume.title = "阅读位置仅保存在当前浏览器"
+    resume.onclick = () => {
+      notice.remove()
+      const target = saved.heading && document.getElementById(saved.heading)
+      const top = target ? target.getBoundingClientRect().top + window.scrollY - 120 : article.getBoundingClientRect().top + window.scrollY + article.offsetHeight * saved.ratio - 120
+      window.scrollTo({top, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth"})
+    }
+    const dismiss = document.createElement("button")
+    dismiss.type = "button"
+    dismiss.textContent = "×"
+    dismiss.setAttribute("aria-label", "清除这篇文章的阅读位置")
+    dismiss.onclick = () => { try { localStorage.removeItem(key) } catch {}; notice.remove() }
+    notice.append(label, resume, dismiss)
+    article.before(notice)
+  }
+  let timer
+  const save = () => {
+    const rect = article.getBoundingClientRect()
+    const ratio = Math.max(0, Math.min(1, (120 - rect.top) / article.offsetHeight))
+    if (ratio < .08) return
+    const headings = [...article.querySelectorAll("h2[id], h3[id]")]
+    const heading = headings.filter(h => h.getBoundingClientRect().top <= 140).at(-1)?.id
+    try {
+      if (rect.bottom <= window.innerHeight || ratio >= .95) localStorage.removeItem(key)
+      else localStorage.setItem(key, JSON.stringify({ratio, heading}))
+    } catch {}
+  }
+  const scroll = () => { clearTimeout(timer); timer = setTimeout(save, 250) }
+  window.addEventListener("scroll", scroll, {passive:true})
+  window.__zzReadingCleanup = () => { clearTimeout(timer); window.removeEventListener("scroll", scroll); notice?.remove() }
+}
+function enhanceExplorerButtons() {
+  const isCompact = window.matchMedia("(max-width: 800px)").matches
+  for (const button of document.querySelectorAll(".mobile-explorer, .explorer-toggle")) {
+    const explorer = button.closest(".explorer")
+    if (!explorer) continue
+    const isMobileButton = button.classList.contains("mobile-explorer")
+    if (isMobileButton) button.classList.remove("explorer-toggle")
+    if (isMobileButton && isCompact && button.dataset.initialized !== "true") {
+      // The compact control owns its toggle below. Removing Quartz's generic
+      // hook prevents a second listener from immediately reversing the state.
+      explorer.classList.add("collapsed")
+      explorer.setAttribute("aria-expanded", "false")
+      document.documentElement.classList.remove("mobile-no-scroll")
+    }
+    const syncLabel = () => {
+      const collapsed = explorer.classList.contains("collapsed")
+      const label = isEnglishPage()
+        ? (isMobileButton ? (collapsed ? "Open navigation" : "Close navigation") : (collapsed ? "Expand navigation" : "Collapse navigation"))
+        : (isMobileButton ? (collapsed ? "打开全局目录" : "关闭全局目录") : (collapsed ? "展开全局目录" : "收起全局目录"))
+      button.setAttribute("aria-label", label)
+      button.setAttribute("title", label)
+      button.setAttribute("aria-expanded", String(!collapsed))
+      explorer.setAttribute("aria-expanded", String(!collapsed))
+      explorer.querySelector(".explorer-content")?.setAttribute("aria-expanded", String(!collapsed))
+    }
+    syncLabel()
+    if (button.dataset.initialized !== "true") {
+      button.dataset.initialized = "true"
+    }
+  }
+}
+function handleExplorerToggle(event) {
+  const target = event.target instanceof Element
+    ? event.target.closest(".mobile-explorer, .desktop-explorer")
+    : null
+  const explorer = target?.closest(".explorer")
+  if (!explorer) return
+  event.preventDefault()
+  event.stopImmediatePropagation()
+  const collapsed = !explorer.classList.contains("collapsed")
+  const compact = window.matchMedia("(max-width: 800px)").matches
+  explorer.classList.toggle("collapsed", collapsed)
+  document.documentElement.classList.toggle("mobile-no-scroll", compact && !collapsed)
+  explorer.setAttribute("aria-expanded", String(!collapsed))
+  explorer.querySelector(".explorer-content")?.setAttribute("aria-expanded", String(!collapsed))
+  target.setAttribute("aria-expanded", String(!collapsed))
+  const label = isEnglishPage()
+    ? (target.classList.contains("mobile-explorer")
+      ? (collapsed ? "Open navigation" : "Close navigation")
+      : (collapsed ? "Expand navigation" : "Collapse navigation"))
+    : (target.classList.contains("mobile-explorer")
+      ? (collapsed ? "打开全局目录" : "关闭全局目录")
+      : (collapsed ? "展开全局目录" : "收起全局目录"))
+  target.setAttribute("aria-label", label)
+  target.setAttribute("title", label)
+  if (!collapsed) restoreGlobalExplorerTree(explorer)
+}
+function mountHeaderTools() {
+  const target = document.querySelector(".doc-header-extra")
+  const tools = document.querySelector(".page > #quartz-body > .sidebar.left > .flex-component")
+  if (target && tools && tools.parentElement !== target) target.appendChild(tools)
+}
+function localizeEnglishLinks() {
+  const header = document.querySelector(".doc-header[data-english-routes]")
+  const slug = document.body.dataset.slug || ""
+  if (!header || (slug !== "en" && !slug.startsWith("en/"))) return
+
+  let routes
+  try {
+    routes = new Set(JSON.parse(header.dataset.englishRoutes || "[]"))
+  } catch {
+    return
+  }
+
+  const marker = "/en/"
+  const markerIndex = window.location.pathname.toLowerCase().indexOf(marker)
+  const basePath = markerIndex >= 0 ? window.location.pathname.slice(0, markerIndex + 1) : "/"
+  document.querySelectorAll("a[href]").forEach((anchor) => {
+    if (anchor.matches(".doc-language-switch, [hreflang='zh-CN']")) return
+    let url
+    try {
+      url = new URL(anchor.href, window.location.href)
+    } catch {
+      return
+    }
+    if (url.origin !== window.location.origin || url.pathname.startsWith(basePath + "en/")) return
+
+    const rawPath = url.pathname.startsWith(basePath)
+      ? url.pathname.slice(basePath.length)
+      : url.pathname.startsWith("/")
+        ? url.pathname.slice(1)
+        : url.pathname
+    let route
+    try {
+      route = decodeURIComponent(rawPath)
+      if (route.endsWith("/")) route = route.slice(0, -1)
+      route ||= "index"
+    } catch {
+      return
+    }
+    if (!routes.has(route.toLowerCase())) return
+
+    const localizedPath =
+      route === "index" ? "en/" : "en/" + (rawPath.endsWith("/") ? rawPath.slice(0, -1) : rawPath)
+    url.pathname = basePath + localizedPath
+    anchor.href = url.pathname + url.search + url.hash
+  })
+}
+function handleEnglishLinkClick(event) {
+  if (event.target.closest?.("a[href]")) localizeEnglishLinks()
+}
+function enhanceReadingShell() {
+  localizeEnglishLinks()
+  mountHeaderTools()
+  if (["index", "en/index"].includes(document.body.dataset.slug)) {
+    document.querySelector(".explorer")?.classList.add("collapsed")
+    document.documentElement.classList.remove("mobile-no-scroll")
+  }
+  enhanceExplorerButtons()
+  organizeExplorer()
+  mountExplorerResize()
+  localizeProperties()
+  localizeSearch()
+  mountJourneyNext()
+  mountReadingMemory()
+  const randomButton = document.querySelector(".studio-random")
+  if (randomButton && !randomButton.dataset.ready) {
+    randomButton.dataset.ready = "true"
+    randomButton.addEventListener("click", () => {
+      const links = [...document.querySelectorAll(".studio-story[href], .studio-desk-link[href]")]
+      if (links.length) links[Math.floor(Math.random() * links.length)].click()
+    })
+  }
+}
+if (!window.__docHeaderInitialized) {
+  window.__docHeaderInitialized = true
+  document.addEventListener("click", handleExplorerToggle, { capture: true })
+  document.addEventListener("click", handleEnglishLinkClick, { capture: true })
+  document.addEventListener("nav", enhanceReadingShell)
+  document.addEventListener("render", enhanceReadingShell)
+  document.addEventListener("DOMContentLoaded", enhanceReadingShell, { once: true })
+}
+enhanceReadingShell()
+window.setTimeout(localizeEnglishLinks, 0)
+`
+
+const Header: QuartzComponent = ({ children, fileData, allFiles }: QuartzComponentProps) => {
+  const slug = (fileData.slug ?? "index") as FullSlug
+  const isEnglish = slug === "en" || slug.startsWith("en/")
+  const localSlug = (isEnglish ? slug.replace(/^en\/?/, "") || "index" : slug) as FullSlug
+  const counterpart = (isEnglish ? localSlug : `en/${localSlug}`) as FullSlug
+  const counterpartExists = allFiles.some((file) => file.slug === counterpart)
+  const languageTarget = counterpartExists
+    ? counterpart
+    : ((isEnglish ? "index" : "en/index") as FullSlug)
+  const navLinks = isEnglish ? EN_NAV_LINKS : NAV_LINKS
+  const { section } = navigationContext(slug)
+
+  return (
+    <header
+      class="doc-header"
+      data-navigation-section={section.id}
+      data-navigation-chapters={JSON.stringify(section.chapters)}
+      data-navigation-title={isEnglish ? section.en : section.zh}
+      data-navigation-root={section.target.replace(/\/index$/, "")}
+      data-navigation-flatten={String(section.flatten)}
+      data-navigation-overview={section.overview?.[isEnglish ? "en" : "zh"] ?? ""}
+      data-english-routes={JSON.stringify(
+        allFiles
+          .map((file) => String(file.slug ?? ""))
+          .filter((fileSlug) => fileSlug === "en" || fileSlug.startsWith("en/"))
+          .map((fileSlug) => fileSlug.replace(/^en\/?/, "") || "index")
+          .map((fileSlug) => fileSlug.replace(/\/index$/, "") || "index")
+          .map((fileSlug) => fileSlug.toLowerCase()),
+      )}
+    >
+      <a
+        class="doc-header-brand"
+        href={resolveRelative(slug, (isEnglish ? "en/index" : "index") as FullSlug)}
+      >
+        <svg class="doc-header-brand-mark" viewBox="0 0 256 256" aria-hidden="true">
+          <path
+            fill="currentColor"
+            d="M82 28h30v43c0 18 15 28 37 36 17 6 35 11 55 17v30c-39-15-80-17-122-7V28Z"
+          />
+          <path
+            fill="currentColor"
+            fill-rule="evenodd"
+            d="M48 181c0-20 36-31 82-31 48 0 78 12 78 30 0 23-34 38-80 38-45 0-80-14-80-37Zm25-7c-2 9 12 16 31 17 20 1 37-4 39-13 2-8-11-14-30-16-19-1-38 3-40 12Z"
+          />
+        </svg>
+        <span>占占 Wiki</span>
+      </a>
+      <nav class="doc-header-nav" aria-label={isEnglish ? "Global navigation" : "全局导航"}>
+        {navLinks.map(([label, target]) => {
+          const active = target === (isEnglish ? "en/" : "") + section.target
+          return (
+            <a
+              key={target}
+              class={`doc-header-link${active ? " is-active" : ""}`}
+              href={resolveRelative(slug, target as FullSlug)}
+              aria-current={active ? "page" : undefined}
+            >
+              {label}
+            </a>
+          )
+        })}
+      </nav>
+      <a
+        class="doc-language-switch"
+        href={resolveRelative(slug, languageTarget)}
+        data-router-ignore="true"
+        lang={isEnglish ? "zh-CN" : "en"}
+        hreflang={isEnglish ? "zh-CN" : "en"}
+        aria-label={isEnglish ? "切换到中文" : "Switch to English"}
+        title={counterpartExists ? undefined : isEnglish ? "返回中文首页" : "Open English home"}
+      >
+        {isEnglish ? "中文" : "EN"}
+      </a>
+      <div class="doc-header-extra">{children}</div>
+      <script dangerouslySetInnerHTML={{ __html: HEADER_SCRIPT }} />
+    </header>
+  )
+}
+
+Header.css = `
+.doc-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
+}
+
+.doc-header-brand,
+.doc-header-link {
+  text-decoration: none;
+}
+
+.doc-header-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.doc-header-brand-mark {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+}
+
+.doc-language-switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  min-height: 2rem;
+  padding: 0 0.55rem;
+  border: 1px solid var(--lightgray);
+  border-radius: 999px;
+  color: var(--darkgray);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+}
+
+.doc-language-switch:hover,
+.doc-language-switch:focus-visible {
+  border-color: var(--secondary);
+  color: var(--secondary);
+}
+`
+
+export default (() => Header) satisfies QuartzComponentConstructor

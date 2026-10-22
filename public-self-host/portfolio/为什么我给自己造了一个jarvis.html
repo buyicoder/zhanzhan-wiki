@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh" dir="ltr"><head><title>为什么我给自己造了一个 Jarvis</title><meta charset="utf-8"/><link rel="preload" href="../index-87e1f575.css" as="style"/><link rel="preload" href="../prescript-009f2671.js" as="script"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="占占的 AI 成长知识库"/><meta property="og:title" content="为什么我给自己造了一个 Jarvis"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="为什么我给自己造了一个 Jarvis"/><meta name="twitter:description" content="📔 笔记整理 · 🌿 生长中 · 图例见 本站的诚实规则 我给自己造 Jarvis，不是因为我缺少一个更聪明的聊天机器人，而是因为 AI 越来越强以后，我反而更需要一个系统替我保存连续性：记得我是谁，知道我正在做什么，并且帮我管理越来越多的 AI。 今天的 Agent 已经很强了。它能写代码、查资料、做网页，也能一次完成过去需要我忙半天的任务。但窗口一关，它还是不认识我；项目一换，它还是要我重新解释背景；任务一多，我还是会陷进窗口、通知和等待时间里。 所以 Jarvis 的进化方向从来不是“再加一个聊天框”。它经历了三次进化：先记住我，再理解我，最后替我管理 AI。 没有 Jarvis ..."/><meta property="og:description" content="📔 笔记整理 · 🌿 生长中 · 图例见 本站的诚实规则 我给自己造 Jarvis，不是因为我缺少一个更聪明的聊天机器人，而是因为 AI 越来越强以后，我反而更需要一个系统替我保存连续性：记得我是谁，知道我正在做什么，并且帮我管理越来越多的 AI。 今天的 Agent 已经很强了。它能写代码、查资料、做网页，也能一次完成过去需要我忙半天的任务。但窗口一关，它还是不认识我；项目一换，它还是要我重新解释背景；任务一多，我还是会陷进窗口、通知和等待时间里。 所以 Jarvis 的进化方向从来不是“再加一个聊天框”。它经历了三次进化：先记住我，再理解我，最后替我管理 AI。 没有 Jarvis ..."/><meta property="og:image:alt" content="📔 笔记整理 · 🌿 生长中 · 图例见 本站的诚实规则 我给自己造 Jarvis，不是因为我缺少一个更聪明的聊天机器人，而是因为 AI 越来越强以后，我反而更需要一个系统替我保存连续性：记得我是谁，知道我正在做什么，并且帮我管理越来越多的 AI。 今天的 Agent 已经很强了。它能写代码、查资料、做网页，也能一次完成过去需要我忙半天的任务。但窗口一关，它还是不认识我；项目一换，它还是要我重新解释背景；任务一多，我还是会陷进窗口、通知和等待时间里。 所以 Jarvis 的进化方向从来不是“再加一个聊天框”。它经历了三次进化：先记住我，再理解我，最后替我管理 AI。 没有 Jarvis ..."/><link rel="canonical" href="https://wiki.zhanzhanai.com/portfolio/为什么我给自己造了一个jarvis"/><meta property="twitter:domain" content="wiki.zhanzhanai.com"/><meta property="og:url" content="https://wiki.zhanzhanai.com/portfolio/为什么我给自己造了一个jarvis"/><meta property="twitter:url" content="https://wiki.zhanzhanai.com/portfolio/为什么我给自己造了一个jarvis"/><link rel="icon" type="image/png" sizes="200x200" href="../static/icon.png?v=532d053e"/><meta name="description" content="📔 笔记整理 · 🌿 生长中 · 图例见 本站的诚实规则 我给自己造 Jarvis，不是因为我缺少一个更聪明的聊天机器人，而是因为 AI 越来越强以后，我反而更需要一个系统替我保存连续性：记得我是谁，知道我正在做什么，并且帮我管理越来越多的 AI。 今天的 Agent 已经很强了。它能写代码、查资料、做网页，也能一次完成过去需要我忙半天的任务。但窗口一关，它还是不认识我；项目一换，它还是要我重新解释背景；任务一多，我还是会陷进窗口、通知和等待时间里。 所以 Jarvis 的进化方向从来不是“再加一个聊天框”。它经历了三次进化：先记住我，再理解我，最后替我管理 AI。 没有 Jarvis ..."/><meta name="generator" content="Quartz"/><link href="../index-87e1f575.css" rel="stylesheet" type="text/css" data-persist="true"/><link href="../component-735924e0.css" rel="stylesheet" type="text/css" data-persist="true"/><link href="../component-589c1cea.css" rel="stylesheet" type="text/css" data-persist="true"/><link href="../component-bbc3f7c0.css" rel="stylesheet" type="text/css" data-persist="true"/><link href="../component-2911f5d1.css" rel="stylesheet" type="text/css" data-persist="true"/><link href="../component-e427079e.css" rel="stylesheet" type="text/css" data-persist="true"/><link href="../component-34bdfded.css" rel="stylesheet" type="text/css" data-persist="true"/><link href="../component-642859cd.css" rel="stylesheet" type="text/css" data-persist="true"/><link href="../component-53b25b2b.css" rel="stylesheet" type="text/css" data-persist="true"/><link href="../component-c93c6a44.css" rel="stylesheet" type="text/css" data-persist="true"/><link href="../component-8a06014f.css" rel="stylesheet" type="text/css" data-persist="true"/><link href="../component-77d6a441.css" rel="stylesheet" type="text/css" data-persist="true"/><link href="../component-6ee21cee.css" rel="stylesheet" type="text/css" data-persist="true"/><link href="../component-1ea6ad18.css" rel="stylesheet" type="text/css" data-persist="true"/><link href="../component-788c9ca3.css" rel="stylesheet" type="text/css" data-persist="true"/><link href="../component-4abc06bd.css" rel="stylesheet" type="text/css" data-persist="true"/><link href="../component-274a3dfe.css" rel="stylesheet" type="text/css" data-persist="true"/><link href="../component-94cb6c84.css" rel="stylesheet" type="text/css" data-persist="true"/><link href="../component-58d5ff56.css" rel="stylesheet" type="text/css" data-persist="true"/><link href="../component-7262b5a7.css" rel="stylesheet" type="text/css" data-persist="true"/><link href="../static/resource-style-a5c806d2.css" rel="stylesheet" type="text/css" data-persist="true"/><link href="../static/resource-style-6bd36952.css" rel="stylesheet" type="text/css" data-persist="true"/><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" data-persist="true"/><script src="../prescript-009f2671.js" type="application/javascript" data-persist="true"></script><script type="application/javascript" data-persist="true">const fetchData = fetch("../static/contentIndex.json").then(data => data.json())</script><meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/><meta property="og:image" content="https://wiki.zhanzhanai.com/portfolio/为什么我给自己造了一个jarvis-og-image.webp"/><meta property="og:image:url" content="https://wiki.zhanzhanai.com/portfolio/为什么我给自己造了一个jarvis-og-image.webp"/><meta name="twitter:image" content="https://wiki.zhanzhanai.com/portfolio/为什么我给自己造了一个jarvis-og-image.webp"/><meta property="og:image:type" content="image/webp"/></head><body data-slug="portfolio/为什么我给自己造了一个jarvis" data-basepath><div id="quartz-root" class="page" data-frame="default"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="..">占占的 AI 成长知识库</a></h2><div class="mobile-only"><div class="spacer"></div></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 0.5rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button" aria-label="搜索" aria-expanded="false"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>搜索</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="搜索内容..." placeholder="搜索内容..."/><div class="search-layout" data-preview="true" data-field-priority="[&quot;title&quot;,&quot;content&quot;,&quot;tags&quot;]"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode" aria-label="暗色模式"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="暗色模式"><title>暗色模式</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="亮色模式"><title>亮色模式</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode" aria-label="阅读模式"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="阅读模式"><title>阅读模式</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer nav-files-container" data-behavior="link" data-collapsed="open" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a2, b2) => {\n    if (!a2.isFolder &amp;&amp; !b2.isFolder || a2.isFolder &amp;&amp; b2.isFolder) {\n      return (a2.displayName || \&quot;\&quot;).localeCompare(b2.displayName || \&quot;\&quot;, void 0, {\n        numeric: true,\n        sensitivity: \&quot;base\&quot;\n      });\n    }\n    if (!a2.isFolder &amp;&amp; b2.isFolder) {\n      return 1;\n    }\n    return -1;\n  }&quot;,&quot;filterFn&quot;:&quot;(node) => node.slugSegment !== \&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;(node) => {\n    return node;\n  }&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-45" aria-label="探索"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>漫游全站</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-45" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#" class="nav-file-title tree-item-self"></a></li></template><template id="template-folder"><li><div class="folder-container nav-folder-title tree-item-self"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon nav-folder-collapse-indicator collapse-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content tree-item-children"></ul></div></li></template></div></div><div class="center"><div class="page-header"><header class="doc-header"><a class="doc-header-brand" href="..">占占的 AI 成长知识库</a><nav class="doc-header-nav" aria-label="全局导航"><a class="doc-header-link" href="../">首页</a><a class="doc-header-link" href="../map/">知识库</a><a class="doc-header-link" href="../ai-basics/">AI 课程</a><a class="doc-header-link is-active" href="../portfolio/" aria-current="page">项目与作品</a><a class="doc-header-link" href="../now">关于占占</a></nav><div class="doc-header-extra"></div><script>
+const readerJourneyOrder = ["map", "input", "capability", "leverage", "ai-work", "portfolio", "expression", "life", "tutorials"]
+const legacyRoots = new Set(["start", "ai-basics", "learning", "business", "cases", "thinking", "toolbox", "works", "garden", "logs", "projects"])
+const legacyLeafPaths = new Set(["now", "conventions"])
+const explorerWidthKey = "zz-explorer-width"
+const explorerWidthDefault = 280
+const explorerWidthMin = 240
+const explorerWidthMax = 520
+const journeyNext = {
+  "capability/高考完之后-焚决": ["capability/index", "capability/ai时代的七条基础能力", "下一步：AI 时代的七条基础能力"],
+  "capability/ai时代的七条基础能力": ["capability/index", "capability/ai时代最不重要的能力恰恰是大家最焦虑的", "下一步：三层能力模型"],
+  "capability/ai时代最不重要的能力恰恰是大家最焦虑的": ["capability/index", "portfolio/我给ai小白课埋了六个坑", "下一步：看真实课程案例"],
+  "ai-work/ai赋能的方向是工作不是娱乐": ["ai-work/index", "ai-work/企业ai转型方法论", "下一步：企业 AI 转型的五个阶段"],
+  "ai-work/企业ai转型方法论": ["ai-work/index", "ai-work/个人知识库不是给自己看的", "下一步：个人知识库如何对外交付"],
+  "ai-work/个人知识库不是给自己看的": ["ai-work/index", "portfolio/ai写小说的真相", "下一步：一次 AI 写作失败复盘"],
+  "portfolio/我给ai小白课埋了六个坑": ["portfolio/index", "portfolio/为什么我给自己造了一个jarvis", "下一个案例：为什么造 Jarvis"],
+  "portfolio/为什么我给自己造了一个jarvis": ["portfolio/index", "portfolio/我的ai记忆系统这样存东西", "下一个案例：AI 记忆系统的存储设计"],
+  "portfolio/我的ai记忆系统这样存东西": ["portfolio/index", "portfolio/ai写小说的真相", "下一个案例：AI 写小说的真相"],
+  "portfolio/ai写小说的真相": ["portfolio/index", "ai-work/前端需求要给视觉参照", "下一个案例：用视觉参照写前端需求"],
+  "ai-work/前端需求要给视觉参照": ["ai-work/index", "ai-work/协议解析代码必须默认高风险", "下一个案例：协议解析为什么高风险"],
+  "ai-work/协议解析代码必须默认高风险": ["ai-work/index", "capability/数学正在从答案稀缺进入理解稀缺", "下一步：学习与能力"],
+  "capability/数学正在从答案稀缺进入理解稀缺": ["capability/index", "map/index", "下一步：回到总地图"],
+  "map/index": ["map/index", "input/index", "从输入系统开始"]
+}
+const courseLessons = [
+  "00-使用说明与总览",
+  "01-里程碑一-让agent第一次操作你的电脑",
+  "02-里程碑二-准备ai环境",
+  "03-里程碑三-理解程序与命令行",
+  "04-里程碑四-git存档",
+  "05-里程碑五-github协作",
+  "06-里程碑六-毕业项目贪吃蛇",
+  "07-里程碑七-发布上线",
+  "08-里程碑八-个人复利成长系统"
+]
+function getCourseJourney(slug) {
+  const match = slug.match(/^ai-basics\/(macos|windows)\/(.+)$/)
+  if (!match) return undefined
+  const index = courseLessons.indexOf(match[2])
+  if (index < 0) return undefined
+  const platform = match[1]
+  return {
+    back: "ai-basics/" + platform + "/index",
+    previous: index > 0 ? "ai-basics/" + platform + "/" + courseLessons[index - 1] : undefined,
+    next: index < courseLessons.length - 1 ? "ai-basics/" + platform + "/" + courseLessons[index + 1] : undefined,
+  }
+}
+function sitePath(target) {
+  const base = (document.body.dataset.basepath || "").replace(/^\/|\/$/g, "")
+  return (base ? "/" + base : "") + "/" + target.replace(/\/index$/, "")
+}
+function enhanceFolderControls(root) {
+  for (const container of root.querySelectorAll(".folder-container")) {
+    const folderPath = container.dataset.folderpath
+    const folderOuter = container.nextElementSibling
+    const folderLink = container.querySelector("a.folder-button")
+    const icon = container.querySelector(":scope > .folder-icon")
+    if (!folderPath || !folderOuter || !folderLink || !icon) continue
+
+    const title = folderLink.textContent?.trim() || "目录"
+    folderLink.title = title
+    folderLink.setAttribute("aria-label", title)
+    const toggle = document.createElement("button")
+    toggle.type = "button"
+    toggle.className = "folder-toggle"
+    toggle.append(icon.cloneNode(true))
+
+    const syncState = () => {
+      const expanded = folderOuter.classList.contains("open")
+      toggle.setAttribute("aria-expanded", String(expanded))
+      toggle.setAttribute("aria-label", (expanded ? "收起" : "展开") + title)
+    }
+    const toggleFolder = (event) => {
+      event.preventDefault()
+      event.stopPropagation()
+      folderOuter.classList.toggle("open")
+      const collapsed = !folderOuter.classList.contains("open")
+      let savedState = []
+      try { savedState = JSON.parse(localStorage.getItem("fileTree") || "[]") } catch {}
+      const existing = savedState.findIndex((item) => item.path === folderPath)
+      if (existing >= 0) savedState[existing].collapsed = collapsed
+      else savedState.push({ path: folderPath, collapsed })
+      localStorage.setItem("fileTree", JSON.stringify(savedState))
+      syncState()
+    }
+    toggle.addEventListener("click", toggleFolder)
+    icon.replaceWith(toggle)
+    syncState()
+
+    const currentSlug = document.body.dataset.slug
+    if (currentSlug === folderPath) {
+      folderLink.classList.add("active", "is-active")
+      folderLink.setAttribute("aria-current", "page")
+    }
+  }
+}
+function organizeExplorer() {
+  for (const list of document.querySelectorAll(".explorer-ul")) {
+    const items = [...list.children]
+    const rank = (item) => {
+      const path = item.querySelector(":scope > .folder-container")?.dataset.folderpath?.replace(/\/index$/, "")
+      const root = path?.split("/")[0]
+      if (legacyRoots.has(root)) return 100
+      const index = readerJourneyOrder.indexOf(root)
+      return index < 0 ? 50 : index
+    }
+    const desired = items.sort((a, b) => rank(a) - rank(b))
+    desired.forEach((item) => {
+      const path = item.querySelector(":scope > .folder-container")?.dataset.folderpath?.replace(/\/index$/, "")
+      const leafHref = item.querySelector(":scope > a.nav-file-title")?.getAttribute("href") || ""
+      const leafPath = decodeURIComponent(leafHref).replace(/^.*\//, "").replace(/\/$/, "")
+      item.hidden = legacyRoots.has(path?.split("/")[0]) || legacyLeafPaths.has(leafPath)
+    })
+    enhanceFolderControls(list)
+    for (const link of list.querySelectorAll("a.tree-item-self")) {
+      const title = link.textContent?.trim()
+      if (title) {
+        link.title = title
+        link.setAttribute("aria-label", title)
+      }
+    }
+    if (desired.some((item, index) => item !== list.children[index])) desired.forEach((item) => list.appendChild(item))
+    if (list.dataset.journeyObserver !== "true") {
+      list.dataset.journeyObserver = "true"
+      new MutationObserver(organizeExplorer).observe(list, { childList: true })
+    }
+  }
+}
+function mountExplorerResize() {
+  const desktop = window.matchMedia("(min-width: 1101px)").matches
+  const body = document.querySelector(".page > #quartz-body")
+  const sidebar = body?.querySelector(":scope > .sidebar.left")
+  if (!body || !sidebar) return
+  sidebar.querySelector(".explorer-resize-handle")?.remove()
+  if (!desktop) return
+
+  const limit = () => Math.max(explorerWidthMin, Math.min(explorerWidthMax, Math.floor(window.innerWidth * 0.4)))
+  const clamp = (value) => Math.max(explorerWidthMin, Math.min(limit(), Math.round(value)))
+  const saved = Number(localStorage.getItem(explorerWidthKey))
+  let width = clamp(Number.isFinite(saved) && saved > 0 ? saved : explorerWidthDefault)
+  const handle = document.createElement("div")
+  handle.className = "explorer-resize-handle"
+  handle.tabIndex = 0
+  handle.setAttribute("role", "separator")
+  handle.setAttribute("aria-orientation", "vertical")
+  handle.setAttribute("aria-label", "调整全局目录宽度")
+
+  const apply = (next, persist = true) => {
+    width = clamp(next)
+    document.documentElement.style.setProperty("--zz-explorer-width", width + "px")
+    handle.setAttribute("aria-valuemin", String(explorerWidthMin))
+    handle.setAttribute("aria-valuemax", String(limit()))
+    handle.setAttribute("aria-valuenow", String(width))
+    if (persist) localStorage.setItem(explorerWidthKey, String(width))
+  }
+  apply(width, Number.isFinite(saved) && saved > 0)
+
+  handle.addEventListener("pointerdown", (event) => {
+    const startX = event.clientX
+    const startWidth = width
+    let dragging = false
+    const move = (moveEvent) => {
+      const delta = moveEvent.clientX - startX
+      if (!dragging && Math.abs(delta) < 5) return
+      if (!dragging) {
+        dragging = true
+        handle.setPointerCapture(event.pointerId)
+        handle.classList.add("is-dragging")
+        document.documentElement.classList.add("explorer-is-resizing")
+      }
+      moveEvent.preventDefault()
+      apply(startWidth + delta)
+    }
+    const stop = () => {
+      if (handle.hasPointerCapture(event.pointerId)) handle.releasePointerCapture(event.pointerId)
+      handle.classList.remove("is-dragging")
+      document.documentElement.classList.remove("explorer-is-resizing")
+      document.removeEventListener("pointermove", move)
+      document.removeEventListener("pointerup", stop)
+      document.removeEventListener("pointercancel", stop)
+    }
+    document.addEventListener("pointermove", move)
+    document.addEventListener("pointerup", stop)
+    document.addEventListener("pointercancel", stop)
+  })
+  handle.addEventListener("dblclick", () => apply(explorerWidthDefault))
+  handle.addEventListener("keydown", (event) => {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return
+    event.preventDefault()
+    const step = event.shiftKey ? 32 : 8
+    apply(width + (event.key === "ArrowRight" ? step : -step))
+  })
+  sidebar.append(handle)
+}
+function localizeProperties() {
+  for (const title of document.querySelectorAll(".note-properties-title")) title.textContent = "页面信息"
+}
+function mountJourneyNext() {
+  document.querySelector(".reader-journey-next")?.remove()
+  const slug = document.body.dataset.slug?.toLowerCase()
+  const entry = slug ? journeyNext[slug] : undefined
+  const course = slug ? getCourseJourney(slug) : undefined
+  const article = document.querySelector(".center > article")
+  if ((!entry && !course) || !article) return
+  const nav = document.createElement("nav")
+  nav.className = "reader-journey-next"
+  nav.setAttribute("aria-label", "阅读下一步")
+  const back = document.createElement("a")
+  back.href = sitePath(course?.back || entry[0])
+  back.textContent = course ? "返回平台课程" : "返回本路径"
+  nav.append(back)
+  if (course?.previous) {
+    const previous = document.createElement("a")
+    previous.href = sitePath(course.previous)
+    previous.textContent = "上一篇"
+    nav.append(previous)
+  }
+  const nextTarget = course?.next || entry?.[1]
+  if (nextTarget) {
+    const next = document.createElement("a")
+    next.href = sitePath(nextTarget)
+    next.textContent = course ? "下一篇" : entry[2]
+    nav.append(next)
+  }
+  article.insertAdjacentElement("afterend", nav)
+}
+function enhanceExplorerButtons() {
+  const isCompact = window.matchMedia("(max-width: 1100px)").matches
+  for (const button of document.querySelectorAll(".mobile-explorer, .explorer-toggle")) {
+    const explorer = button.closest(".explorer")
+    if (!explorer) continue
+    const isMobileButton = button.classList.contains("mobile-explorer")
+    if (isMobileButton) button.classList.remove("explorer-toggle")
+    if (isMobileButton && isCompact && button.dataset.initialized !== "true") {
+      // The compact control owns its toggle below. Removing Quartz's generic
+      // hook prevents a second listener from immediately reversing the state.
+      explorer.classList.add("collapsed")
+      explorer.setAttribute("aria-expanded", "false")
+      document.documentElement.classList.remove("mobile-no-scroll")
+    }
+    const syncLabel = () => {
+      const collapsed = explorer.classList.contains("collapsed")
+      const label = isMobileButton ? (collapsed ? "打开全局目录" : "关闭全局目录") : (collapsed ? "展开全局目录" : "收起全局目录")
+      button.setAttribute("aria-label", label)
+      button.setAttribute("title", label)
+      button.setAttribute("aria-expanded", String(!collapsed))
+      explorer.setAttribute("aria-expanded", String(!collapsed))
+      explorer.querySelector(".explorer-content")?.setAttribute("aria-expanded", String(!collapsed))
+    }
+    syncLabel()
+    if (button.dataset.initialized !== "true") {
+      button.dataset.initialized = "true"
+      if (isMobileButton && isCompact) continue
+      button.addEventListener(
+        "click",
+        () => queueMicrotask(syncLabel),
+        { capture: true },
+      )
+    }
+  }
+}
+function captureCompactExplorerIntent(event) {
+  if (!window.matchMedia("(max-width: 1100px)").matches) return
+  const target = event.target instanceof Element ? event.target.closest(".mobile-explorer") : null
+  const explorer = target?.closest(".explorer")
+  if (!explorer) return
+  target.dataset.nextCollapsed = String(!explorer.classList.contains("collapsed"))
+}
+function handleCompactExplorerToggle(event) {
+  if (event.__compactExplorerHandled) return
+  if (!window.matchMedia("(max-width: 1100px)").matches) return
+  const target = event.target instanceof Element ? event.target.closest(".mobile-explorer") : null
+  const explorer = target?.closest(".explorer")
+  if (!explorer) return
+  if (event.type === "click" && event.detail !== 0) return
+  event.__compactExplorerHandled = true
+  event.preventDefault()
+  event.stopImmediatePropagation()
+  const collapsed = target.dataset.nextCollapsed
+    ? target.dataset.nextCollapsed === "true"
+    : !explorer.classList.contains("collapsed")
+  delete target.dataset.nextCollapsed
+  const applyState = () => {
+    explorer.classList.toggle("collapsed", collapsed)
+    document.documentElement.classList.toggle("mobile-no-scroll", !collapsed)
+    explorer.setAttribute("aria-expanded", String(!collapsed))
+    explorer.querySelector(".explorer-content")?.setAttribute("aria-expanded", String(!collapsed))
+    target.setAttribute("aria-expanded", String(!collapsed))
+    target.setAttribute("aria-label", collapsed ? "打开全局目录" : "关闭全局目录")
+    target.setAttribute("title", collapsed ? "打开全局目录" : "关闭全局目录")
+  }
+  applyState()
+  requestAnimationFrame(applyState)
+}
+function mountHeaderTools() {
+  const target = document.querySelector(".doc-header-extra")
+  const tools = document.querySelector(".page > #quartz-body > .sidebar.left > .flex-component")
+  if (target && tools && tools.parentElement !== target) target.appendChild(tools)
+}
+function enhanceReadingShell() {
+  mountHeaderTools()
+  enhanceExplorerButtons()
+  organizeExplorer()
+  mountExplorerResize()
+  localizeProperties()
+  mountJourneyNext()
+}
+if (!window.__docHeaderInitialized) {
+  window.__docHeaderInitialized = true
+  document.addEventListener("pointerdown", captureCompactExplorerIntent, { capture: true })
+  document.addEventListener("pointerup", handleCompactExplorerToggle, { capture: true })
+  document.addEventListener("click", handleCompactExplorerToggle, { capture: true })
+  document.addEventListener("nav", enhanceReadingShell)
+  document.addEventListener("render", enhanceReadingShell)
+}
+enhanceReadingShell()
+</script></header><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../portfolio/">项目与作品</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>为什么我给自己造了一个 Jarvis</a></div></nav><h1 class="article-title">为什么我给自己造了一个 Jarvis</h1><details class="note-properties metadata-container" open data-collapsed="false"><summary class="note-properties-header"><span class="note-properties-title">Properties</span><span class="note-properties-count">2</span></summary><table class="note-properties-table"><tbody><tr class="note-properties-row metadata-property"><td class="note-properties-key metadata-property-key">tags</td><td class="note-properties-value metadata-property-value"><span class="note-properties-tags"><a href="../tags/jarvis" class="internal internal-link tag-link">jarvis</a><span class="note-properties-separator">, </span><a href="../tags/记忆系统" class="internal internal-link tag-link">记忆系统</a><span class="note-properties-separator">, </span><a href="../tags/制作日志" class="internal internal-link tag-link">制作日志</a></span></td></tr><tr class="note-properties-row metadata-property"><td class="note-properties-key metadata-property-key">aliases</td><td class="note-properties-value metadata-property-value"><span class="note-properties-list"><span class="note-properties-text">/logs/为什么我给自己造了一个Jarvis</span><span class="note-properties-separator">, </span><span class="note-properties-text">/cases/为什么我给自己造了一个Jarvis</span></span></td></tr></tbody></table></details><p show-comma="true" class="content-meta"><time datetime="2026-07-14T16:00:00.000Z">2026年7月15日</time><span>17分钟阅读</span></p></div></div><article class="popover-hint"><div class="markdown-preview-view markdown-rendered"><blockquote>
+<p>📔 笔记整理 · 🌿 生长中 · 图例见 <a href="../conventions" class="internal internal-link alias" data-slug="conventions">本站的诚实规则</a></p>
+</blockquote>
+<p>我给自己造 Jarvis，不是因为我缺少一个更聪明的聊天机器人，而是因为 AI 越来越强以后，我反而更需要一个系统替我保存连续性：记得我是谁，知道我正在做什么，并且帮我管理越来越多的 AI。</p>
+<p>今天的 Agent 已经很强了。它能写代码、查资料、做网页，也能一次完成过去需要我忙半天的任务。但窗口一关，它还是不认识我；项目一换，它还是要我重新解释背景；任务一多，我还是会陷进窗口、通知和等待时间里。</p>
+<p>所以 Jarvis 的进化方向从来不是“再加一个聊天框”。它经历了三次进化：先记住我，再理解我，最后替我管理 AI。</p>
+<h2 id="没有-jarvis-之前agent-很强但不认识我">没有 Jarvis 之前：Agent 很强，但不认识我<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#没有-jarvis-之前agent-很强但不认识我" class="internal internal-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>我同时有多个项目，也会同时使用 Codex、Claude Code 和其他 AI 工具。每个 Agent 单独拿出来都很能干，问题是它们不知道另一个窗口刚刚发生了什么，也不知道我过去为什么做过某个决定。</p>
+<p>于是我反复做同一件事：介绍自己、解释项目、贴旧结论、说明哪些东西不能动。刚把一个窗口喂明白，换个窗口又从头来。Agent 在执行，我在等待；等待的时候我又打开另一个任务。很快，注意力被切成碎片，我看起来同时推进了很多事情，实际上脑子里全是没有关掉的标签页。</p>
+<p>还有一个更隐蔽的问题：AI 产出了很多东西，但没有真正沉淀下来。一次对话里很好的判断，几天后找不到；一个项目踩过的坑，下一个项目再踩一次；我知道自己做了很多事，却说不清这些事如何连成一条主线。</p>
+<p>这不是模型不够聪明，而是系统没有连续性。</p>
+<h2 id="第一次进化记住我">第一次进化：记住我<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#第一次进化记住我" class="internal internal-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Jarvis 最早的想法很朴素：既然 Agent 不认识我，就把我留下的数据给它看。</p>
+<p>我最好的个人资料是 GitHub。几十个项目记录了我的技术栈和兴趣方向，提交记录会暴露真实的工作习惯：我是稳定输出还是短时爆发，喜欢先搭框架还是边做边改，哪些项目只是一时兴起，哪些事情我真的坚持了很久。</p>
+<p>另一个重要来源是日记。我从两年前开始断断续续写每日总结，人生发生重大转折时也会写复盘。日记不是简历，也不是写给别人看的自我介绍。人在日记里没有那么多必要把自己包装正确，所以它是一手资料。项目文档告诉 AI 我做了什么，日记更可能告诉它我为什么这样做。</p>
+<p>再就是我和 AI 的对话。我和豆包的对话有四百多万字，它们记录了我长期关心的问题、吸收过的内容和反复出现的困惑。除此之外，还有电脑里的本地资料。把这些东西连起来以后，Jarvis 至少不再每次都把我当成一个刚注册的新用户。</p>
+<p>但这里必须泼一盆冷水：<strong>收集资料不等于理解我。</strong> 四百万字扔进一个库，只能说明库很大，不能说明判断很准。资料可能过时，人在不同阶段也会互相矛盾。搜索命中一句旧话，更不代表那句话今天仍然代表我。</p>
+<p>隐私边界也不能因为“更懂我”就取消。我的微信聊天记录没有导入 Jarvis；私密数据本地优先；一次扫描或一次对话不能自动污染长期记忆。AI 想记住什么，必须经过边界和确认。否则所谓“第二大脑”，很容易先变成一台不受控制的复印机。</p>
+<h2 id="第二次进化理解我">第二次进化：理解我<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#第二次进化理解我" class="internal internal-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>第一版 Jarvis 更像个人知识库：资料进来，问题来了，再从资料里检索答案。这个阶段有用，但不够。真正影响我每天工作的，不只是“某段话存在哪里”，而是下面这些东西：</p>
+<ul>
+<li>我现在最看重什么，哪些原则不能为了速度牺牲；</li>
+<li>我手上有哪些项目，每个项目卡在哪里；</li>
+<li>我做过哪些关键决策，当时为什么这样选；</li>
+<li>哪些关系和承诺需要被尊重，但不应该被随便暴露；</li>
+<li>我今天的精力、注意力和优先级是什么。</li>
+</ul>
+<p>所以 Jarvis 开始从资料库走向结构化记忆。原始记录还是原始记录，稳定判断是稳定判断，项目状态是项目状态，不能全部扔进同一个抽屉。它可以用 <code>morning</code> 帮我把今天压缩成几个真正重要的方向，用 <code>evening</code> 复盘哪些事情推进了目标；临时想法通过 <code>capture</code> 留下，积累到一定程度再 <code>distill</code>；需要进入长期记忆的内容先成为 <code>proposal</code>，由我确认后才 <code>apply</code>。</p>
+<p>这里最重要的不是几个命令，而是“提议”和“写入”被故意拆开。Jarvis 可以说：“我认为这条值得长期记住。”但它不能因为自己说得很像那么回事，就直接改写我是谁。长期记忆一旦被错误结论污染，后面的推荐、总结和计划都会沿着错误方向继续跑。</p>
+<p>到这一步，Jarvis 就不再只是一个 RAG 问答工具。它开始成为我的注意力与决策辅助：提醒我当前主线，带回过去的理由，把今天的变化和长期目标放在一起比较。它不替我做判断，但让我的判断不必每次从零开始。</p>
+<h2 id="第三次进化替我管理-ai">第三次进化：替我管理 AI<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#第三次进化替我管理-ai" class="internal internal-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>后来我真正高频使用 Agent 开发项目，才发现最大的瓶颈又变了：不是 AI 不够懂我，而是我正在变成一群 AI 的项目经理。</p>
+<p>我开着多个窗口，一个在写前端，一个在查资料，一个在跑测试，一个在等部署。每个窗口都会问问题，每个窗口都需要验收。Agent 替我省下了执行时间，我却把省下来的时间用来切窗口、追进度、复制上下文。</p>
+<p>于是我做了一个很反直觉的决定：<strong>我只开主控窗口。剩下的窗口，让 Jarvis 去管理。</strong></p>
+<p>现在我把目标交给主控。主控不应该亲自扎进所有细节，而是找到对应的项目负责人。项目负责人保留这个项目的长期上下文，再把具体工作交给工程、审计或发布角色。一个典型链路是：</p>
+<blockquote>
+<p>主控 → 项目负责人 → 工程执行 / 独立审计 / 发布验收</p>
+</blockquote>
+<p>这不是让一群 Agent 在群聊里热闹开会。它更像 GitHub 的异步协作：主控发任务包，负责人交付代码或文档，完整证据写进报告，最后只发一个极简回执。需要复核的人直接读产物，不把整段思考过程反复搬运到所有线程里。这样既省 token，也避免上下文被无关信息污染。</p>
+<p>这套协作必须有约束。制作的人和检查的人尽量分开，也就是 maker/checker；权限先过门禁，不默认任何线程都能访问一切；改代码要测试，发布要看真实线上页面；出了问题要知道改了什么、能不能回滚。AI 数量越多，越不能靠“我感觉它应该做对了”。</p>
+<h2 id="jarvis-参与的一个普通工作日">Jarvis 参与的一个普通工作日<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#jarvis-参与的一个普通工作日" class="internal internal-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>早上，我先让 Jarvis 根据最近的项目状态和日记，给出今天最重要的三个优先级。我不会照单全收，而是删掉那些看起来合理、实际上不符合我当前状态的安排，最后确认今天的主线。</p>
+<p>然后我只在主控窗口里说目标，比如：“把一篇文章加入公开 Wiki，保留我的口吻，做隐私扫描，发布后检查手机端。”主控把它交给占占 Wiki 的项目负责人。负责人先确认仓库和边界，再读现有信息架构、修改文章、构建、跑浏览器测试。需要发布时，它提交代码、等待 Pages，再到线上点一遍真实页面。</p>
+<p>这段时间我不需要盯着进度条。我可以继续写同一篇文章的下一段，或者处理今天主线里只有我能做的判断。注意，是做同一条主线上的工作，不是因为“AI 正在跑”就再给自己开十个新坑。</p>
+<p>负责人完成后，不会把几十屏过程塞回主控。它只回报结论、提交、部署、风险和报告位置。主控根据回执决定是否需要独立审计；审计发现问题，就退回修复；证据够了，才把结果交给我验收。</p>
+<p>晚上，我再用 <code>evening</code> 回看：今天真正推进了什么，哪里只是忙，哪些经验值得留下。新的长期判断不会偷偷写进去，而是先成为提议。第二天早晨，这些被我确认过的东西才可能成为下一轮计划的输入。</p>
+<p>这就是我想要的“自动化”：不是 Jarvis 在我睡觉时替我凭空经营人生，而是重复的交接、追踪和整理被系统接住，我仍然负责目标、边界和最终验收。</p>
+<h2 id="它是被失败逼着进化的">它是被失败逼着进化的<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#它是被失败逼着进化的" class="internal internal-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Jarvis 不是我坐在桌前一次设计出来的。很多规则都来自真实失败。</p>
+<p><strong>标题和权限 gate</strong> 是因为线程会认错身份，也可能在错误权限下接任务。Agent 很自信不代表它站在正确的项目里。先确认“你是谁、你能做什么”，再执行，比出事以后解释便宜得多。</p>
+<p><strong>报告和主动回执</strong> 是因为“文件写完了”不等于任务完成。负责人只把报告放在角落，不通知主控，主控就不知道下一步该验收还是继续等待。现在完整过程进报告，极简结论主动回父线程，两者缺一个都不算闭环。</p>
+<p><strong>脏工作树保护</strong> 是因为真实项目里经常已经有人的修改。Agent 如果把工作区当成干净白纸，很可能为了完成自己的任务覆盖别人的工作。先看状态，只提交自己负责的文件，是协作底线，不是洁癖。</p>
+<p><strong>Vault 和发布扫描</strong> 是因为个人系统天然靠近最私密的数据，而公开仓库天然会被复制。核心能力、运行记录和私人记忆必须分层；每次打包或发布，都要扫描本机路径、账号、密钥和不该公开的内容。“我没有故意泄露”远远不够。</p>
+<p>这些规则看起来有点笨，但可靠系统往往就是一堆从失败里长出来的笨规则。</p>
+<h2 id="它还做不到什么">它还做不到什么<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#它还做不到什么" class="internal internal-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Jarvis 不会替我决定人生，也不会因为读过很多资料就获得解释我的最终权力。</p>
+<p>它的理解可能错，长期记忆可能过时，结构化之后也会丢掉原始故事里的细节。Agent 交出的代码、文章和报告仍然需要验收；多个角色并不自动等于多个真正独立的观点，它们可能一起被同一个错误前提带偏。</p>
+<p>更现实的是，系统复杂度本身会成为负担。线程、门禁、报告、记忆层次都需要维护。如果我为了管理 Jarvis 花掉的注意力，比它替我省下的还多，那它就失败了。工具不能因为架构漂亮，就获得永久存在的权利。</p>
+<h2 id="最终判断我要的不是更懂我的聊天机器人">最终判断：我要的不是更懂我的聊天机器人<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#最终判断我要的不是更懂我的聊天机器人" class="internal internal-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>我曾经说，把 GitHub、日记和四百多万字 AI 对话喂进去以后，这个世界上可能没有谁比 Jarvis 更了解我。现在我觉得，这句话只说对了一半。</p>
+<p>“了解我”不是终点。一个模型今天可以很懂我，明天上下文一换，连续性又断了。真正重要的是，我有没有一套机制保存原始事实、区分临时想法和长期判断、延续项目上下文，并且约束越来越强的 AI 如何替我工作。</p>
+<p>所以 Jarvis 不是“最懂我的聊天机器人”。它是我在 AI 时代给自己建立的连续性、注意力和协作控制层。</p>
+<p>它最终要做的，不是把我变成一个更忙的 AI 管理员，而是把我的注意力还给那些无法外包的事情：判断、写作、关系和生活。</p>
+<hr/>
+<p><em>这套系统的存储设计见 <a href="../logs/我的ai记忆系统这样存东西" class="internal internal-link alias" data-slug="logs/我的ai记忆系统这样存东西">我的 AI 记忆系统这样存东西</a>。它带来的认知复盘见 <a href="../works/ai时代最不重要的能力恰恰是大家最焦虑的" class="internal internal-link alias" data-slug="works/ai时代最不重要的能力恰恰是大家最焦虑的">三层能力模型</a>。</em></p></div></article><hr/><div class="page-footer"><details class="knowledge-details"><summary>知识关系与反向链接</summary><div class="graph"><h3>关系图谱</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="backlinks"><h3>反向链接</h3><ul id="list-0" class="overflow"><li><a href="../expression/" class="internal">内容与表达</a></li><li><a href="../portfolio/" class="internal">项目与作品</a></li><li class="overflow-end"></li></ul></div></details></div></div><div class="right sidebar"><div class="toc"><button type="button" class="toc-header" aria-controls="toc-28" aria-expanded="true"><h3>目录</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-0" class="toc-content overflow"><li class="depth-0"><a href="#没有-jarvis-之前agent-很强但不认识我" data-for="没有-jarvis-之前agent-很强但不认识我">没有 Jarvis 之前：Agent 很强，但不认识我</a></li><li class="depth-0"><a href="#第一次进化记住我" data-for="第一次进化记住我">第一次进化：记住我</a></li><li class="depth-0"><a href="#第二次进化理解我" data-for="第二次进化理解我">第二次进化：理解我</a></li><li class="depth-0"><a href="#第三次进化替我管理-ai" data-for="第三次进化替我管理-ai">第三次进化：替我管理 AI</a></li><li class="depth-0"><a href="#jarvis-参与的一个普通工作日" data-for="jarvis-参与的一个普通工作日">Jarvis 参与的一个普通工作日</a></li><li class="depth-0"><a href="#它是被失败逼着进化的" data-for="它是被失败逼着进化的">它是被失败逼着进化的</a></li><li class="depth-0"><a href="#它还做不到什么" data-for="它还做不到什么">它还做不到什么</a></li><li class="depth-0"><a href="#最终判断我要的不是更懂我的聊天机器人" data-for="最终判断我要的不是更懂我的聊天机器人">最终判断：我要的不是更懂我的聊天机器人</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Created with <a href="https://quartz.jzhao.xyz/">Quartz v5.0.0</a> © 2026</p><ul><li><a href="/conventions">诚实规则</a></li><li><a href="/now">Now</a></li><li><a href="https://github.com/buyicoder/zhanzhan-wiki">GitHub</a></li></ul></footer></div></div></body><script src="../static/resource-after-e13fffa1.js" type="application/javascript" data-persist="true"></script><script src="../static/resource-after-8b336f9a.js" type="application/javascript" data-persist="true"></script><script src="../static/resource-after-baba652b.js" type="application/javascript" data-persist="true"></script><script src="../static/resource-after-5eb75950.js" type="module" data-persist="true"></script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript" data-persist="true"></script><script src="../postscript-9b65b318.js" type="module" data-persist="true"></script></html>
